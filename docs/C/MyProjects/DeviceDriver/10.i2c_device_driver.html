@@ -24,7 +24,7 @@
 
   
   
-    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/css/theme.css" type="text/css" />
   
 
   
@@ -36,7 +36,7 @@
         <link rel="prev" title="09. call other kernel module" href="09.call_other_kernel_module.html"/> 
 
   
-  <script src="../../../_static/js/modernizr.min.js"></script>
+  <script src="../../../static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -154,7 +154,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../../../_sources/C/MyProjects/DeviceDriver/10.i2c_device_driver.txt" rel="nofollow"> View page source</a>
+            <a href="../../../sources/C/MyProjects/DeviceDriver/10.i2c_device_driver.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -179,7 +179,7 @@
 <li>L3GD20のデバイスIDを読むには, 0x0F番地のレジスタを読む. 正しく読めたら0xD4が読み取れる.</li>
 </ul>
 <p>接続の回路に関してはL3GDの取説を参照する. ピンが8つあり, 1がVCC(2.4~3.6V), 2がSCL, 3がSDA, 4がスレーブアドレス下位ビット選択でVDDに接続すると(0b)1101011(0x6b), GNDに接続すると(0b)1101010(0x6a)になる.(I2Cの場合は必ずどちらかに接続する/今回はVCCに接続した), 5はCS(VDDに接続するとI2Cモード/VCCに接続), 6, 7はインターラプト(今回は不要), 8はGNDである. そのため下図のような接続でいいだろう.</p>
-<img alt="../../../_images/RaspiGPIO_L3GD20.jpg" src="../../../_images/RaspiGPIO_L3GD20.jpg" />
+<img alt="../../../images/RaspiGPIO_L3GD20.jpg" src="../../../images/RaspiGPIO_L3GD20.jpg" />
 <div class="section" id="id1">
 <h2>事前準備と確認(ラズパイ用)<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>ラズパイにssh接続し,</p>
@@ -252,7 +252,7 @@ i2cget -y <span class="m">1</span> 0x6b 0xff b
 <p>第9回では, 第5回のコードの汎用化を行った. すなわち第5回のようなコードはチップ特有のコードであり, GPIOの処理が抽象化できていないため(例えば, このラズパイのGPIO操作は同じGPIO操作であってもArduino上で動作できないということ), インターフェース(linix/gpio.h)を利用することで汎用化したわけである. これ以外の処理は第5回と同じ(というかより第5回の処理が基本である)ため, ここでは説明を省略する.</p>
 <p>さて, ここで今回である. 今回は「ラズパイのGPIOで(I2Cで)接続されたI2C機器(L3GD20)のレジスタの情報をユーザ空間のプロセスから取得できるようにする」というのが目的である. そのため, これまでのようにGPIOのレジスタの値の書き換えを行うハンドラを登録したデバイスファイルの設定の他に, I2C機器からデータを取得する関係のハンドラやI2C機器を認識させる関係のコードを書く必要がある. これらを以降順番に見ていく.</p>
 <p>下図に簡単ではあるが図解を示しておく.</p>
-<img alt="../../../_images/I2C_DeviceDriverArch.jpg" src="../../../_images/I2C_DeviceDriverArch.jpg" />
+<img alt="../../../images/I2C_DeviceDriverArch.jpg" src="../../../images/I2C_DeviceDriverArch.jpg" />
 </div>
 <div class="section" id="id3">
 <h2>簡単なI2C機器のデバイスドライバ<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
@@ -277,7 +277,7 @@ i2cget -y <span class="m">1</span> 0x6b 0xff b
 <p>I2Cは「 <strong>バス</strong> 」で接続するインターフェースであるため, デバドラがロードされているからといって, 常に対象となるI2C機器が接続されているとは限らない. そのため, I2Cバスに機器が接続/切断された場合の処理が必要になる. その時の処理などを登録/解除するのが <cite>i2c_add_driver()</cite> と <cite>i2c_del_driver()</cite> になる. 登録するテーブルの型は <cite>struct i2c_driver</cite> になる. このデバドラでサポートするI2C機器の情報を <cite>.id_table</cite> に登録する. 登録内容は先頭の方で宣言している, <cite>struct i2c_device_id mydevice_i2c_idtable[]</cite> になる. 第一メンバーが対応するデバイス名になる. カーネルはこの名前で対応するデバドラを検索するため, 非常に重要なメンバである(ユニーク番号などではない!). 第二メンバーはこのデバドラ内で使うプライベートデータになる. 何でも良いが通常は識別用番号(数字)を入れる. カーネルがI2C機器から接続/切断のときに呼ぶ関数 <cite>.probe</cite>, <cite>.remove</cite> に登録する. <cite>.driver</cite> にはこのデバドラの名前などを登録する.</p>
 <p><cite>mydevice_i2c_probe()</cite> 内で, <cite>i2c_smbus_read_byte_data()</cite> 関数を呼んで, 認識されたI2C機器と通信している. 今回の場合は, L3GD20が接続されたとしているので, 0x0F番地の値(機器ID, WHO_AM_I)を読む. <cite>i2c_smbus_read_byte_data()</cite> に渡す第一引数は, <cite>struct i2c_client</cite> で, その中にI2Cバス情報(使用するI2C Adapter)やスレーブアドレスを格納する. これらの情報は, この関数 <cite>mydevice_i2c_probe()</cite> が呼ばれるときにもらえる.</p>
 <p>以上, 概要の図に記載する. これを見ながらコードを眺めるといい.</p>
-<img alt="../../../_images/I2C_DeviceDriver1.jpg" src="../../../_images/I2C_DeviceDriver1.jpg" />
+<img alt="../../../images/I2C_DeviceDriver1.jpg" src="../../../images/I2C_DeviceDriver1.jpg" />
 <div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
 <span class="cm"> * I2C Device Driver</span>
 <span class="cm"> *</span>
@@ -456,7 +456,7 @@ dmesg
 <h2>sysfsを使ったインターフェース<a class="headerlink" href="#sysfs" title="このヘッドラインへのパーマリンク">¶</a></h2>
 <p>ここまでで, I2C機器の認識と最初の通信ができた. 続いて, ユーザ, あるいはユーザ空間のプログラムとのインターフェースを作成する. 基本的にはいつもどおり, デバイスファイルを使ったやり取りになる. まずは簡単にできるsysfsを使ったインターフェースを作る.</p>
 <p>言葉では分かりづらいが下図を見ればわかるだろう.</p>
-<img alt="../../../_images/I2C_DeviceDriver2.jpg" src="../../../_images/I2C_DeviceDriver2.jpg" />
+<img alt="../../../images/I2C_DeviceDriver2.jpg" src="../../../images/I2C_DeviceDriver2.jpg" />
 <p>sysfsについては, <a class="reference internal" href="07.interface_for_procfs.html"><span class="doc">07. interface for procfs</span></a> で軽く触れた. この時は, モジュールのパラメータとして扱ったが, 今回は, I2C機器のパラメータとして取り扱う必要がある. <a class="reference internal" href="07.interface_for_procfs.html"><span class="doc">07. interface for procfs</span></a> では, 一番簡単にパラメータを見せる方法として, <cite>module_params()</cite> というヘルパーマクロを使用して実装していたが, 今回はもう少し真面目に実装してみる.</p>
 <p>機器ID(バージョン情報)を取得するだけの簡単なインターフェース(sysfsの実装)を考える. 順序は非常に簡単で,</p>
 <ol class="arabic simple">
@@ -760,8 +760,8 @@ dmesg
 <p><cite>mydevice_i2c_probe()</cite> 内で, キャラクタ型デバイスファイル(cdev)を作ったので, open/close/read/writeが使える. まず, <cite>mydevice_open()</cite> を見る. 第一引数 <cite>struct inode *inode</cite> 内に, cdevへのポインタが格納されており, <cite>inode-&gt;i_cdev</cite> で参照できる. 先程, probeのタイミングでデバイスファイルを作成するときに, cdevは独自構造体 <cite>struct mydevice_device_info</cite> 内に保存した. そのため, <cite>container_of</cite> を使用して, このcdevが格納されている構造体の先頭アドレスを求めることができる(<cite>dev_info = container_of(inode-&gt;i_cdev, struct mydevice_device_ino, cdev);</cite>). そして, この中に <cite>struct i2c_client</cite> の情報も入れたので, これを使ってI2C制御が可能となる. 実際には, read/write時に使うので, さらに <cite>file</cite> 構造体内の <cite>private_data</cite> に入れて, read/writeのタイミングで参照できるようにしている.</p>
 <p><cite>devm_kzalloc</cite> : <a class="reference internal" href="../../Library/Kernel/linux/device.h.html"><span class="doc">device.h</span></a></p>
 <p>以下, 本コードの簡易図解</p>
-<img alt="../../../_images/I2C_CodeDescription.jpg" src="../../../_images/I2C_CodeDescription.jpg" />
-<img alt="../../../_images/I2C_CodeDescription2.jpg" src="../../../_images/I2C_CodeDescription2.jpg" />
+<img alt="../../../images/I2C_CodeDescription.jpg" src="../../../images/I2C_CodeDescription.jpg" />
+<img alt="../../../images/I2C_CodeDescription2.jpg" src="../../../images/I2C_CodeDescription2.jpg" />
 </div>
 <div class="section" id="id8">
 <h3>動かしてみる<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h3>
@@ -835,17 +835,16 @@ cat /dev/mydevice0
             HAS_SOURCE:  true
         };
     </script>
-      <script type="text/javascript" src="../../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/translations.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/translations.js"></script>
 
   
 
   
   
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
   
 
   

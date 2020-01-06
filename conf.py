@@ -37,9 +37,10 @@ extensions = [
     'sphinxcontrib.nwdiag',
     'sphinxcontrib.rackdiag',
     'sphinxcontrib.packetdiag',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.todo',
-    'sphinx.ext.githubpages',
+    'sphinxtogithub',
+    # 'sphinx.ext.mathjax',
+    # 'sphinx.ext.todo',
+    # 'sphinx.ext.githubpages',
 ]
 
 # setting of diagram data type

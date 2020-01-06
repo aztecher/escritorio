@@ -24,7 +24,7 @@
 
   
   
-    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/css/theme.css" type="text/css" />
   
 
   
@@ -36,7 +36,7 @@
         <link rel="prev" title="04. read/write and Memory" href="04.read_write_and_memory.html"/> 
 
   
-  <script src="../../../_static/js/modernizr.min.js"></script>
+  <script src="../../../static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -154,7 +154,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="../../../_sources/C/MyProjects/DeviceDriver/05.raspi_gpio_device_driver.txt" rel="nofollow"> View page source</a>
+            <a href="../../../sources/C/MyProjects/DeviceDriver/05.raspi_gpio_device_driver.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -183,7 +183,7 @@
 </div>
 <p>前回説明を省略したが, 今回は必要なのでメモリのアドレス番号を取得する方法に関して記しておく.
 とはいえ, 以下の画像で理解できるはずである. (相変わらず解像度問題があるので, 必要に応じてiPadを確認する)</p>
-<img alt="../../../_images/PeripheralAddress.jpg" src="../../../_images/PeripheralAddress.jpg" />
+<img alt="../../../images/PeripheralAddress.jpg" src="../../../images/PeripheralAddress.jpg" />
 <p>上記URLの筆者の環境ではラズパイ2で, CPUはBCM2835という番号であった. 私の手元にあるのは, ラズパイ3で, CPUはBCM2837であったがデータシートを確認したところ, おそらく2835と同じようであった. <cite>bcm_host_get_peripheral_address</cite> 関数で取得できる値も <cite>3F000000</cite> であったことと, <cite>cat /proc/cpuinfo | grep Hardware</cite> の値も <cite>2835</cite> とあったので, これは実質2835と考えていいだろう.</p>
 <p>今回は簡単のために, ARM(CPU)からみたペリフェラルレジスタの物理アドレスは <cite>3F000000</cite> で固定とする.
 そして, データシートを見ると, ペリフェラルのアドレスは <cite>7E000000</cite> であるため, それぞれのオフセットを計算して, <cite>3F000000</cite> に加えたアドレスが, 操作すべきハードウェアレジスタの値である.</p>
@@ -237,12 +237,12 @@
 <p>これまで, カーネルモジュールを作ってきたが, レジスタアクセスだけならばユーザ空間からもできる. 今回はGPIO制御のレジスタを叩くだけなので, ひとまずユーザ空間上のプログラムで実装してみる. これでうまく動いたら, 後でカーネルモジュール側でデバイスドライバの実装に取り掛かる. 事前にユーザ空間で試すことで, デバッグがやりやすい利点がある.</p>
 <p>ユーザ空間から行うために, ユーザ空間プログラムから物理アドレスに対してアクセスする必要がある. まず, <cite>/dev/mem</cite> をopenする. そしてそのファイルディスクリプタを使用して <cite>mmap</cite> する. この時, オフセットとして物理アドレスを指定する. サイズは使用する分だけでも良いが, <a class="reference internal" href="#id11">ページ</a> サイズ(4KByte)確保している例が多いようである. なお, openするときに <cite>O_SYNC</cite> を指定する. これによりキャッシュが無効になり, 即レジスタアクセスが行われる (そもそも, レジスタではキャッシュが使われない設定のはずだがねんのための処理)</p>
 <p>言葉ではわかりにくいので下図を参照するといい.</p>
-<img alt="../../../_images/RegisterAddressFromUserSpace.jpg" src="../../../_images/RegisterAddressFromUserSpace.jpg" />
+<img alt="../../../images/RegisterAddressFromUserSpace.jpg" src="../../../images/RegisterAddressFromUserSpace.jpg" />
 <p>ここで取り上げられているコードでは, それぞれ必要なオフセット値と, ペリフェラルレジスタの物理アドレスの開始位置などがdefineされており, オフセット等からアドレスを計算する場合にはシフト演算(&lt;&lt;)を利用している
 これに関しては, データシートをよく読まないとわからないだろう. 下の画像は今回のレジスタ操作の概要を示している.</p>
-<img alt="../../../_images/Register0.jpg" src="../../../_images/Register0.jpg" />
-<img alt="../../../_images/Register1.jpg" src="../../../_images/Register1.jpg" />
-<img alt="../../../_images/Register2.jpg" src="../../../_images/Register2.jpg" />
+<img alt="../../../images/Register0.jpg" src="../../../images/Register0.jpg" />
+<img alt="../../../images/Register1.jpg" src="../../../images/Register1.jpg" />
+<img alt="../../../images/Register2.jpg" src="../../../images/Register2.jpg" />
 <p>上記の画像の内容が理解できれいれば, 上記URLのプログラム部で分からない部分はほぼ無いだろう.
 <cite>REG</cite> マクロはアドレスの値を与えるとそこに参照する部分まで実行する(図で示しているが一応補足)
 その値に対して&#8216;1&#8217;をセットした後, 必要分ビットシフトすることで目的のレジスタ値をセットしている.</p>
@@ -308,7 +308,7 @@
 <li><cite>put_user</cite>, <cite>get_user</cite> : <a class="reference internal" href="../../Library/Kernel/linux/uaccess.h.html"><span class="doc">uaccess.h</span></a></li>
 </ul>
 <p>下に少し図解を入れておく.</p>
-<img alt="../../../_images/KernelUserMemory.jpg" src="../../../_images/KernelUserMemory.jpg" />
+<img alt="../../../images/KernelUserMemory.jpg" src="../../../images/KernelUserMemory.jpg" />
 <p>いい節目なのでコードを添付しておく.
 上記URLとほぼ同じだが, 自分がわかるように多少のコメントを残している.</p>
 <div class="highlight-c"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
@@ -829,17 +829,16 @@ cat /dev/mymodule0
             HAS_SOURCE:  true
         };
     </script>
-      <script type="text/javascript" src="../../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="../../../_static/translations.js"></script>
-      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="../../../static/translations.js"></script>
 
   
 
   
   
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
   
 
   

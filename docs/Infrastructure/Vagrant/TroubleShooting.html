@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Trouble Shooting &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../index.html"/>
+        <link rel="up" title="Vagrant Documents" href="index.html"/>
+        <link rel="next" title="Docker Documents" href="../Docker/index.html"/>
+        <link rel="prev" title="Examples" href="Examples.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../C/index.html">C Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Infrastructure Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../Packer/index.html">Packer Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Ansible/index.html">Ansible Documents</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Vagrant Documents</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="What_is_Vagrant.html">What is Vagrant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Examples.html">Examples</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Trouble Shooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vagrantfile">Vagrantfileに関する諸注意事項</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#virtualbox">VirtualBoxのバージョンに関する警告</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xxx-cloudimg-console-log">XXX-cloudimg-console.log の出力抑制</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Docker/index.html">Docker Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Kubernetes/index.html">Kubernetes Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../OpenStack/index.html">OpenStack Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Network/index.html">Network Documents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Infrastructure Documents</a> &raquo;</li>
+      
+          <li><a href="index.html">Vagrant Documents</a> &raquo;</li>
+      
+    <li>Trouble Shooting</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/Infrastructure/Vagrant/TroubleShooting.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="trouble-shooting">
+<h1>Trouble Shooting<a class="headerlink" href="#trouble-shooting" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>Vagrantを使っていく上で鉢合わせたエラーに関して対処法を記述していく.</p>
+<div class="admonition warning">
+<p class="first admonition-title">警告</p>
+<p class="last">エラー内容が表示されている場合は必ずそれを記述すること. また, 可能な限りエラー時の諸症状等を記述すること.</p>
+</div>
+<div class="section" id="vagrantfile">
+<h2>Vagrantfileに関する諸注意事項<a class="headerlink" href="#vagrantfile" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>書き方という意味では, TroubleShootingに書くまでもないようなエラーが多いので省略するが, もうすこし細かくないレベルの注意事項を記述しておく.</p>
+</div>
+<div class="section" id="virtualbox">
+<h2>VirtualBoxのバージョンに関する警告<a class="headerlink" href="#virtualbox" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id1">
+<h3>症状<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">vagrant</span> <span class="pre">up</span></code> 時に以下のようなエラーがでる. 時間が経つと無事起動する.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>    default: SSH auth method: private key
+    default: Warning: Connection reset. Retrying...
+    default: Warning: Remote connection disconnect. Retrying...
+    default: Warning: Connection reset. Retrying...
+    default: Warning: Remote connection disconnect. Retrying...
+    ......
+    default: Warning: Remote connection disconnect. Retrying...
+<span class="o">==</span>&gt; default: Machine booted and ready!
+<span class="o">==</span>&gt; default: Checking <span class="k">for</span> guest additions in VM...
+    default: The guest additions on this VM <span class="k">do</span> not match the installed version of
+    default: VirtualBox! In most cases this is fine, but in rare cases it can
+    default: prevent things such as shared folders from working properly. If you see
+    default: shared folder errors, please make sure the guest additions within the
+    default: virtual machine match the version of VirtualBox you have installed on
+    default: your host and reload your VM.
+    default:
+    default: Guest Additions Version: 5.2.10
+    default: VirtualBox Version: 5.1
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>考察<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Guest Additionのバージョンに対して, VirtualBoxのバージョンが足りていないようだ. そのため, VirtualBoxのバージョンをアップグレードするといいだろうと考えた.</p>
+</div>
+<div class="section" id="id3">
+<h3>解決方法<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">brew</span></code> のリストで検索をしても引っかからなかった. <code class="docutils literal"><span class="pre">brew</span> <span class="pre">cask</span></code> のリストで検索すると見つかったので, これをアップデートすればいい.</p>
+<div class="admonition warning">
+<p class="first admonition-title">警告</p>
+<p class="last">もしVMを起動していたら全て停止させた情況で行なうこと.
+&#8220;VBox...&#8221;という名前のプロセスが残っていても怒られた. 素直に <code class="docutils literal"><span class="pre">kill</span> <span class="pre">-9</span></code> でプロセスを殺して再度実行する.</p>
+</div>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>brew list <span class="p">|</span> grep virtualbox
+&gt; <span class="o">(</span>結果なし<span class="o">)</span>
+
+brew cask list <span class="p">|</span> grep virtualbox
+&gt; virtualbox <span class="o">(</span>Hit<span class="o">)</span>
+
+brew cask upgrade virtualbox
+</pre></div>
+</div>
+<p>その後, もとのVMは削除し再度起動する.
+さて, これでも初回起動時には <code class="docutils literal"><span class="pre">insecure_key</span></code> がどうのこうのという話がでてきた.
+ただし, 一度停止して再度起動した際には特に問題なく起動できているようだったため, ひとまず解決とした.</p>
+</div>
+<div class="section" id="id4">
+<h3>備考<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ネットを調べるとどうも逆パターン(Guest Additionsのバージョンが古い)場合にも同様の問題が起きるようだ. この際には, <code class="docutils literal"><span class="pre">vagrant-vbguest</span></code> というVagrantのプラグインをインストール(<code class="docutils literal"><span class="pre">vagrant</span> <span class="pre">plugin</span> <span class="pre">install</span> <span class="pre">vagrant-vbguest</span></code>)し, <code class="docutils literal"><span class="pre">vagrant</span> <span class="pre">vbguest</span></code> でアップデートをすると解決するらしい.</p>
+</div>
+</div>
+<div class="section" id="xxx-cloudimg-console-log">
+<h2>XXX-cloudimg-console.log の出力抑制<a class="headerlink" href="#xxx-cloudimg-console-log" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id5">
+<h3>症状<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">vagrant</span> <span class="pre">up</span></code> を行なうと, <code class="docutils literal"><span class="pre">XXX-cloudimg-console.log</span></code> という名前のログファイルが作成される. 実害はないしログは重要だということは認識しているが, 現状使いみちが無いので出力の抑制を行なう.</p>
+</div>
+<div class="section" id="id6">
+<h3>考察<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>あまり検討がつかないのでとりあえずググった. ただ, Vagrantfileでどうにかなるだろうという目算は立っていた(それ以外どうしようもないし...).</p>
+</div>
+<div class="section" id="id7">
+<h3>解決方法<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Vagrantfileに以下を追記すると抑制できるようだ. 理由はよくわかっていないがとりあえず良しとした.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>config.vm.provider <span class="s2">&quot;virtualbox&quot;</span> <span class="k">do</span> <span class="p">|</span>vb<span class="p">|</span>
+      vb.customize <span class="o">[</span><span class="s2">&quot;modifyvm&quot;</span>, :id, <span class="s2">&quot;--uartmode1&quot;</span>, <span class="s2">&quot;disconnected&quot;</span><span class="o">]</span>
+end
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Docker/index.html" class="btn btn-neutral float-right" title="Docker Documents" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Examples.html" class="btn btn-neutral" title="Examples" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

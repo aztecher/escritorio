@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>debugfs.h &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../../index.html"/>
+        <link rel="up" title="linux" href="index.html"/>
+        <link rel="next" title="gpio.h" href="gpio.h.html"/>
+        <link rel="prev" title="dcache.h" href="dcache.h.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Libraries</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">C Kernel Libraries</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="index.html">linux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../asm/index.html">asm</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../Standard/index.html">Standard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Sys/index.html">Sys</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../MyProjects/index.html">C MyProjects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Libraries</a> &raquo;</li>
+      
+          <li><a href="../index.html">C Kernel Libraries</a> &raquo;</li>
+      
+          <li><a href="index.html">linux</a> &raquo;</li>
+      
+    <li>debugfs.h</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/C/Library/Kernel/linux/debugfs.h.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="debugfs-h">
+<h1>debugfs.h<a class="headerlink" href="#debugfs-h" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>&#8216;linux/debugfs.h&#8217; の情報を記述する.</p>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="debugfs-create-dir">
+<h3>debugfs_create_dir<a class="headerlink" href="#debugfs-create-dir" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="n">debugfs_create_dir</span> <span class="p">(</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="n">parent</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>debugfsファイルシステムにディレクトリを作成する.
+第一引数には, 作成するディレクトリの名前の文字列が入っているポインタ, 第二引数には親となるdentry(NULLセットされている場合, debugfsファイルシステムのルートに作成される).</p>
+<p>恐らくこれの返り値がdentryなので, この帰り値を <cite>debugfs_create_dir</cite> や <cite>debugfs_create_file</cite> のparent引数にすることで, ディレクトリツリー構造になっていくのだろう.</p>
+</div>
+<div class="section" id="debugfs-create-file">
+<h3>debugfs_create_file<a class="headerlink" href="#debugfs-create-file" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="n">debugfs_create_file</span><span class="p">(</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">mode_t</span> <span class="o">*</span><span class="n">mode</span><span class="p">,</span>
+    <span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="n">parent</span><span class="p">,</span>
+    <span class="n">void</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span>
+    <span class="n">const</span> <span class="n">dtruct</span> <span class="n">file_operations</span> <span class="o">*</span><span class="n">fops</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>debugfsファイルシステムにファイルを作成する.
+第一引数には, 作成するファイルの名前の文字列が入っているポインタ, 第二引数には当該ファイルのパーミション, 第三引数には親となるdentry(NULLセットされている場合, debugfsファイルシステムのルートに作成される), 第四引数にはよくわからん(inode.i_privateのポインタが, open時に指す先になるらしいがよくわからん), 第五引数にはハンドラテーブルのポインタを渡す.</p>
+<p>ここで返り値として返される値を <cite>debugfs_remove</cite> に与えることで削除することができる. <cite>debugfs_remove_recursive</cite> の場合には, <cite>debugfs_create_dir</cite> の返り値を与えることで再帰的に削除されるのでこの返り値は必要ないようだ.</p>
+</div>
+<div class="section" id="debugfs-create-u32">
+<h3>debugfs_create_u32<a class="headerlink" href="#debugfs-create-u32" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="n">debugfs_create_u32</span> <span class="p">(</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">mode_t</span> <span class="n">mode</span><span class="p">,</span>
+    <span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="n">parent</span><span class="p">,</span>
+    <span class="n">u32</span> <span class="o">*</span><span class="n">value</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>unsigned 32-bit 値を read/write するためのdebugfsファイルを作成する.
+第一引数には, 作成するファイルの名前の文字列が入っているポインタ, 第二引数には当該ファイルのパーミション, 第三引数には親となるdentry(NULLセットされている場合, debugfsファイルシステムのルートに作成される), 第四引数にはこのファイルがread/writeする値へのポインタ.</p>
+</div>
+<div class="section" id="debugfs-create-x32">
+<h3>debugfs_create_x32<a class="headerlink" href="#debugfs-create-x32" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="n">debugfs_create_x32</span><span class="p">(</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">umode_t</span> <span class="n">mode</span><span class="p">,</span>
+    <span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="n">parent</span><span class="p">,</span>
+    <span class="n">u32</span> <span class="o">*</span><span class="n">value</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><span class="xref std std-ref">debugfs_create_u32_tag</span> のx32バージョン</p>
+</div>
+<div class="section" id="debugfs-remove-recursive">
+<h3>debugfs_remove_recursive<a class="headerlink" href="#debugfs-remove-recursive" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">debugfs_remove_recursive</span><span class="p">(</span> <span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="n">dentry</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>ディレクトリを再帰的に削除する.
+第一引数に削除したいディレクトリのdentryポインタを渡す.
+再帰的にdebugfsのディレクトリツリーを削除する.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gpio.h.html" class="btn btn-neutral float-right" title="gpio.h" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dcache.h.html" class="btn btn-neutral" title="dcache.h" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

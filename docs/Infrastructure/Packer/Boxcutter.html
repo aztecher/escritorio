@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>BoxCutter &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../index.html"/>
+        <link rel="up" title="Packer Documents" href="index.html"/>
+        <link rel="next" title="Examples" href="Examples.html"/>
+        <link rel="prev" title="What is Packer" href="What_is_Packer.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../C/index.html">C Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Infrastructure Documents</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Packer Documents</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="What_is_Packer.html">What is Packer</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">BoxCutter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#boxcutterpacker">BoxCutterを利用したPackerの実行</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Examples.html">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="KickStart.html">KickStart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Preseed.html">Preseed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Ansible/index.html">Ansible Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Vagrant/index.html">Vagrant Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Docker/index.html">Docker Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Kubernetes/index.html">Kubernetes Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../OpenStack/index.html">OpenStack Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Network/index.html">Network Documents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Infrastructure Documents</a> &raquo;</li>
+      
+          <li><a href="index.html">Packer Documents</a> &raquo;</li>
+      
+    <li>BoxCutter</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/Infrastructure/Packer/Boxcutter.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="boxcutter">
+<h1>BoxCutter<a class="headerlink" href="#boxcutter" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>BoxCutterはOSSでPackerの各OSでのテンプレートが配布されているものである.</p>
+<p>&gt; <a class="reference external" href="https://github.com/boxcutter">BoxCutter</a></p>
+<p>もちろん, 人の作ったものという気持ちはあるので, 最終的にはすべて自分でかけるように理解しなければいけないと思う. ただ, 感覚を掴むためにも, コードの意図を掴むためにも, これらのコードを実際に実行しながら勉強することは重要であると考える.</p>
+<p>本ページでは, Boxcutterを利用し <cite>ubuntu16.04-server-amd64.iso</cite> を使ったPackerによるVM構築の手順について記していく. BoxCutterは適宜Clone等しておくこと(今回はubuntu)</p>
+<p>以降, 特に断りなくubuntuの例で話しを進めるが, repositoryのディレクトリ構造の一意性などはあまり考えていない. つまり, ubuntuのディレクトリではこうなっているという話をするが, その他でも同様の構成化どうかは知らないのでそこら辺は適宜確認すること.</p>
+<div class="section" id="boxcutterpacker">
+<h2>BoxCutterを利用したPackerの実行<a class="headerlink" href="#boxcutterpacker" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="osjson">
+<h3>1. 自分が作りたいOSのjsonを編集する<a class="headerlink" href="#osjson" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>OSの名前のついたjsonファイルが大元のPackerファイルになるのだろう. そして, 変数として各バージョンのjsonファイルを渡すようだ. ここらへんはREADME.mdを参照のこと. つまり, 我々は利用する各バージョンのjsonを編集することとする.</p>
+<p>今回, <code class="docutils literal"><span class="pre">ubuntu1604.json</span></code> を確認したところ特に変更する点もなかったのでそのまま利用する.</p>
+</div>
+<div class="section" id="http-preseed-cfg">
+<h3>2. http/preseed.cfgを編集する<a class="headerlink" href="#http-preseed-cfg" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>必要に応じて, <code class="docutils literal"><span class="pre">preseeed.cfg</span></code> を編集する. 詳しくは <span class="xref doc">./Preseed.rst</span> に記述しているので参考にされたし. デフォルトのタイムゾーンを変更したりなどはしてもいいかもしれない.</p>
+</div>
+<div class="section" id="id1">
+<h3>3. ビルドする<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>以下のコマンドでビルドする. 今回は <code class="docutils literal"><span class="pre">virtualbox</span></code> 用のみに向けてビルドする.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>$ packer build -only<span class="o">=</span>virtualbox-iso -var-file<span class="o">=</span>ubuntu1604.json ubuntu.json
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>4. 作成完了<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>これだけで完了. めちゃクソ楽. やはり, Packerの肝は適切にPreseed.cfgが書けるかと, 必要な情報をjsonにまとめられるかだけだと思う.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="What_is_Packer.html" class="btn btn-neutral" title="What is Packer" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

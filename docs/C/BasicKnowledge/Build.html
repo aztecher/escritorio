@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Build &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../index.html"/>
+        <link rel="up" title="BasicKnowledge" href="index.html"/>
+        <link rel="next" title="PreProcessor" href="PreProcessor.html"/>
+        <link rel="prev" title="BasicKnowledge" href="index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">BasicKnowledge</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Build</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#abstract">Abstract</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#processing">Processing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#library">Library</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="PreProcessor.html">PreProcessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VisualStudio/index.html">VisualStudio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MemoryAllocation.html">Dynamic Memory Allocation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Inline.html">inline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Static.html">static</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Extern.html">extern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ConstPointer.html">Const and Pointer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Virtual_Func_Class.html">Virtual (Function/Class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Library/index.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MyProjects/index.html">C MyProjects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="index.html">BasicKnowledge</a> &raquo;</li>
+      
+    <li>Build</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/C/BasicKnowledge/Build.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="build">
+<h1>Build<a class="headerlink" href="#build" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>ここではビルドに関するほぼ全ての内容を記述していく.</p>
+<div class="section" id="abstract">
+<h2>Abstract<a class="headerlink" href="#abstract" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ビルドとは, 「材料となるファイルから何かしらの成果物を作成する処理」である. C/C++のようなプログラムでは, ビルドの成果物として挙げられるのは, ライブラリや実行ファイルである.</p>
+</div>
+<div class="section" id="processing">
+<h2>Processing<a class="headerlink" href="#processing" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ビルドは具体的に以下のフェーズに分かれている.</p>
+<ol class="arabic simple">
+<li>プリプロセッサ処理</li>
+<li>コンパイル処理</li>
+<li>リンク処理</li>
+</ol>
+<p>それぞれに関して具体的に記述する.</p>
+<div class="section" id="preprocessor">
+<h3>PreProcessor<a class="headerlink" href="#preprocessor" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>プリプロセッサのより詳細な内容は, <a class="reference internal" href="PreProcessor.html"><span class="doc">PreProcessor</span></a> に記述する</p>
+<p>ビルドを開始すると, まずプリプロセッサがソースファイル1つ1つに対して次のような処理を行なう.</p>
+<ul class="simple">
+<li><cite>#include</cite>, <cite>#define</cite> などのプリプロセッサディレクティブの解決</li>
+<li>コメントの削除</li>
+</ul>
+<p>少しだけ詳細を逸脱してここに記述する話として, <cite>#include</cite> の話がある. ソースファイルに <cite>#include</cite> が指定されている場合, プリプロセッサによって指定された名前のヘッダファイルを探索して(探索方法については詳細に記述する), ソースファイルのその位置に <strong>中身をまるごとコピーする</strong> .</p>
+<p>つまり, <cite>*.h</cite> や <cite>*.hpp</cite> などはコンパイルの前に, <cite>#include</cite> の指示に従って, <cite>*.c</cite>, <cite>*.cpp</cite> へ丸コピされた状態になるということである.</p>
+</div>
+<div class="section" id="compiler">
+<h3>Compiler<a class="headerlink" href="#compiler" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>プリプロセッサを通過したソースファイルはコンパイラに渡され, コンパイルが実行される.</p>
+<p>コンパイルとは「人間が読み書きしやすいように設計された言語(高水準言語)で書かれたプログラムをコンピュータが理解しやすい形式に翻訳する処理」を意味する. 例えば, 「C/C++で書かれたファイルをアセンブラ言語のファイルに変換する処理」である. コンパイラはプリプロセッサから受け取ったソースファイル1つ1つをアセンブラ言語のファイルに変換する. このようにして作成されたアセンブラ言語のファイルを機械語のファイル( <strong>オブジェクトファイル / バイナリファイル</strong> )に変換する.</p>
+<p>さて, コンパイラによりそれぞれのファイルがオブジェクトファイルに変換されたわけだが, このときソースファイルをまたいで参照されている関数はどうやって処理されているのだろう. この問題を解決する仕組みが, <strong>ヘッダーファイル</strong> と <strong>プロトタイプ宣言</strong> である. ヘッダファイルには関数のプロトタイプ宣言が書かれている(実装でなく, 定義が書かれているのが一般的)ので, これが <cite>#include</cite> で読み込まれて展開されるというのはプロトタイプ宣言と同義である. この情報があることにより, 「ある関数はどのような型の引数をいくつ取り, 結果としてある型の値を返す」ということがわかる. コンパイラはその手がかりのみを元にコンパイルを完了させ, 中身に関しては保留する.</p>
+<p>こうして, 他のファイルにある関数の実装が保留された状態( <strong>外部参照が未解決である</strong> という) のオブジェクトファイルが複数作成される.</p>
+</div>
+<div class="section" id="linker">
+<h3>Linker<a class="headerlink" href="#linker" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>最後に生成された複数のオブジェクトファイルを纏める作業をリンクといい, これを実行するのがリンカである.</p>
+<p>リンカはCompiler時点の, 外部参照が未解決であるような実装を順に探索していく. そして必要な情報をすべてまとめ, 1つの実行ファイルを作成する.</p>
+<p>もう少し真面目に書くと以下のようである.</p>
+<p>リンカは未解決の参照のリストを保持している. はじめ, このリストにはmainが入っている. リンカはオブジェクトファイル(.o)を受け取り, 参照を解決し, 新しい未解決の参照が見つかったらリストに追加する(リンクする). 静的ライブラリ(.a)を受け取った場合, 未解決の参照を定義しているオブジェクトファイルのみを静的ライブラリから抜き出し, リンクを行なう. いままで処理したオブジェクトファイルから参照されていないオブジェクトファイルは静的ライブラリに含まれていても無視される.</p>
+</div>
+</div>
+<div class="section" id="library">
+<h2>Library<a class="headerlink" href="#library" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>はじめに, ビルド処理による成果物には <strong>ライブラリ</strong> と実行ファイルという話をした.
+実行ファイルに関してはこれまでの話でそれなりにイメージがついただろうが, ライブラリの場合はどうだろう. 以降, ライブラリに焦点を当てて話をしていく.</p>
+<div class="section" id="id1">
+<h3>Abstract<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ライブラリとは, プログラムをいくつかの単位に分割して, 他人の書いたプログラムを再利用したり, ビルドの管理を楽にしたりする仕組みである.</p>
+<p>例えば, <cite>stdio.h</cite> や <cite>stdlib.h</cite> などの標準ライブラリをこの仕組を利用している.</p>
+<p>実行ファイル側からすると, ライブラリを別にするということは, <strong>外部参照の実装を別にする</strong> ということである. これだけ聞くとやはり単純にソースファイルによるコードの分割と同義であるといえるだろう. しかしながら後述するが, この外部参照の実装を呼び出せるように処理する場面, つまりリンク処理の場面において, プログラム内部に実装を埋め込むか, 実行ファイルとは別に動的に参照可能なファイルを作成するかという選択によって, ライブラリの種類が分かれることになる.</p>
+</div>
+<div class="section" id="library-type">
+<h3>Library Type<a class="headerlink" href="#library-type" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>現在, ライブラリには2種類ある. 一つは, <strong>静的ライブラリ(Static Link Library/.lib)</strong> で, もう一つは <strong>動的ライブラリ(Dynamic Link Library/.dll)/共有ライブラリ</strong> である.</p>
+<p>恐ろしくザックリとした概要だけ話しておくならば, 静的ライブラリは隠匿性をとったものであり, ユーザによって実行できなくなるようなことがなくなるものである. 動的ライブラリは拡張性をとったものであり, プログラムの拡張が容易だったり実装の変更が容易だったりするものである.</p>
+<div class="section" id="static-link-library-windows-lib-osx-linux-lib-a">
+<h4>Static Link Library (Windows: <em>.lib, OSX/Linux: lib</em>.a)<a class="headerlink" href="#static-link-library-windows-lib-osx-linux-lib-a" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>静的ライブラリは静的リンク, つまりライブラリをプログラム内部に組み込むものであり, 実行ファイルには静的ライブラリが組み込まれている.</p>
+<p>ライブラリの実装自体が実行ファイル内部に埋め込まれているため, 実行ファイル単体で動作させることが可能である. また, ライブラリ呼び出しの時間が短く, 高速に処理することができる.</p>
+<p>その反面, 当然ながら実行ファイルの容量は大きくなる. また, ライブラリのバージョンアップが行われると, 実行ファイルも一緒に更新しないといけなくなる. この作業においてライブラリ自体に関わるソースファイルはコンパイルするものの, 実行ファイルのみに関わるソースファイルの更新は(本来)必要ないが, リンカによるリンクは再度行わなければならない. また, 同様のライブラリを使用する別のアプリケーションを動作させる場合でも, 実行ファイル毎にライブラリのコードがメモリに読み込まれることになり, メモリの使用量が大きくなる.</p>
+</div>
+<div class="section" id="dynamic-link-library-windows-dll-osx-lib-dylib-linux-lib-so">
+<h4>Dynamic Link Library (Windows: <em>.dll, OSX: lib</em>.dylib, Linux: lib*.so)<a class="headerlink" href="#dynamic-link-library-windows-dll-osx-lib-dylib-linux-lib-so" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>動的ライブラリ(共有ライブラリ)は動的リンク, つまりライブラリがプログラム内部から分離されており, 実行時に必要なものを外部から動的に呼び出して実行する.</p>
+<p>メモリ上に読み込んだ1つのdllを複数のアプリケーションで共有できるため, メモリの使用量を節約することができる. また, 実行ファイルに埋め込まないため, 実行ファイル自体のファイルサイズは小さくなる. 更に, ライブラリアップデートの場合にも, dllファイルのアップロードのみをすればよく, 実行ファイルの再リンク処理などは必要ない.</p>
+<p>ただし, 当たり前ながらdllファイルがなければ, 外部参照の実装が解決できないので, 実行ファイルは単体では動作しない. そのため, dllのリンクを正しく設定しておく必要がある.</p>
+</div>
+<div class="section" id="dynamic-loading">
+<h4>dynamic loading<a class="headerlink" href="#dynamic-loading" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>ライブラリの種類というよりは読み込み方の話なので多少毛色は違うものの, 関係のあるないようなのでここに記述しておく.</p>
+<p>動的ライブラリ(静的ライブラリもだが...)は通常, 実装がある動的ライブラリへの参照を自身のソースコードに埋め込まなければならず, それが <cite>#include</cite> による <strong>ヘッダーファイルのインクルード</strong> である. つまり, これをやっておいて実行時に実装のある <cite>.dll</cite> ファイルが見つかれば実行できる. これを拡張したような利用形式に, <strong>動的読み込み (dynamic loading)</strong> がある. これはヘッダーファイルなどは必要なく, 自身のソースコードだけでビルドが可能である. しかしながら, 結局参照はしなければならないので, 自身のソースコード内に, 「 <cite>**</cite> という名前の動的リンクライブラリの <cite>**</cite> という関数を呼び出す」ということを記述してあげないといけない.</p>
+<p>この方式は, ライブラリファイルの探索やロードの処理もプログラム上で細かく実装することができたり, 実行ファイルのコンパイル時点でライブラリが完成していなくてもよかったりというメリットが有り, プラグイン機能の開発に利用されることが多いようである.</p>
+<p>ただし, 実行ファイルの作成時点ではライブラリの名前と関数名が大文字として埋まっているだけであり, コンパイルの恩恵(型の管理, 関数名の管理などを自身で行わないといけない)という欠点がある.</p>
+</div>
+</div>
+<div class="section" id="lib-vs-dll">
+<h3>lib vs dll<a class="headerlink" href="#lib-vs-dll" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>静的ライブラリであれ動的ライブラリであれ, 結局最終的には <strong>未解決の外部参照の実体を記述したもの</strong> であり, これをどのように参照可能にするかの違いしか無いわけである. それぞれの違いやメリット/デメリットは上に記述したとおりであるが, 一概には言えないが, dllの方が利点の数では軍配が上がるだろう.</p>
+<p>実際, 大抵のライブラリはdllファイルとなっているようである. libファイルはバージョンアップされることがほぼ無い標準的なもの, 例えばC/C++の標準ライブラリ等くらいのものではないだろか.</p>
+</div>
+<div class="section" id="how-to-make">
+<h3>How To Make<a class="headerlink" href="#how-to-make" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="section" id="macos-linux">
+<h4>MacOS/Linux<a class="headerlink" href="#macos-linux" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>普通, Windowsから説明するものかもしれないが, Mac/Linuxによる作り方(どうせCCコマンドオプションとかリッチに言ってもMakeを使う程度)がわかっていれば本質的に理解できるのでこちらから説明する.</p>
+<p>注意されたいのは, MacOS/Linuxは基本的にコマンドが同じだろうという憶測から同一視して書いていることである. 多少コマンドが違うことはあるだろうがそこらへんは探せばわかるので各個人に任せることとする.</p>
+<p>ただし, おそらくフォーマット自体は違うものになることは想定できる. Objectファイル一つをとっても, LinuxはELFでMacはなんか良く分からん感じのフォーマットだった記憶がある. これに関しては注意を払うべきであろう.</p>
+<p><em>静的ライブラリ</em></p>
+<p>静的ライブラリは実はオブジェクトファイルを(インデックス付して)まとめたただのアーカイブである. そのため, objファイルを生成して, <cite>ar</cite> コマンドでアーカイブするだけでいい.</p>
+<p>ただし, 名前には注意が必要で, <cite>lib*.a</cite> という名前にしなければならない.</p>
+<p>例えば, <cite>static-library.c</cite> というソースファイルを利用して静的ライブラリを作成する場合は以下のような流れになる.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="c1"># 1. オブジェクトファイル(static-library.o)を作成</span>
+gcc -c static-library.c
+
+<span class="c1"># 2. 静的ライブラリ(libstatic.a)にまとめる</span>
+ar r libstatic.a static-library.o
+
+<span class="c1"># 3. 別のソースファイル(main.c)で静的ライブラリを使用する</span>
+gcc  main.c -lstatic
+</pre></div>
+</div>
+<p><em>動的ライブラリ(共有ライブラリ)</em></p>
+<p>(動的ライブラリに関しては拡張子の時点でMac(.dylib)とLinux(.lib*.so)は違うので, 以降はMacに関する方法と捉えておくといい. ただし, Linuxでも手続き的にはほぼ同じだろう)</p>
+<p>続いて, 動的ライブラリ(共有ライブラリ)についてである. これも基本的には同じような流れである. ただし, 「まとめる」という操作がないぶん, コンパイルオプションを付加するだけで直接作成することが可能である.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="c1"># 1. 動的ライブラリ(共有ライブラリ)を作成(shared-lib.c)</span>
+gcc -dynamiclib -o libshared.dylib shared-lib.c
+
+<span class="c1"># 2. 別のソースファイル(main.c)で共有ライブラリを使用する.</span>
+gcc -o main main.c libshared.dylib
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">警告</p>
+<p class="last">コンパイルフラグである <code class="docutils literal"><span class="pre">-lXXX</span></code> は <strong>GCC</strong> の場合はコマンドの最後につける.
+<code class="docutils literal"><span class="pre">ld</span></code> (GNUリンカー)のドキュメントにもあるように, <strong>コマンドラインで指定された場所でアーカイブを一回だけ検索する</strong> らしい.
+つまり, <strong>そのフラグ前のオブジェクトの中で未定義のシンボルを定義している場合に, リンカーはアーカイブから適切なファイルをインクルードする</strong>
+そして, <strong>コード行の後に表示されるオブジェクトの未定義シンボルによって, リンカーはアーカイブを再度検索することはない</strong></p>
+</div>
+</div>
+<div class="section" id="windows">
+<h4>Windows<a class="headerlink" href="#windows" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>Windowsの話は基本的にVisual Studioを利用する方向性で進めていく. WindowsでもMakeが実行できるようだが, それに関してはMac/Linuxにおける場合とほぼ同じなので, そちらにまかせることにする.</p>
+<p>VisualStudio一般に関しては, <a class="reference internal" href="VisualStudio/DetailedKnowledge.html"><span class="doc">詳細知識</span></a> に記述しているのでそちらを参考されたし.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="PreProcessor.html" class="btn btn-neutral float-right" title="PreProcessor" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="BasicKnowledge" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

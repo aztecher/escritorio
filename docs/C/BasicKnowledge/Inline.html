@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>inline &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../index.html"/>
+        <link rel="up" title="BasicKnowledge" href="index.html"/>
+        <link rel="next" title="static" href="Static.html"/>
+        <link rel="prev" title="Dynamic Memory Allocation" href="MemoryAllocation.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">BasicKnowledge</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Build.html">Build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PreProcessor.html">PreProcessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VisualStudio/index.html">VisualStudio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MemoryAllocation.html">Dynamic Memory Allocation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">inline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">inline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">メンバ関数のインライン化</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Static.html">static</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Extern.html">extern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ConstPointer.html">Const and Pointer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Virtual_Func_Class.html">Virtual (Function/Class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Library/index.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MyProjects/index.html">C MyProjects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="index.html">BasicKnowledge</a> &raquo;</li>
+      
+    <li>inline</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/C/BasicKnowledge/Inline.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="inline">
+<h1>inline<a class="headerlink" href="#inline" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>ここでは, <code class="docutils literal"><span class="pre">inline</span></code> に関して記述していく.</p>
+<div class="section" id="id1">
+<h2>inline<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>inline(インライン)指定子は, コンパイラに対して特定の関数をインライン展開するようヒントを与える. インライン展開とは, 分かってしまえば読んで時のごとくなのだが, コードを展開することを意味する. インライン関数で定義される関数が別のソース内で呼ばれた際, その位置に関数の内容を展開する. これはマクロによる関数定義に動作としては似通っており, 効果としても関数呼び出しのオーバーヘッドの減少などが目的であるためその点でも同じだろう. しかし, インライン展開の場合は先に述べたとおり, コンパイラに対してのヒントなので, この展開処理はコンパイラによって行われる(どうも行われない場合もあるらしい. その辺はコンパイラ先生が勝手にやるみたい). これは, マクロの展開をプリプロセッサが行なうことに比べるとおおきな違いである.</p>
+<p>もちろん関数内部のコードを展開するので, むやみに長い関数に適用するといたずらにコードの総量を増やすことになり, 逆に関数呼び出しのオーバーヘッドよりも処理速度を要求されることになる(という話もある. 実際に体験したことはないが). この話は, インクルードディレクティブの話と同じである.</p>
+<p>また, inlineを指定すれば必ずインライン関数になるわけではなく, 必ず <em>コンパイラの宣言に従う</em> 必要がある. インライン展開できなかった場合には, 通常の関数として扱われる.</p>
+<div class="section" id="inline-vs">
+<h3>inline vs マクロ<a class="headerlink" href="#inline-vs" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>MSDNによると, inlineとマクロに関しては次のような言及がある.</p>
+<div class="admonition note">
+<p class="first admonition-title">注釈</p>
+<p>インライン関数はマクロに似ていますが, インライン関数がコンパイラによって解析されるのに対し(関数コードはコンパイル時に呼び出しの時点で展開されるため), マクロはプリプロセッサによって展開されれます.</p>
+<p>そのため, これらにはいくつかの重要な違いがあります.</p>
+<p>インライン関数は, 通常の関数に適用されるタイプセーフの全てのプロトコルに従う.</p>
+<p>インライン関数は他の関数と同じ構造を使用して指定されますが, 関数宣言に <code class="docutils literal"><span class="pre">inline</span></code> キーワードを指定する点が異なる</p>
+<p class="last">インライン展開に引数として渡された式は1回だけ評価される. マクロでは, 引数として渡された式が複数回評価される可能性があります.</p>
+</div>
+<p>なお, MSDNでも, インライン関数は小さい関数で使用することを推奨しており, オーバーヘッド削減効果がある関数として紹介されている.</p>
+</div>
+<div class="section" id="disassemble">
+<h3>Disassemble<a class="headerlink" href="#disassemble" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>話としてはわかったが, やっぱり実際に見てみたいというのが性だろう. というわけで, プリプロセス終了段階と, バイナリ段階で展開の様子を確認してみる.</p>
+<p>以下のようなコードを用意する.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#define SQUARE(x) ((x)*(x))</span>
+
+<span class="c1">// Clang では, static が付いているか,</span>
+<span class="c1">// 最適化オプションがないと</span>
+<span class="c1">// inlineはエラーになるらしい</span>
+<span class="kr">inline</span> <span class="k">static</span> <span class="kt">void</span> <span class="nf">hello</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;hello, world</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;SQUARE = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">SQUARE</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+  <span class="n">hello</span><span class="p">();</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>以下のようなmakefileでプリプロセス段階を.ppというファイルで書き出し, 通常のコンパイルは通常通り行なう.</p>
+<div class="highlight-make"><div class="highlight"><pre><span></span><span class="c">##################################################################</span>
+<span class="c"># Makefile Template</span>
+<span class="c">#</span>
+<span class="c"># please replace the name &#39;filename&#39; to your program name,</span>
+<span class="c"># and add the FLAGS or libraries you need to compile the program</span>
+<span class="c">#</span>
+<span class="c"># Date:  2018.03.04</span>
+<span class="c"># author: Mikiya Michishita</span>
+<span class="c">###################################################################</span>
+
+<span class="nv">CFLAGS</span> <span class="o">:=</span> -I/usr/local/include -g -O2 -Wall
+
+<span class="nv">CC</span> <span class="o">:=</span> CC
+
+<span class="nv">DEFAULT_TARGET</span> <span class="o">:=</span> <span class="nb">help</span>
+
+<span class="c"># list up all targets</span>
+<span class="nv">ALL_TARGET</span> <span class="o">:=</span> inline-after-preprocess <span class="se">\</span>
+    inline
+
+<span class="nv">CLEAN_TARGET</span> <span class="o">:=</span> inline
+
+<span class="nf">target</span><span class="o">:</span> <span class="k">$(</span><span class="nv">DEFAULT_TARGET</span><span class="k">)</span> <span class="c">## help</span>
+
+<span class="nf">all</span><span class="o">:</span> <span class="k">$(</span><span class="nv">ALL_TARGET</span><span class="k">)</span> <span class="c">## Make all files</span>
+
+
+<span class="nf">inline-after-preprocess</span><span class="o">:</span> <span class="n">inline</span>.<span class="n">c</span> <span class="c">## create preprocessed code</span>
+    <span class="si">${</span><span class="nv">CC</span><span class="si">}</span> <span class="k">$(</span>CFLAGS<span class="k">)</span> -E inline.c &gt;&gt; inline.pp
+
+<span class="nf">inline</span><span class="o">:</span> <span class="n">inline</span>.<span class="n">o</span> <span class="c">## Make `inline` executable file by `inline.c` source code</span>
+    <span class="si">${</span><span class="nv">CC</span><span class="si">}</span> <span class="k">$(</span>CFLAGS<span class="k">)</span> inline.o -o inline
+
+<span class="nf">clean</span><span class="o">:</span> <span class="c">## Remove object file and others</span>
+    rm *.o
+    rm *.pp
+    rm <span class="k">$(</span>CLEAN_TARGET<span class="k">)</span>
+
+<span class="nf">clean_tags</span><span class="o">:</span> <span class="c">## Remove tags created by ctags and gtags</span>
+    rm tags
+    rm GPATH GTAGS GRTAGS
+
+<span class="c"># compile option</span>
+<span class="nf">.c.o</span><span class="o">:</span>
+    <span class="si">${</span><span class="nv">CC</span><span class="si">}</span> <span class="si">${</span><span class="nv">CFLAGS</span><span class="si">}</span> -c $&lt;
+
+<span class="nf">.C.o</span><span class="o">:</span>
+    <span class="si">${</span><span class="nv">CC</span><span class="si">}</span> <span class="si">${</span><span class="nv">CFLAGS</span><span class="si">}</span> -c $&lt;
+
+<span class="nf">.PHONT</span><span class="o">:</span> <span class="n">help</span>
+<span class="nf">help</span><span class="o">:</span>
+    @grep -E <span class="s1">&#39;^[a-zA-Z_-]+:.*##.*$$&#39;</span> <span class="k">$(</span>MAKEFILE_LIST<span class="k">)</span> <span class="p">|</span> sort <span class="p">|</span> awk <span class="s1">&#39;BEGIN {FS = &quot;:.*##&quot;}; {printf &quot;\033[36m%-30s\033[0m %s\n&quot;, $$1, $$2}&#39;</span>
+</pre></div>
+</div>
+<p>プリプロセッサが解釈したあとのコードを確認してみる.
+ヘッダーの展開の影響でコード量が膨大になっているため, 必要な部分のみ抜き出すことにする.</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>inline static void hello() {
+  printf (&quot;hello, world\n&quot;);
+}
+
+int main() {
+  printf (&quot;SQUARE = %d\n&quot;, ((2)*(2)));
+  hello();
+  return 0;
+}
+</pre></div>
+</div>
+<p>前述の説明の通り, プリプロセッサが翻訳した段階では, マクロは展開されているが, インライン関数自体の展開は行われていない.</p>
+<p>さて, 作成されたバイナリをgdbで解析してみる.</p>
+<p>以下に示すのは, 最適化オプションを切ったもの <code class="docutils literal"><span class="pre">-O0</span></code> である(インライン展開は期待できない). ちょうど, つぎにコールされるのが <code class="docutils literal"><span class="pre">hello()</span></code> 関数である.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="o">[</span>-------------------------------------code-------------------------------------<span class="o">]</span>
+   0x100000f24 &lt;main+20&gt;:       mov    DWORD PTR <span class="o">[</span>rbp-0x4<span class="o">]</span>,0x0
+   0x100000f2b &lt;main+27&gt;:       mov    al,0x0
+   0x100000f2d &lt;main+29&gt;:       call   <span class="nv">0x100000f70</span>
+<span class="o">=</span>&gt; 0x100000f32 &lt;main+34&gt;:       mov    DWORD PTR <span class="o">[</span>rbp-0x8<span class="o">]</span>,eax
+   0x100000f35 &lt;main+37&gt;:       call   0x100000f50 &lt;hello&gt;
+   0x100000f3a &lt;main+42&gt;:       xor    eax,eax
+   0x100000f3c &lt;main+44&gt;:       add    rsp,0x10
+   0x100000f40 &lt;main+48&gt;:       pop    rbp
+</pre></div>
+</div>
+<p>以下は, 最適化オプション <code class="docutils literal"><span class="pre">-O2</span></code> をつけたものである(インライン展開が期待できる). ちょうど, つぎにコールされるのが <code class="docutils literal"><span class="pre">hello()</span></code> 関数である.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="o">[</span>-------------------------------------code-------------------------------------<span class="o">]</span>
+   0x100000f4b &lt;main+11&gt;:       mov    esi,0x4
+   0x100000f50 &lt;main+16&gt;:       xor    eax,eax
+   0x100000f52 &lt;main+18&gt;:       call   <span class="nv">0x100000f68</span>
+<span class="o">=</span>&gt; 0x100000f57 &lt;main+23&gt;:       lea    rdi,<span class="o">[</span>rip+0x47<span class="o">]</span>        <span class="c1"># 0x100000fa5</span>
+   0x100000f5e &lt;main+30&gt;:       call   0x100000f6e
+   0x100000f63 &lt;main+35&gt;:       xor    eax,eax
+   0x100000f65 &lt;main+37&gt;:       pop    rbp
+   0x100000f66 &lt;main+38&gt;:       ret
+</pre></div>
+</div>
+<p>見てわかるとおり, シンボルテーブルから helloが消えていることがわかる.</p>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>メンバ関数のインライン化<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>メンバ関数も通常の関数同様にインライン関数として定義することができる.
+メンバ関数のインライン化の場合, 通常はクラス内部で内容を定義してしまう.
+(つまり, ヘッダーで定義し, 実態をソースで書くような形でメンバ関数をインライン化すると, ヘッダーの方のクラス内部に内容を定義するということ...だろうか / 定義と実装は分離した上で実態としてはクラス内部に展開するという形になるということだろうか)</p>
+<p>さらに, クラス内で定義したメンバ関数の場合は, inlineを指定しなくても, <em>自動的にインライン化</em> される. もちろん, <code class="docutils literal"><span class="pre">inline</span></code> キーワードを指定しても良い. インライン化できなかった場合は通常の関数として扱われる.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Static.html" class="btn btn-neutral float-right" title="static" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="MemoryAllocation.html" class="btn btn-neutral" title="Dynamic Memory Allocation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

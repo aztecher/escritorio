@@ -1,0 +1,450 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>linux &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../../index.html"/>
+        <link rel="up" title="C Kernel Libraries" href="../index.html"/>
+        <link rel="next" title="kernel.h" href="kernel.h.html"/>
+        <link rel="prev" title="C Kernel Libraries" href="../index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Libraries</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">C Kernel Libraries</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">linux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../asm/index.html">asm</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../Standard/index.html">Standard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Sys/index.html">Sys</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../MyProjects/index.html">C MyProjects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Libraries</a> &raquo;</li>
+      
+          <li><a href="../index.html">C Kernel Libraries</a> &raquo;</li>
+      
+    <li>linux</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/C/Library/Kernel/linux/index.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="linux">
+<h1>linux<a class="headerlink" href="#linux" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="line-block">
+<div class="line">Cのlinuxライブラリに関して記述していく</div>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="kernel.h.html">kernel.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kernel.h.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="kernel.h.html#printk">printk</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kernel.h.html#macros">Macros</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="kernel.h.html#container-of">container_of</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="module.h.html">module.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="module.h.html#structures">Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="module.h.html#module">module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="module.h.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="module.h.html#module-init">module_init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module.h.html#module-exit">module_exit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="module.h.html#macros">Macros</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="module.h.html#module-license">MODULE_LICENSE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="module.h.html#module-device-table">MODULE_DEVICE_TABLE</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fs.h.html">fs.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fs.h.html#structures">Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="fs.h.html#file-operations">file_operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs.h.html#inode">inode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs.h.html#file">file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fs.h.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="fs.h.html#register-chrdev">register_chrdev</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs.h.html#unregister-chrdev">unregister_chrdev</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs.h.html#alloc-chrdev-region">alloc_chrdev_region</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs.h.html#unregister-chrdev-region">unregister_chrdev_region</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="types.h.html">types.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="types.h.html#types">types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="types.h.html#size-t">size_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.h.html#ssize-t">ssize_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.h.html#loff-t">loff_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types.h.html#dev-t">dev_t</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compiler-types.h.html">compiler-types.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compiler-types.h.html#macro">Macro</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="compiler-types.h.html#user">__user</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cdev.h.html">cdev.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cdev.h.html#structures">Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cdev.h.html#cdev">cdev</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cdev.h.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cdev.h.html#cdev-init">cdev_init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cdev.h.html#cdev-add">cdev_add</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cdev.h.html#cdev-del">cdev_del</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="device.h.html">device.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="device.h.html#structures">Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="device.h.html#class">class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="device.h.html#device-driver">device_driver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="device.h.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="device.h.html#class-create">class_create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="device.h.html#device-create">device_create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="device.h.html#device-destroy">device_destroy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="device.h.html#device-create-file">device_create_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="device.h.html#device-remove-file">device_remove_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="device.h.html#devm-kzalloc">devm_kzalloc</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="device.h.html#macro">Macro</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="device.h.html#device-attr">DEVICE_ATTR</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="uaccess.h.html">uaccess.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="uaccess.h.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="uaccess.h.html#copy-to-user">copy_to_user</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uaccess.h.html#copy-from-user">copy_from_user</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uaccess.h.html#get-user">get_user</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uaccess.h.html#put-user">put_user</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="slab.h.html">slab.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="slab.h.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slab.h.html#kmalloc">kmalloc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slab.h.html#kfree">kfree</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="io.h.html">io.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="io.h.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="io.h.html#ioremap">ioremap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io.h.html#ioremap-nocache">ioremap_nocache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io.h.html#iounmap">iounmap</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proc_fs.h.html">proc_fs.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="proc_fs.h.html#structures">Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="proc_fs.h.html#proc-dir-entry">proc_dir_entry</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="proc_fs.h.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="proc_fs.h.html#proc-create">proc_create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="proc_fs.h.html#remove-proc-entry">remove_proc_entry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dcache.h.html">dcache.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dcache.h.html#structures">Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dcache.h.html#class">class</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="debugfs.h.html">debugfs.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="debugfs.h.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="debugfs.h.html#debugfs-create-dir">debugfs_create_dir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="debugfs.h.html#debugfs-create-file">debugfs_create_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="debugfs.h.html#debugfs-create-u32">debugfs_create_u32</a></li>
+<li class="toctree-l3"><a class="reference internal" href="debugfs.h.html#debugfs-create-x32">debugfs_create_x32</a></li>
+<li class="toctree-l3"><a class="reference internal" href="debugfs.h.html#debugfs-remove-recursive">debugfs_remove_recursive</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gpio.h.html">gpio.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gpio.h.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpio.h.html#gpio-direction-output">gpio_direction_output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpio.h.html#gpio-direction-input">gpio_direction_input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpio.h.html#gpio-set-value">gpio_set_value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpio.h.html#gpio-to-irq">gpio_to_irq</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interrupt.h.html">interrupt.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="interrupt.h.html#structures">Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="interrupt.h.html#irqreturn-t">irqreturn_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interrupt.h.html#irq-handler-t">irq_handler_t</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="interrupt.h.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="interrupt.h.html#request-irq">request_irq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interrupt.h.html#free-irq">free_irq</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="i2c.h.html">i2c.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="i2c.h.html#structures">Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="i2c.h.html#i2c-driver">i2c_driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i2c.h.html#i2c-client">i2c_client</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="i2c.h.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="i2c.h.html#i2c-del-driver">i2c_del_driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i2c.h.html#i2c-set-clientdata">i2c_set_clientdata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i2c.h.html#i2c-get-clientdata">i2c_get_clientdata</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="i2c.h.html#macros">Macros</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="i2c.h.html#to-i2c-client">to_i2c_client</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i2c.h.html#i2c-add-driver">i2c_add_driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i2c.h.html#module-i2c-driver">module_i2c_driver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="i2c-core.h.html">i2c-core.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="i2c-core.h.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="i2c-core.h.html#i2c-register-driver">i2c_register_driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i2c-core.h.html#i2c-del-driver">i2c_del_driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i2c-core.h.html#i2c-smbus-read-byte-data">i2c_smbus_read_byte_data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mod_devicetable.h.html">mod_devicetable.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mod_devicetable.h.html#structures">Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mod_devicetable.h.html#i2c-device-id">i2c_device_id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mod_devicetable.h.html#of-device-id">of_device_id</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kernel.h.html" class="btn btn-neutral float-right" title="kernel.h" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="C Kernel Libraries" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

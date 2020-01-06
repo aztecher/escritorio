@@ -1,0 +1,480 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>11. Add I2C Device to DeviceTree &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="Device Driver" href="index.html"/>
+        <link rel="next" title="12. bootloading device driver" href="12.bootloading_device_driver.html"/>
+        <link rel="prev" title="10.I2C Device Driver" href="10.i2c_device_driver.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">C MyProjects</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Device Driver</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="01.create_simple_kernel_module.html">01. Create Simple Kernel Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="02.driver_register_static.html">02. Driver Register (Static)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03.driver_register_dynamic.html">03. Driver Register (Dynamic)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="04.read_write_and_memory.html">04. read/write and Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="05.raspi_gpio_device_driver.html">05. Raspi GPIO Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="06.ioctl_implementation.html">06. ioctl Implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="07.interface_for_procfs.html">07. interface for procfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="08.interface_for_debugfs.html">08. interface for debugfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="09.call_other_kernel_module.html">09. call other kernel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="10.i2c_device_driver.html">10.I2C Device Driver</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">11. Add I2C Device to DeviceTree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="12.bootloading_device_driver.html">12. bootloading device driver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">C MyProjects</a> &raquo;</li>
+      
+          <li><a href="index.html">Device Driver</a> &raquo;</li>
+      
+    <li>11. Add I2C Device to DeviceTree</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/C/MyProjects/DeviceDriver/11.add_i2c_device_to_device_tree.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="add-i2c-device-to-devicetree">
+<h1>11. Add I2C Device to DeviceTree<a class="headerlink" href="#add-i2c-device-to-devicetree" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>参考URL</p>
+<ul class="simple">
+<li><a class="reference external" href="https://qiita.com/take-iwiw/items/0d13142863d9ed064e41">組み込みLinuxデバイスドライバの作り方</a></li>
+</ul>
+<p>また, 今回は別に, Device Tree についての参考URLも載せておく
+* DeviceTreeについてのまとめ</p>
+<p>これまで, いくつかのデバイスドライバを実装してきた. しかし, どのデバイスドライバも, 「ハードウェア固有の情報」を直接デバイスドライバ内に持ってしまっていた.</p>
+<p>例えば, <a class="reference internal" href="05.raspi_gpio_device_driver.html"><span class="doc">05. Raspi GPIO Device Driver</span></a> では, 直接メモリマップアドレスレジスタを叩くことでGPIOデバドラを実装した. この時, オフセットアドレスなどのチップ(SoC)固有の情報をデバドラ内で持っていたが, これは良くないだろう(そもそも, GPIOそのもののデバドラを作ることはなく, Linuxカーネル標準の関数を普通は利用する)</p>
+<p>仮に, Linuxカーネル標準の関数を使っても, まだハードウェア固有情報をデバドラは持ち得る. <cite>./10.i2c_device_driver</cite> では, Linuxカーネル標準のI2C制御関数を使用してI2Cデバイスにアクセスした. しかし, 対象となるI2Cデバイスが, どのI2Cバスにつながっているかや, スレーブアドレスといったボード固有の情報をデバドラ内に記載していた.</p>
+<p>こういったことは, 現在ではルール的に許されていない. 理由は, SoC, ボードのバリエーション毎にコードがどんどん増加してしまうためである. 現在では, こういったハードウェア固有情報は <strong>デバイスツリー</strong> によって管理している.</p>
+<p>前回, I2C接続されたジャイロセンサ(L3GD20)のデバドラを作成した. しかし, この時は, 手動でカーネルに対してI2C機器の情報を教えてあげる必要があった. 今回はこの情報をデバイスツリーに組み込んでみる.</p>
+<div class="section" id="id1">
+<h2>デバイスツリーに関連するファイル<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><strong>デバイスツリー</strong> と言っているが, その実態はバイナリ形式のファームウェアになる. 拡張子は <cite>.dtb</cite> になる. これは, ラズパイでは <cite>/boot</cite> の下にある. 例えば, ラズパイ3Bの場合は, <cite>/boot/bcm2710-rpi-3-b.dtb</cite> になる</p>
+<p>SoC固有情報はDTSIファイルに, ボード固有情報はDTSファイルに記載することになっている. これらをDTCという特別なコンパイラでコンパイルすることで, さっきほどのDTBファイルが作られる.</p>
+</div>
+<div class="section" id="dtb">
+<h2>1. dtbファイルを直接書き換える(手抜き版)<a class="headerlink" href="#dtb" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">警告</p>
+<p class="last">この方法は非推奨である. 正しくは以降に説明する2の方法を利用する.</p>
+</div>
+<div class="section" id="id2">
+<h3>デバイスツリーに追加する<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>本来は後述する2の方法(Linuxソースツリーを引っ張ってきて, <cite>bcm2710-rpi-3-b.dts</cite> を編集してコンパイルする流れ)が正しい. ただとりあえずお手軽にやってみる. ちょっと危険なので最悪OSの再インストールになるが, 落ち着いてやれば問題ないだろう.</p>
+<p>ひとまずデバイスツリー用のコンパイラ(DTC)をインストールする(私の環境ではデフォルトでインストールされていた)</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo apt-get install device-tree-compiler
+</pre></div>
+</div>
+<p>続いて, 現在使用されているDTBファイルを逆コンパイルしてDTSに戻す.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>dtc -I dtb -O dts /boot/bcm2710-rpi-3-b.dtb &gt; dis_bcm2710-rpi-3-b.dts
+</pre></div>
+</div>
+<p>これにより, <cite>dis_bcm2710-rpi-3-b.dts</cite> というテキストができる. このファイルにはこのボード(ラズパイ3)上でのデバイスの接続情報がツリー状に記載されている. また, レジスタ番地なども記載されている. 今回は, I2C_1 に L3GD20(スレーブアドレス=0x6b)を接続するとする. まず, I2C1のノードを探す. アドレスで書かれていまっているが, <cite>i2c&#64;7e804000</cite> の所になる. そこに <cite>mydevice</cite> というノードを追加する. <cite>compatible</cite> に <cite>mycompany,myoriginaldevice</cite> を設定することで, 「mycompanyというメーカー製のmyoriginaldeviceという名前のデバイス」だと指定する. また <cite>reg</cite> の所にはスレーブアドレスを設定する. これによってカーネルは, 「このボードには, I2C_1の0x6bに&#8221;mycompany,myoriginaldevice&#8221;というデバイスがつながっている」と認識する.</p>
+<div class="highlight-txt"><div class="highlight"><pre><span></span>...
+
+i2c@7e804000 {
+    compatible = &quot;brcm,bcm2835-i2c&quot;;
+    reg = &lt;0x7e804000 0x1000&gt;;
+    ...
+    phandle = &lt;0x20&gt;;
+
+    /* 自分用のデバイスを追加 */
+    mydevice@6b {
+        compatible = &quot;mycompany,myoriginaldevice&quot;;
+        reg = &lt;0x6b&gt;;
+    };
+};
+
+...
+</pre></div>
+</div>
+<p>編集したら, 以下のコマンドでコンパイルして, 元のDTBファイルに上書きする. 一応アクセス権の設定もしておく.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>dtc -O dtb -o bcm2710-rpi-3-b.dtb dis_bcm2710-rpi-3-b.dts
+chmod <span class="m">755</span> bcm2710-rpi-3-b.dtb
+sudo cp bcm2710-rpi-3-b.dtb /boot/bcm2710-rpi-3-b.dtb
+sudo reboot
+</pre></div>
+</div>
+<p><cite>/proc/device-tree</cite> でデバイスツリーの情報を確認できる. 再起動後に, I2C1の下に mydevice が追加されていれば成功</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>ls /proc/device-tree/soc/i2c@7e804000/mydevice@6b/
+&gt;&gt; compatible name reg
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>デバドラ側の対応<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>デバイスドライバ側では, 対応するデバイスを登録する必要がある. デバイスツリーには &#8220;mycompany,myoriginaldevice&#8221; というデバイスを登録したので, それに対応するようにする. そのために, <cite>struct of_device_id</cite> に <cite>&#8220;mycompany,myoriginaldevice&#8221;</cite> を設定して, <cite>struct i2c_driver</cite> の <cite>.of_match_table</cite> に登録する. それ以外は, 前回の内容と同じ. (以下, ソースコード)</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * デバイスツリーに登録した</span>
+<span class="cm"> * &quot;mycompany,myoriginaldevice&quot;</span>
+<span class="cm"> * という情報に合わせて, デバドラ側でもデバイスを登録する.</span>
+<span class="cm"> *</span>
+<span class="cm"> * Date :  2018.08.24</span>
+<span class="cm"> * @author Mikiya Michishita</span>
+<span class="cm"> */</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;linux/module.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;linux/i2c.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;linux/of_platform.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// Device Information</span>
+<span class="n">MODULE_LICENSE</span><span class="p">(</span><span class="s">&quot;Dual BSD/GPL&quot;</span><span class="p">);</span>
+<span class="cp">#define DRIVER_NAME &quot;MyDevice&quot;</span>
+
+<span class="c1">// このデバイスドライバで取り扱うデバイスのマッチングテーブル</span>
+<span class="c1">// dts内の下記に対応する</span>
+<span class="c1">// i2c@7e804000 { /* i2c-1 */</span>
+<span class="c1">//   ...</span>
+<span class="c1">//   mydevice@6b { /* 0x6b : ジャイロセンサのアドレス */</span>
+<span class="c1">//     compatible = &quot;mycompany,myoriginaldevice&quot;;</span>
+<span class="c1">//     reg = &lt;0x6b&gt;;</span>
+<span class="c1">//   };</span>
+<span class="c1">//   ...</span>
+
+<span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">of_device_id</span> <span class="n">mydevice_of_match_table</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">{.</span><span class="n">compatible</span> <span class="o">=</span> <span class="s">&quot;mycompany,myoriginaldevice&quot;</span><span class="p">,},</span>
+  <span class="p">{},</span>
+<span class="p">};</span>
+<span class="n">MODULE_DEVICE_TABLE</span><span class="p">(</span><span class="n">of</span><span class="p">,</span> <span class="n">mydevice_of_match_table</span><span class="p">);</span>
+
+<span class="c1">// このデバイスドライバで取り扱うデバイスを識別するテーブルを登録する.</span>
+<span class="k">static</span> <span class="k">struct</span> <span class="n">i2c_device_id</span> <span class="n">mydevice_i2c_idtable</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">{</span><span class="s">&quot;MyI2CDevice&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span>
+  <span class="p">{}</span>
+<span class="p">};</span>
+<span class="n">MODULE_DEVICE_TABLE</span><span class="p">(</span><span class="n">i2c</span><span class="p">,</span> <span class="n">mydevice_i2c_idtable</span><span class="p">);</span>
+
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_i2c_probe</span><span class="p">(</span><span class="k">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">i2c_device_id</span> <span class="o">*</span><span class="n">id</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_i2c_probe</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">id</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="n">printk</span><span class="p">(</span><span class="s">&quot;id.name = %s, id.driver_data = %ld</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">id</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="n">id</span><span class="o">-&gt;</span><span class="n">driver_data</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">client</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="n">printk</span><span class="p">(</span><span class="s">&quot;slave address = 0x%02X</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">client</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">);</span>
+
+  <span class="c1">// 通常はここで, このデバドラでサポートしているデバイスかどうかチェックする.</span>
+
+  <span class="kt">int</span> <span class="n">version</span><span class="p">;</span>
+  <span class="n">version</span> <span class="o">=</span> <span class="n">i2c_smbus_read_byte_data</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="mh">0x0f</span><span class="p">);</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;id = 0x%02X</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_i2c_remove</span><span class="p">(</span><span class="k">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">client</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_i2c_remove</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="k">struct</span> <span class="n">i2c_driver</span> <span class="n">mydevice_driver</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">.</span><span class="n">driver</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">DRIVER_NAME</span><span class="p">,</span>
+    <span class="p">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">THIS_MODULE</span><span class="p">,</span>
+    <span class="p">.</span><span class="n">of_match_table</span> <span class="o">=</span> <span class="n">mydevice_of_match_table</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="p">.</span><span class="n">id_table</span> <span class="o">=</span> <span class="n">mydevice_i2c_idtable</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">probe</span> <span class="o">=</span> <span class="n">mydevice_i2c_probe</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">remove</span> <span class="o">=</span> <span class="n">mydevice_i2c_remove</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="n">module_i2c_driver</span><span class="p">(</span><span class="n">mydevice_driver</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>デバイスツリーに記載されている接続情報に基づいて, カーネルが対応するデバイスドライバを呼んでくれる. <cite>mydevice_i2c_probe()</cite> に渡される, <cite>struct i2c_client</cite> 内には, デバイスツリーで設定したスレーブアドレスが格納されている.</p>
+<p><cite>of_device_id</cite>: <a class="reference internal" href="../../Library/Kernel/linux/mod_devicetable.h.html"><span class="doc">mod_devicetable.h</span></a>
+<cite>of_match_table(in driver structure)</cite> : <a class="reference internal" href="../../Library/Kernel/linux/device.h.html"><span class="doc">device.h</span></a></p>
+<p>(余談だが, <cite>of_</cite> は <cite>Open Firmware</cite> を指しているようだ. このへんはより詳細にデバイスツリーを調べることでわかるだろう.)</p>
+<p>一点, 注意点としては, この場合は <cite>struct i2c_device_id</cite> にはNULLが入る. そのためかはわからないが, <cite>.probe</cite> はそのうち廃止されるようである. 代わりに, <cite>.probe_new</cite> を使用するようである. <cite>.probe_new</cite> では <cite>struct i2c_device_id</cite> が消されている.</p>
+</div>
+<div class="section" id="id4">
+<h3>動かしてみる<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>以下のコマンドでビルド, ロードする.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>make
+sudo insmod MyDeviceDriver.ko
+dmesg
+&gt;&gt; ...
+&gt;&gt; <span class="o">[</span>...<span class="o">]</span> mydevice_i2c_probe
+&gt;&gt; <span class="o">[</span>...<span class="o">]</span> slave <span class="nv">address</span> <span class="o">=</span> 0x6b
+&gt;&gt; <span class="o">[</span>...<span class="o">]</span> <span class="nv">id</span> <span class="o">=</span> 0xd4
+</pre></div>
+</div>
+<p>ログを見ると, ちゃんとprobeが呼ばれて, I2C通信もできていることが分かる. 前回は, 手動でデバイス接続通知が必要だったが, 今回は不要という点が違い.</p>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>2. ソースコードからDTBを作る<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id6">
+<h3>環境準備<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>上記のDTBファイルを作成するための, DTSファイルのダウンロードを行う. コンパイラはデフォルトで入っていたが, 必要ならダウンロードすればいいだろう.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo apt-get install git bc
+git clone --depth<span class="o">=</span><span class="m">1</span> https://github.com/raspberrypi/linux
+
+ls -lat linux/arch/arm/boot/dts <span class="p">|</span> grep bcm2710
+&gt;&gt; ...
+&gt;&gt; bcm2710-rpi-3-b.dts
+&gt;&gt; ...
+</pre></div>
+</div>
+<p>ラズパイ3B用のDTSファイルは上記コマンドで得られる <cite>bcm2710-rpi-3-b.dts</cite> になる.</p>
+</div>
+<div class="section" id="dts">
+<h3>ラズパイ用のDTSファイルを編集してみる<a class="headerlink" href="#dts" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>上記のファイルを以下のように修正してみる.
+基本修正内容は1と同じだが, こちらのファイルのほうが見やすいだろう.</p>
+<div class="highlight-txt"><div class="highlight"><pre><span></span>...
+&amp;i2c1 {
+    pinctrl-names = &quot;default&quot;;
+    pinctrl-0 = &lt;&amp;i2c1_pins&gt;;
+    clock-frequency = &lt;100000&gt;;
+
+    /* 自分用のデバイスを追加 */
+    mydevice@6b {
+        compatible = &quot;mycompany,myoriginaldevice&quot;;
+        reg = &lt;0x6b&gt;;
+    };
+};
+...
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>DTBをビルドしてみる<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>以下のコマンドでビルドする. bcm2709_defconfigを指定しているが, これで問題ない.</p>
+<div class="admonition warning">
+<p class="first admonition-title">警告</p>
+<p class="last">以下のコマンドはフルコンパイルになるため安易に実行しないこと. 無限に時間がかかる. DTBのコンパイルだけなら更に下に示すコマンドを実行する.</p>
+</div>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="nb">cd</span> linux
+<span class="nv">KERNEL</span><span class="o">=</span>kernel7
+make bcm2709_defconfig
+make -j4 zImage modules dtbs
+sudo make modules_install
+sudo cp arch/arm/boot/dts/*.dtb /boot/
+sudo cp arch/arm/boot/dts/overlays/*.dtb* /boot/overlays/
+sudo cp arch/arm/boot/dts/overlays/README /boot/overlays/
+sudo cp arch/arm/boot/zImage /boot/<span class="nv">$KERNEL</span>.img
+</pre></div>
+</div>
+<p>なお, これは <a class="reference external" href="https://www.raspberrypi.org/documentation/linux/kernel/building.md">本家</a> に載っているので確認してみるといい.
+さて, 私はこれで実行したが, これはどうもフルコンパイルらしく恐ろしく時間がかかったので, 今回のようなケースでは推奨しない.
+以下のように, DTBだけコンパイルしよう.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="nb">cd</span> linux
+<span class="nv">KERNEL</span><span class="o">=</span>kernel7
+make bcm2709_defconfig
+make -j4 dtbs
+sudo cp arch/arm/boot/dts/*.dtb /boot/
+sudo cp arch/arm/boot/dts/overlays/*.dtb* /boot/overlays/
+sudo cp arch/arm/boot/dts/overlays/README /boot/overlays/
+</pre></div>
+</div>
+</div>
+<div class="section" id="note">
+<h3>Note<a class="headerlink" href="#note" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>overlays用のDTBは, カーネル起動後に, 動的に接続状態が変わるときに使うらしい. なので, 特にコピーは必要ないかもしれない.</p>
+</div>
+<div class="section" id="id8">
+<h3>動かしてみる<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>デバドラは, 1の手抜きバージョンと同じでOK. 再起動すると同じ結果になるはず. これによりデバイスの認識を手動で行わないようにできた.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="12.bootloading_device_driver.html" class="btn btn-neutral float-right" title="12. bootloading device driver" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="10.i2c_device_driver.html" class="btn btn-neutral" title="10.I2C Device Driver" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Monad &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../index.html"/>
+        <link rel="up" title="Haskell Documents" href="../index.html"/>
+        <link rel="next" title="State" href="State/index.html"/>
+        <link rel="prev" title="Usage" href="../Library/System/DirectoryTree/Usage.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Haskell Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../Library/index.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Monad</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="State/index.html">State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Writer/index.html">Writer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Continuation/index.html">Continuation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MonadTransformers/index.html">Monad Transformers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../MyProjects/index.html">Haskell MyProject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../LanguageExtension/index.html">LanguageExtension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Monoid/index.html">Monoid</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../C/index.html">C Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Haskell Documents</a> &raquo;</li>
+      
+    <li>Monad</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/Haskell/Monad/index.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="monad">
+<h1>Monad<a class="headerlink" href="#monad" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="line-block">
+<div class="line">HaskellのMonadについて記述していく</div>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="State/index.html">State</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="State/StructureOfStateMonad.html">Stateモナドを構造からわかりやすく</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="State/StructureOfStateMonad.html#id1">対象</a></li>
+<li class="toctree-l3"><a class="reference internal" href="State/StructureOfStateMonad.html#id2">用語</a></li>
+<li class="toctree-l3"><a class="reference internal" href="State/StructureOfStateMonad.html#id3">Stateをつくる</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="State/StructureOfStateMonad.html#id4">状態(State)とはなにか</a></li>
+<li class="toctree-l4"><a class="reference internal" href="State/StructureOfStateMonad.html#id5">状態を持つ関数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="State/StructureOfStateMonad.html#id6">状態を持つ関数, だったもの</a></li>
+<li class="toctree-l4"><a class="reference internal" href="State/StructureOfStateMonad.html#id7">おやおや???</a></li>
+<li class="toctree-l4"><a class="reference internal" href="State/StructureOfStateMonad.html#id8">合成できんやんけ!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="State/StructureOfStateMonad.html#id9">再, 合成</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="State/StructureOfStateMonad.html#id10">モナド</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="State/StructureOfStateMonad.html#id11">突然のかけ算! そして「モノイド」</a></li>
+<li class="toctree-l4"><a class="reference internal" href="State/StructureOfStateMonad.html#id12">再, 再, 関数合成</a></li>
+<li class="toctree-l4"><a class="reference internal" href="State/StructureOfStateMonad.html#id13">さあ, Stateの出番だ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="State/StructureOfStateMonad.html#id14">結局モナドとはなんぞや?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="State/StructureOfStateMonad.html#io">モナド入門の鬼門 <cite>IO</cite> を爆破せよ</a></li>
+<li class="toctree-l3"><a class="reference internal" href="State/StructureOfStateMonad.html#id15">落ち穂拾い</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="State/StructureOfStateMonad.html#id16">&gt;&gt;= とかあったよね?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="State/StructureOfStateMonad.html#id17">関数が合成できるだけでなんでそんなに騒いだの?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="State/StructureOfStateMonad.html#id18">結局のところモナドのメリット</a></li>
+<li class="toctree-l4"><a class="reference internal" href="State/StructureOfStateMonad.html#id19">なにか問題でも?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="State/Usage.html">Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Writer/index.html">Writer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Writer/Warning.html">Writer Monad によるスペースリーク</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Writer/Usage.html">Writer Monad Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Writer/Usage.html#example">Example. 計算の結果を得る</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Writer/Usage.html#method1-io">Method1. IOモナドを使う</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Writer/Usage.html#method2-trace">Method2. traceを使う</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Writer/Usage.html#method3-writer">Method3. Writerモナドを使う</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Continuation/index.html">Continuation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Continuation/ContStyleWithoutMonad.html">モナドから初めない継続入門</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Continuation/ContStyleWithoutMonad.html#id2">継続</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Continuation/ContStyleWithoutMonad.html#id3">継続渡しスタイルの書き方</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Continuation/ContStyleWithoutMonad.html#id4">継続のメリット</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Continuation/ImplementContMonad.html">Contモナドを実装する</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Continuation/ContCallCc.html">Contモナドとcall/cc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Continuation/ContCallCc.html#call-cc">call/cc とは</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Continuation/ResourceManagementByCont.html">継続モナドによるリソース管理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Continuation/ResourceManagementByCont.html#id2">リソース管理の問題</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Continuation/ResourceManagementByCont.html#bracket">bracket 関数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Continuation/ResourceManagementByCont.html#with">with系関数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Continuation/ResourceManagementByCont.html#id3">withの問題点</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Continuation/ResourceManagementByCont.html#cps">継続渡しスタイル(CPS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Continuation/ResourceManagementByCont.html#id4">継続モナド</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Continuation/ResourceManagementByCont.html#id5">他のリソース管理に特化したモナド</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Continuation/ResourceManagementByCont.html#managed">Managed モナド</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Continuation/ResourceManagementByCont.html#resourcet">ResourceT モナド</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="MonadTransformers/index.html">Monad Transformers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="MonadTransformers/StepByStep.html">Monad Transformer Step By Step</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="MonadTransformers/StepByStep.html#abstract">0. Abstract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MonadTransformers/StepByStep.html#introduction">1. Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MonadTransformers/StepByStep.html#example-program">1.1 プログラム例 (Example Program)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MonadTransformers/StepByStep.html#monad-transformers">2. モナドトランスフォーマー(Monad Transformers)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MonadTransformers/StepByStep.html#converting-to-monadic-style">2.1 モナドスタイルに (Converting to Monadic Style)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MonadTransformers/StepByStep.html#adding-error-handling">2.2 エラー処理を加える (Adding Error Handling)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MonadTransformers/StepByStep.html#hiding-the-environment">2.3 環境を隠す (Hiding the Environment)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MonadTransformers/StepByStep.html#adding-state">2.4 状態を加える (Adding State)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MonadTransformers/StepByStep.html#adding-logging">2.5 ログを加える (Adding Logging)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MonadTransformers/StepByStep.html#io-what-about-i-o">2.6 IOはどうすんのさ? (What about I/O?)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MonadTransformers/StepByStep.html#conclusion">3. 結論 (Conclusion)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="State/index.html" class="btn btn-neutral float-right" title="State" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../Library/System/DirectoryTree/Usage.html" class="btn btn-neutral" title="Usage" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

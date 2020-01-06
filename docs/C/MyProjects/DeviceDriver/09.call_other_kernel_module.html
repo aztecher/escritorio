@@ -1,0 +1,527 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>09. call other kernel module &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="Device Driver" href="index.html"/>
+        <link rel="next" title="10.I2C Device Driver" href="10.i2c_device_driver.html"/>
+        <link rel="prev" title="08. interface for debugfs" href="08.interface_for_debugfs.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">C MyProjects</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Device Driver</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="01.create_simple_kernel_module.html">01. Create Simple Kernel Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="02.driver_register_static.html">02. Driver Register (Static)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03.driver_register_dynamic.html">03. Driver Register (Dynamic)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="04.read_write_and_memory.html">04. read/write and Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="05.raspi_gpio_device_driver.html">05. Raspi GPIO Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="06.ioctl_implementation.html">06. ioctl Implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="07.interface_for_procfs.html">07. interface for procfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="08.interface_for_debugfs.html">08. interface for debugfs</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">09. call other kernel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="10.i2c_device_driver.html">10.I2C Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="11.add_i2c_device_to_device_tree.html">11. Add I2C Device to DeviceTree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="12.bootloading_device_driver.html">12. bootloading device driver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">C MyProjects</a> &raquo;</li>
+      
+          <li><a href="index.html">Device Driver</a> &raquo;</li>
+      
+    <li>09. call other kernel module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/C/MyProjects/DeviceDriver/09.call_other_kernel_module.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="call-other-kernel-module">
+<h1>09. call other kernel module<a class="headerlink" href="#call-other-kernel-module" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>参考URL</p>
+<ul class="simple">
+<li><a class="reference external" href="https://qiita.com/take-iwiw/items/e92a950a2cf57d1a3ded">組み込みLinuxデバイスドライバの作り方</a></li>
+</ul>
+<p>以前ラズパイ用のGPIOデバイスドライバを実装した. その時には, レジスタで直接叩くことで制御を行った. レジスタ番地や設定値はBCM2835のデータシートを見ながら設定した. これらは「チップ依存」の情報である. センサーやモーターといった外付けのデバイスを制御するデバイスドライバを作るときに, いちいちチップのデータシートなどは見たくないものである. GPIO制御用の関数があるので, それを使ってみる.</p>
+<p>これと関連して, まずは他のカーネルモジュールで定義された関数を呼んでみる, ということを行ってみる.</p>
+<div class="section" id="id1">
+<h2>他のカーネルモジュールで定義された関数を呼ぶ<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>以前述べたように, カーネルは全体で1つのメモリ空間を共有する. これにはカーネルモジュールも含まれる. そのため, 自分が実装しているカーネルモジュールから, 他のカーネルモジュールの関数を呼んだり, カーネルそのものに静的に組み込まれている関数を呼ぶことができる.</p>
+<div class="section" id="a">
+<h3>関数を提供するカーネルモジュールAを作る<a class="headerlink" href="#a" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>(以下, コードは参考までに全て記述する)</p>
+<p>他のモジュールからも呼べるような関数を作るには, 関数を定義した後に, <cite>EXPORT_SYMBOL</cite> でエクスポートしてあげるだけ. <cite>EXPORT_SYMBOL</cite> によって, その関数がカーネルのシンボルテーブルに登録されて, 他のカーネルモジュールから呼べるようになる.</p>
+<p>ロード(insmod)とアンロード(rmmod)用のエントリ関数と, 関数(<cite>mydevicea_func()</cite>)だけを定義したモジュールを作る. これを, MyDeviceDriverAとする. 本来は関数宣言をヘッダに記載すべきだが, 面倒なので省略する.</p>
+<p><cite>make</cite> して, MyDeviceDriverA.ko を作っておく.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * 他のモジュールから呼べるような関数</span>
+<span class="cm"> *</span>
+<span class="cm"> * Date :  2018.08.24</span>
+<span class="cm"> * @author Mikiya Michishita</span>
+<span class="cm"> */</span>
+<span class="cp">#include</span> <span class="cpf">&lt;linux/module.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// Device Information</span>
+<span class="n">MODULE_LICENSE</span><span class="p">(</span><span class="s">&quot;Dual BSD/GPL&quot;</span><span class="p">);</span>
+<span class="cp">#define DRIVER_NAME &quot;MyDeviceA&quot;</span>
+
+<span class="c1">// 他のカーネルモジュールから呼べるようにする関数</span>
+<span class="kt">void</span> <span class="nf">mydevicea_func</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;This is a message in mydevicea_func</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// カーネルのシンボルテーブルに登録する</span>
+<span class="n">EXPORT_SYMBOL</span><span class="p">(</span><span class="n">mydevicea_func</span><span class="p">);</span>
+
+<span class="c1">// ロード(insmod)時に呼ばれる関数</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevicea_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;[A]: mydevice_init</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="n">mydevicea_func</span><span class="p">();</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// アンロード(rmmod)時に呼ばれる関数</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">mydevicea_exit</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;[A]: mydevice_exit</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">module_init</span><span class="p">(</span><span class="n">mydevicea_init</span><span class="p">);</span>
+<span class="n">module_exit</span><span class="p">(</span><span class="n">mydevicea_exit</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="b">
+<h3>提供された関数を呼ぶカーネルモジュールBを作る<a class="headerlink" href="#b" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>先程用意した関数を呼ぶカーネルモジュールBを作成する. 通常のC言語と同じように呼べる. 今回は関数宣言ヘッダを省略したので, externで呼び出し側で宣言している. あまりお行儀はよくない. このモジュールBをロード(insmod)するタイミングで, 先程の関数(<cite>mydevicea_func()</cite>)を呼んでみる.</p>
+<p><cite>make</cite> して, MyDeviceDriverB.koを作っておく. <cite>mydevicea_func()</cite> の実体はここにはないが, カーネルモジュールを作るときには問題ない. カーネルモジュール用のmakeでは, コンパイルしてオブジェクトファイルを作るだけで, リンクを行わないためである.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * 別モジュールの関数を呼び出すカーネルモジュール</span>
+<span class="cm"> *</span>
+<span class="cm"> * Date :  2018.08.24</span>
+<span class="cm"> * @author Mikiya Michishita</span>
+<span class="cm"> */</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;linux/module.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// Device Information</span>
+<span class="n">MODULE_LICENSE</span><span class="p">(</span><span class="s">&quot;Dual BSD/GPL&quot;</span><span class="p">);</span>
+<span class="cp">#define DRIVER_NAME &quot;MyDeviceB&quot;</span>
+
+<span class="c1">// ロード時(insmod)時に呼ばれる関数</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydeviceb_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;[B]: mydevice_init</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+  <span class="c1">// ヘッダーを使わない, お行儀の悪い書き方</span>
+  <span class="k">extern</span> <span class="kt">void</span> <span class="n">mydevicea_func</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+  <span class="n">mydevicea_func</span><span class="p">();</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// アンロード時(rmmod)時に呼ばれる関数</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">mydeviceb_exit</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;[B]: mydevice_exit</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">module_init</span><span class="p">(</span><span class="n">mydeviceb_init</span><span class="p">);</span>
+<span class="n">module_exit</span><span class="p">(</span><span class="n">mydeviceb_exit</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>実行<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>下記コマンドで実行してみる.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo insmod MyDeviceModuleA.ko
+dmesg
+&gt;&gt; ... <span class="o">[</span>A<span class="o">]</span>: mydevice_init
+&gt;&gt; ... This is a message in mydevicea_func
+</pre></div>
+</div>
+<p>ロード後, dmesgでログを見ると, モジュールAのinit処理と, init内で関数を呼んだことが分かる. これは特に問題ない.</p>
+<p>続いて, MyDeviceDriverB.koをロードする</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo insmod MyDeviceModuleB.ko
+dmesg
+&gt;&gt; ... <span class="o">[</span>B<span class="o">]</span>: mydeviceb_init
+&gt;&gt; ... This is a message in mydevicea_func
+</pre></div>
+</div>
+<p>モジュールBからモジュールA内で定義した関数を呼べていることが分かる.</p>
+</div>
+<div class="section" id="id3">
+<h3>依存関係<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>モジュールBがモジュールAを使用しているという依存関係になる. そのため, モジュールBをロードする前にモジュールAをロードしておく必要がある. そうでないと, モジュールBのロード時にエラーが発生する. 同様に, モジュールAをアンロード刷る前にモジュールBをアンロードしておく必要がある. 先にモジュールAのアンロードをしようとするとエラーが発生する.</p>
+<p>必要な内容をちゃんと実装して, 作成したカーネルモジュール(.ko)を適切な場所に配置すれば, <cite>insmod</cite> の代わりに <cite>modprobe</cite> を使うことで自動的に依存関係のあるモジュールをロードしてくれるらしい.</p>
+</div>
+</div>
+<div class="section" id="gpio">
+<h2>GPIO制御関数を使用するカーネルモジュール<a class="headerlink" href="#gpio" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id4">
+<h3>チップ依存のGPIO制御関数<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>冒頭で述べたように, 外部デバイスやオンボードデバイスのデバドラを作る限り, チップのデータをみてレジスタ設定をするといったことは行わないと思う. (融資でチップ依存のデバイスの開発をする場合は必要になるかもだが...)</p>
+<p>デバドラからGPIOを制御するときには, そういった方々が作成してくれた関数を呼ぶ. この時, みんなバラバラなフォーマットで実装してるのではなく, <cite>linux/gpio.h</cite> にあるようなインターフェースになるよう実装してくれている. そのため, ユーザ(デバドラ開発者)は, <cite>linux/gpio.h</cite> にある関数を使ってGPIO制御ができる. ここにある関数を使用していれば, 別のチップ状でも同じコードを使用することができる(ものによってはわからんが代替できるはず)</p>
+<p>どのチップ用のGPIO制御処理を行うかは, カーネルビルド時の設定できまる. ラズパイの場合, bcm2835用の処理を使うようになっているはずである. BCM2835用のGPIO処理は, <cite>pinctl-bcm2835.c</cite> にあった. 深く追えていないが, <cite>linux/gpio.h</cite> にある関数を呼ぶと, 最終的に <cite>pinctl-bcm2835.c</cite> の各処理にたどり着くのだろう.</p>
+<p><strong>とにかく, `linux/gpio.h` にある関数を使ってGPIO制御を行えばいい</strong></p>
+</div>
+<div class="section" id="id5">
+<h3>GPIO制御関数<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>基本的なGPIO制御をするのに必要な関数を以下に示す</p>
+<ul>
+<li><dl class="first docutils">
+<dt><cite>int gpio_direction_output(unsigned gpio, int value)</cite></dt>
+<dd><ul class="first last simple">
+<li>GPIOを出力に設定する. gpioはピン番号. valueは初期出力値(0=low, 1=high)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><cite>int gpio_direction_input(unsigned gpio)</cite></dt>
+<dd><ul class="first last simple">
+<li>GPIOを入力に設定する. gpioはピン番号.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><cite>void gpio_set_value(unsigned gpio, int value)</cite></dt>
+<dd><ul class="first last simple">
+<li>GPIOに出力する. gpioはピン番号. valueは出力値(0=low, 1=high)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><cite>int request_irq(unsigned int irq, irq_handler_t handler, unsigned long flags, const char *name, void *dev)</cite></dt>
+<dd><ul class="first last simple">
+<li>割り込みハンドラの登録をする. これはGPIOに限った関数ではない.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>詳細は <a class="reference internal" href="../../Library/Kernel/linux/gpio.h.html"><span class="doc">gpio.h</span></a>, <a class="reference internal" href="../../Library/Kernel/linux/interrupt.h.html"><span class="doc">interrupt.h</span></a></p>
+</div>
+<div class="section" id="id6">
+<h3>GPIO制御関数を使用するカーネルモジュールを作る<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>read/writeとかを実装するのが面倒なので, 以下のようなシンプルな仕様のデバドラ(カーネルモジュール)を作成する. 前提として, ラズパイのGPIO4にLEDを, GPIO17にボタンを接続しているとする. LEDは抵抗経由で3.3Vに接続. ボタンはGNDに接続し, GPIO17側はプルアップする.</p>
+<p>作成するカーネルモジュールの仕様は以下</p>
+<ul>
+<li><dl class="first docutils">
+<dt>モジュールのロード(insmod)時に,</dt>
+<dd><ul class="first last simple">
+<li>GPIO4(LED)を出力に設定し, Lowを出力する.</li>
+<li>GPIO17(ボタン)を入力に設定し, 割り込みハンドラを登録する.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>モジュールのアンロード(rmmod)時に,</dt>
+<dd><ul class="first last simple">
+<li>登録した割り込みハンドラを取り除く.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>割り込みハンドラ内で</dt>
+<dd><ul class="first last simple">
+<li>GPIO17(ボタン)の入力値をprintkする</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>コードは以下(全文記載). 割り込みハンドラは, <cite>mydevice_gpio_intr()</cite> になる. これをロード時に <cite>request_irq()</cite> で登録する.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * Using GPIO Functions (lunix/gpio)</span>
+<span class="cm"> *</span>
+<span class="cm"> * Date :  2018.08.24</span>
+<span class="cm"> * @author Mikiya Michishita</span>
+<span class="cm"> */</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;linux/module.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;linux/gpio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;linux/interrupt.h&gt; // 割り込み関係の関数など</span><span class="cp"></span>
+
+<span class="c1">// Device Information</span>
+<span class="n">MODULE_LICENSE</span><span class="p">(</span><span class="s">&quot;Dual BSD/GPL&quot;</span><span class="p">);</span>
+<span class="cp">#define DRIVER_NAME &quot;MyDevice&quot;</span>
+
+<span class="cp">#define GPIO_PIN_LED 4</span>
+<span class="cp">#define GPIO_PIN_BTN 17</span>
+
+<span class="c1">// 割り込みハンドラの定義</span>
+<span class="k">static</span> <span class="n">irqreturn_t</span> <span class="nf">mydevice_gpio_intr</span><span class="p">(</span><span class="kt">int</span> <span class="n">irq</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">dev_id</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span> <span class="p">(</span><span class="s">&quot;mydevice_gpio_intr</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+  <span class="kt">int</span> <span class="n">btn</span><span class="p">;</span>
+  <span class="n">btn</span> <span class="o">=</span> <span class="n">gpio_get_value</span><span class="p">(</span><span class="n">GPIO_PIN_BTN</span><span class="p">);</span>
+  <span class="n">printk</span> <span class="p">(</span><span class="s">&quot;button = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">btn</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">IRQ_HANDLED</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// ロード(insmod)時に呼ばれる関数</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_init</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+  <span class="c1">// LED用のGPIO4を出力にする. 初期値は1(High)</span>
+  <span class="n">gpio_direction_output</span><span class="p">(</span><span class="n">GPIO_PIN_LED</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="c1">// LED用のGPIO4に0(Low)を出力する</span>
+  <span class="n">gpio_set_value</span><span class="p">(</span><span class="n">GPIO_PIN_LED</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+  <span class="c1">// ボタン用のGPIO17を入力にする</span>
+  <span class="n">gpio_direction_input</span><span class="p">(</span><span class="n">GPIO_PIN_BTN</span><span class="p">);</span>
+
+  <span class="c1">// ボタン用のGPIO17の割り込み番号を取得する.</span>
+  <span class="kt">int</span> <span class="n">irq</span> <span class="o">=</span> <span class="n">gpio_to_irq</span><span class="p">(</span><span class="n">GPIO_PIN_BTN</span><span class="p">);</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;gpio_to_irq = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">irq</span><span class="p">);</span>
+
+  <span class="c1">// ボタン用のGPIO17の割り込みハンドラをと登録する.</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">request_irq</span><span class="p">(</span><span class="n">irq</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">mydevice_gpio_intr</span><span class="p">,</span> <span class="n">IRQF_SHARED</span> <span class="o">|</span> <span class="n">IRQF_TRIGGER_RISING</span> <span class="o">|</span> <span class="n">IRQF_TRIGGER_FALLING</span><span class="p">,</span> <span class="s">&quot;mydevice_gpio_intr&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">mydevice_gpio_intr</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printk</span> <span class="p">(</span><span class="n">KERN_ERR</span> <span class="s">&quot;request_irq</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// アンロード(rmmod)時に呼ばれる関数</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">mydevice_exit</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_exit</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="kt">int</span> <span class="n">irq</span> <span class="o">=</span> <span class="n">gpio_to_irq</span><span class="p">(</span><span class="n">GPIO_PIN_BTN</span><span class="p">);</span>
+  <span class="n">gpio_set_value</span><span class="p">(</span><span class="n">GPIO_PIN_LED</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// rmmod時にLED消す</span>
+  <span class="n">free_irq</span><span class="p">(</span><span class="n">irq</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">mydevice_gpio_intr</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">module_init</span><span class="p">(</span><span class="n">mydevice_init</span><span class="p">);</span>
+<span class="n">module_exit</span><span class="p">(</span><span class="n">mydevice_exit</span><span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><cite>gpio_direction_output</cite>, <cite>gpio_direction_input</cite>, <cite>gpio_set_value</cite>, <cite>gpio_to_irq</cite> : <a class="reference internal" href="../../Library/Kernel/linux/gpio.h.html"><span class="doc">gpio.h</span></a></li>
+<li><cite>request_irq</cite>, <cite>free_irq</cite>, <cite>irqreturn_t</cite>, <cite>irq_handler_t</cite> : <a class="reference internal" href="../../Library/Kernel/linux/interrupt.h.html"><span class="doc">interrupt.h</span></a></li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h3>実行してみる<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>以下の通りビルドしてロードする.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>make
+sudo insmod MyDeviceDriver.ko
+</pre></div>
+</div>
+<p>すると, LEDが点灯するはずである. その後何度かボタンを押してdmesgでログを見ると, 登録したとおり割り込みハンドラが呼ばれていて, その中でGPIOの入力値がprintされていることが分かる.
+ちなみに割り込み状況は <cite>/proc/interrupts</cite> で確認できる.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>cat /proc/interrupt
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="10.i2c_device_driver.html" class="btn btn-neutral float-right" title="10.I2C Device Driver" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="08.interface_for_debugfs.html" class="btn btn-neutral" title="08. interface for debugfs" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

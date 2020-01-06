@@ -1,0 +1,386 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Basic Usage &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../index.html"/>
+        <link rel="up" title="LLDB" href="index.html"/>
+        <link rel="next" title="Libraries" href="../Library/index.html"/>
+        <link rel="prev" title="LLDB" href="index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../GDB/index.html">GDB</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">LLDB</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Basic Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tips">Tips</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Library/index.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MyProjects/index.html">C MyProjects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="index.html">LLDB</a> &raquo;</li>
+      
+    <li>Basic Usage</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/C/LLDB/BasicUsage.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="basic-usage">
+<h1>Basic Usage<a class="headerlink" href="#basic-usage" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>LLDBに関する基本的な使い方や, デバッグの際のテンプレート処理などを備忘録として記述しておく.</p>
+<div class="section" id="id1">
+<h2>Basic Usage<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>LLDBのコマンドはGDBより構造的な構文になっている. コマンドは, 全て以下のようなフォームになっている.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>&lt;noun&gt; &lt;verb&gt; <span class="o">[</span>-options <span class="o">[</span>option-value<span class="o">]]</span> <span class="o">[</span>argument <span class="o">[</span>argument...<span class="o">]]</span>
+</pre></div>
+</div>
+<p>コマンド, オプション, 引数はスペースで区切られる. スペースが必要なものにはダブルクオーテーションが使用できる.</p>
+<p>コマンドに対するオプションはどこでも指定可能. ただし, 引数(argument)が, &#8216;-&#8216; から始まる場合, LLDBにオプションの終了位置を &#8216;&#8211;&#8217; で教えてやる必要がある. 例えば, <code class="docutils literal"><span class="pre">process</span> <span class="pre">launch</span></code> というコマンドを <code class="docutils literal"><span class="pre">--stop-at-entry</span></code> オプションと一緒にLLDBに与える時, かつコマンドの引数を <code class="docutils literal"><span class="pre">-program_arg</span> <span class="pre">value</span></code> で与える時, コマンドは以下のようになる.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>&gt; <span class="o">(</span>lldb<span class="o">)</span> process launch --stop-at-entry -- -program_arg value
+</pre></div>
+</div>
+<div class="section" id="id2">
+<h3>基本的なコマンドの一覧<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">help</span></code> コマンドで表示されるが, 日本語は以下のページを参考にするといいだろう.</p>
+<ul class="simple">
+<li><a class="reference external" href="https://yokaze.github.io/2018/01/06/">lldbで使えるコマンド一覧</a></li>
+<li><a class="reference external" href="http://lldb.llvm.org/lldb-gdb.html">gdb-lldb対応表</a></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>プログラムのロード<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>基本的には, 直接引数として指定するか, fileコマンドで取り込む.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>$ lldb optical_simulator
+</pre></div>
+</div>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>$ lldb
+&gt; <span class="o">(</span>lldb<span class="o">)</span> file optical_simulator
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>プログラムの実行<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">run</span></code> もしくは, <code class="docutils literal"><span class="pre">r</span></code> で実行.</p>
+</div>
+<div class="section" id="breakpoint">
+<h3>Breakpoint<a class="headerlink" href="#breakpoint" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">breakpoint</span></code> もしくは, <code class="docutils literal"><span class="pre">br</span></code> を使い, 設定する場合は, <code class="docutils literal"><span class="pre">set</span></code> もしくは <code class="docutils literal"><span class="pre">s</span></code> を利用する. その他オプションに関しては, 以下に例示しながら記述する.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="c1"># ファイル foo.c の12行目にBreakpointを設定</span>
+&gt; <span class="o">(</span>lldb<span class="o">)</span> breakpoint <span class="nb">set</span> --file foo.c --line 12
+&gt; <span class="o">(</span>lldb<span class="o">)</span> breakpoint <span class="nb">set</span> -f foo.c -l 12
+
+<span class="c1"># 関数 foo にBreakpointを設定</span>
+&gt; <span class="o">(</span>lldb<span class="o">)</span> breakpoint <span class="nb">set</span> --name foo
+&gt; <span class="o">(</span>lldb<span class="o">)</span> breakpoint <span class="nb">set</span> -n foo
+<span class="c1"># --nameオプションは1 breakpointコマンドに対して複数指定可</span>
+&gt; <span class="o">(</span>lldb<span class="o">)</span> breakpoint <span class="nb">set</span> --name foo --name bar
+
+<span class="c1"># メソッド名でも指定可能</span>
+&gt; <span class="o">(</span>lldb<span class="o">)</span> breakpoint <span class="nb">set</span> --method foo
+&gt; <span class="o">(</span>lldb<span class="o">)</span> breakpoint <span class="nb">set</span> -M foo
+
+<span class="c1"># --shlibオプションで, Breakpointを実行可能ファイルに限定できる.</span>
+&gt; <span class="o">(</span>lldb<span class="o">)</span> breakpoint <span class="nb">set</span> --shlib foo.dylib --name foo
+&gt; <span class="o">(</span>lldb<span class="o">)</span> breakpoint <span class="nb">set</span> -s foo.dylib -n foo
+<span class="c1"># --nameオプションのように, 複数指定可能</span>
+
+<span class="c1"># Breakpointの一覧を表示</span>
+&gt; <span class="o">(</span>lldb<span class="o">)</span> breakpoint list
+</pre></div>
+</div>
+</div>
+<div class="section" id="watchpoint">
+<h3>Watchpoint<a class="headerlink" href="#watchpoint" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">watchpoint</span></code> もしくは <code class="docutils literal"><span class="pre">watch</span></code> を利用する. <code class="docutils literal"><span class="pre">set</span></code> などは, <code class="docutils literal"><span class="pre">breakpoint</span></code> の場合と同じ.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="c1"># 変数 int i をwatchpointに設定する.</span>
+&gt; <span class="o">(</span>lldb<span class="o">)</span> watchpoint <span class="nb">set</span> variable i
+
+<span class="c1"># watchpointの確認</span>
+&gt; <span class="o">(</span>lldb<span class="o">)</span> watchpoint list
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>変数出力<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">po</span></code> コマンド(Print Object)を使って変数を出力できる.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>&gt; <span class="o">(</span>lldb<span class="o">)</span> po name
+<span class="s2">&quot;edo&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>構造体出力<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">p</span></code> コマンドを使うと構造体名が出力される.
+また, <code class="docutils literal"><span class="pre">p</span> <span class="pre">val[0]</span></code> と, <code class="docutils literal"><span class="pre">[0]</span></code> を指定することで, 構造体の中身を見ることができる.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>&gt; <span class="o">(</span>lldb<span class="o">)</span> p res
+<span class="o">(</span>addrinfo *<span class="o">)</span> <span class="nv">$12</span> <span class="o">=</span> 0x00000001003004a0
+&gt; <span class="o">(</span>lldb<span class="o">)</span> p res<span class="o">[</span>0<span class="o">]</span>
+<span class="o">(</span>addrinfo *<span class="o">)</span> <span class="nv">$13</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="nv">ai_flags</span> <span class="o">=</span> 0
+  <span class="nv">ai_family</span> <span class="o">=</span> 2
+  <span class="nv">ai_socktype</span> <span class="o">=</span> 1
+  <span class="nv">ai_protocol</span> <span class="o">=</span> 6
+  <span class="nv">ai_addrlen</span> <span class="o">=</span> 16
+  <span class="nv">ai_cannonname</span> <span class="o">=</span> 0x0000000000000000
+  <span class="nv">ai_addr</span> <span class="o">=</span> 0x0000000100300460
+  <span class="nv">ai_next</span> <span class="o">=</span> 0x0000000000000000
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>変数の一覧を出力する<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>現在breakしているフレームで見ている変数の一覧を出力できる.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>&gt; <span class="o">(</span>lldb<span class="o">)</span> frame variable
+<span class="o">(</span>int<span class="o">)</span> <span class="nv">argc</span> <span class="o">=</span> 1
+<span class="o">(</span>char **<span class="o">)</span> <span class="nv">argv</span> <span class="o">=</span> 0x00007fff5fbff460
+<span class="o">(</span>char *<span class="o">)</span> <span class="nb">test</span> <span class="o">=</span> 0x0000000100000f6e <span class="s2">&quot;This is a debug demo.&quot;</span>
+<span class="o">(</span>char *<span class="o">)</span> <span class="nv">name</span> <span class="o">=</span> 0x0000000100000f84 <span class="s2">&quot;edo&quot;</span>
+<span class="o">(</span>int<span class="o">)</span> <span class="nv">age</span> <span class="o">=</span> 20
+</pre></div>
+</div>
+<p>以下のようにすると, 該当の変数を出力もできる.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>&gt; <span class="o">(</span>lldb<span class="o">)</span> frame variable *argv
+<span class="o">(</span>char *<span class="o">)</span> *argv <span class="o">=</span> 0x00007fff5fbff5e0
+
+&gt; <span class="o">(</span>lldb<span class="o">)</span> frame variable age
+<span class="o">(</span>int<span class="o">)</span> <span class="nv">age</span> <span class="o">=</span> 20
+</pre></div>
+</div>
+</div>
+<div class="section" id="id8">
+<h3>ステップ実行<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>現在の一から一行分だけ処理を進める場合,  <code class="docutils literal"><span class="pre">n</span></code> (<code class="docutils literal"><span class="pre">next</span></code>) か, <code class="docutils literal"><span class="pre">s</span></code> (<code class="docutils literal"><span class="pre">step</span></code>)を使って処理を進める. <code class="docutils literal"><span class="pre">n</span></code> の場合, 関数はステップ・オーバーし次の行で停止する. <code class="docutils literal"><span class="pre">s</span></code> の場合, 関数はステップインする.</p>
+</div>
+<div class="section" id="id9">
+<h3>スタックトレースを出力する<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">bt</span></code> (thread backtrace) コマンドで出力することができる.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>&gt; <span class="o">(</span>lldb<span class="o">)</span> bt
+...<span class="o">(</span>省略<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="tips">
+<h2>Tips<a class="headerlink" href="#tips" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="alias">
+<h3>Alias<a class="headerlink" href="#alias" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>Aliasを作成することができる. 例えば, 長いコマンドの短縮形を教えて利用することができたりする. 例えば, breakpointのコマンドで, <code class="docutils literal"><span class="pre">(lldb)</span> <span class="pre">breakpoint</span> <span class="pre">set</span> <span class="pre">--file</span> <span class="pre">foo.c</span> <span class="pre">--line</span> <span class="pre">12</span></code> というコマンドのエイリアスを貼る時に, <code class="docutils literal"><span class="pre">(lldb)</span> <span class="pre">command</span> <span class="pre">alias</span> <span class="pre">bfl</span> <span class="pre">breakpoint</span> <span class="pre">set</span> <span class="pre">-f</span> <span class="pre">%1</span> <span class="pre">-l</span> <span class="pre">%2</span></code> とLLDBに教えてあげると, <code class="docutils literal"><span class="pre">(lldb)</span> <span class="pre">bfl</span> <span class="pre">foo.c</span> <span class="pre">12</span></code> と, シェルのように引数を与えられる.</p>
+<p>lldbは立ち上がり時に, <code class="docutils literal"><span class="pre">~/.lldbinit</span></code> ファイルを読みに行くため, そのファイル内にaliasコマンドを書き連ねておくと, いちいちlldb起動時にaliasを登録し直すといった面倒な作業は発生しなくなる. ユーザが定義したaliasもhelpで参照可能なので, 自分で定義したaliasの意味を忘れても安心.</p>
+</div>
+<div class="section" id="id10">
+<h3>コマンド補完<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>lldbでは, TABキーによるコマンド補完が使用可能. ソースファイル名・シンボル名・その他ファイル名を補完する. <code class="docutils literal"><span class="pre">--file</span></code> オプション指定地にはファイル名を, <code class="docutils literal"><span class="pre">--shlib</span></code> オプション指定時にはロード済みのっ共有ライブラリ名を補完する.</p>
+</div>
+<div class="section" id="help">
+<h3>Help<a class="headerlink" href="#help" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>lldbはコマンドヘルプが超絶充実しているため, helpコマンドを活用するといい. aproposコマンドでhelpテキストなどを検索可能.</p>
+<p>以下のように, helpで出てくるコマンド例の引数の意味も調べられる.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>&gt; <span class="o">(</span>lldb<span class="o">)</span> <span class="nb">help</span> <span class="nb">command</span> <span class="nb">alias</span>
+... <span class="o">(</span>中略<span class="o">)</span>
+Syntax: <span class="nb">command</span> <span class="nb">alias</span> &lt;alias-name&gt; &lt;cmd-name&gt; <span class="o">[</span>&lt;options-for-aliased-command&gt;<span class="o">]</span>
+&gt; <span class="o">(</span>lldb<span class="o">)</span> <span class="nb">help</span> &lt;alias-name&gt;
+&lt;alias-name&gt; -- The name of an abbreviation <span class="o">(</span><span class="nb">alias</span><span class="o">)</span> <span class="k">for</span> a debugger command.
+</pre></div>
+</div>
+<p>基本的にはこれを読めばいいだろう. というか読む癖をつけたほうがいい.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Library/index.html" class="btn btn-neutral float-right" title="Libraries" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="LLDB" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

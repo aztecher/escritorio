@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>02. Driver Register (Static) &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="Device Driver" href="index.html"/>
+        <link rel="next" title="03. Driver Register (Dynamic)" href="03.driver_register_dynamic.html"/>
+        <link rel="prev" title="01. Create Simple Kernel Module" href="01.create_simple_kernel_module.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">C MyProjects</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Device Driver</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="01.create_simple_kernel_module.html">01. Create Simple Kernel Module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">02. Driver Register (Static)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03.driver_register_dynamic.html">03. Driver Register (Dynamic)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="04.read_write_and_memory.html">04. read/write and Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="05.raspi_gpio_device_driver.html">05. Raspi GPIO Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="06.ioctl_implementation.html">06. ioctl Implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="07.interface_for_procfs.html">07. interface for procfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="08.interface_for_debugfs.html">08. interface for debugfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="09.call_other_kernel_module.html">09. call other kernel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="10.i2c_device_driver.html">10.I2C Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="11.add_i2c_device_to_device_tree.html">11. Add I2C Device to DeviceTree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="12.bootloading_device_driver.html">12. bootloading device driver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">C MyProjects</a> &raquo;</li>
+      
+          <li><a href="index.html">Device Driver</a> &raquo;</li>
+      
+    <li>02. Driver Register (Static)</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/C/MyProjects/DeviceDriver/02.driver_register_static.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="driver-register-static">
+<h1>02. Driver Register (Static)<a class="headerlink" href="#driver-register-static" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>今回は, 古い方法でユーザがデバイスドライバにアクセスできるようにする.
+前回の内容に加え, プログラムやシェルからopen/closeして, 値をread/writeできるようにする.</p>
+<p>そのために, open/close/read/write といったシステムコール用の処理を実装する.
+また, ユーザはデバイスファイル(/dev/XXX)として本デバイスドライバにアクセスするため, カーネルへのデバイス登録を行う.</p>
+<p>今回は決め打ちで静的に登録するという, 古い方法を利用する.</p>
+<p>参考URL</p>
+<ul class="simple">
+<li><a class="reference external" href="https://qiita.com/take-iwiw/items/580ec7db2e88beeac3de">組み込みLinuxデバイスドライバの作り方</a></li>
+</ul>
+<div class="section" id="makefile">
+<h2>Makefile<a class="headerlink" href="#makefile" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>特定の名前のソースファイルから, 特定の名前のカーネルモジュールを作成するようにMakefileを編集する.</p>
+</div>
+<div class="section" id="id1">
+<h2>ソースコードの解説<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id2">
+<h3>システムコール用ハンドラの定義と設定<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ユーザからのシステムコール(open, close, read, write)に対応するハンドラ関数を定義する.
+そして, 作成したハンドラ関数を <cite>file_operations</cite> 構造体(<a class="reference internal" href="../../Library/Kernel/linux/fs.h.html"><span class="doc">fs.h</span></a> で定義されている)に追加する.
+この際, C99で実装されたイニシャライザーによって, 特定のフィールド名を指定してハンドラを登録するといい. (これを使わないと, それ以外の <cite>file_operations</cite> のフィールドをNULL埋めした状態での定義が必要になる)</p>
+<p>定義する関数の戻り値や引数は言わずもがな, <cite>file_operations</cite> 構造体のフィールドとして定義されている関数と一致させないと行けない. すなわち,</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">open</span>    <span class="o">-&gt;</span> <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="nb">open</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="p">,</span> <span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">)</span>
+<span class="n">release</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">release</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="p">,</span> <span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">)</span>
+<span class="n">read</span>    <span class="o">-&gt;</span> <span class="n">ssize_t</span> <span class="p">(</span><span class="n">read</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">,</span> <span class="n">char</span> <span class="n">__user</span> <span class="o">*</span><span class="p">,</span> <span class="n">size_t</span><span class="p">,</span> <span class="n">loff_t</span> <span class="o">*</span><span class="p">)</span>
+<span class="n">write</span>   <span class="o">-&gt;</span> <span class="n">ssize_t</span> <span class="p">(</span><span class="n">write</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="n">__user</span> <span class="o">*</span><span class="p">,</span> <span class="n">size_t</span><span class="p">,</span> <span class="n">loff_t</span> <span class="o">*</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>このような関数を定義する.
+(ただし, 当然だが必ずしも引数を値などを利用する必要はない)</p>
+<p>各種構造体及びマクロは以下のように定義されている.</p>
+<ul class="simple">
+<li>inode   : <a class="reference internal" href="../../Library/Kernel/linux/fs.h.html"><span class="doc">fs.h</span></a></li>
+<li>file    : <a class="reference internal" href="../../Library/Kernel/linux/fs.h.html"><span class="doc">fs.h</span></a></li>
+<li>__user  : <a class="reference internal" href="../../Library/Kernel/linux/compiler-types.h.html"><span class="doc">compiler-types.h</span></a></li>
+<li>size_t  : <a class="reference internal" href="../../Library/Kernel/linux/types.h.html"><span class="doc">types.h</span></a></li>
+<li>ssize_t : <a class="reference internal" href="../../Library/Kernel/linux/types.h.html"><span class="doc">types.h</span></a></li>
+<li>loff_t  : <a class="reference internal" href="../../Library/Kernel/linux/types.h.html"><span class="doc">types.h</span></a></li>
+</ul>
+<p><cite>init.h</cite> によって, <cite>types.h</cite>, <cite>compiler.h</cite> -&gt; <cite>compiler-types</cite> が読まれる.
+<cite>module.h</cite> によって, <cite>init.h</cite>, <cite>compiler.h</cite> -&gt; <cite>compiler-types</cite> が読まれれる.
+<cite>fs.h</cite> は依存関係にないので少なくともインクルードしておいたほうがいい.</p>
+<p>今はひとまず, ログを出したり, 固定値を返すだけの関数を定義して <cite>file_operations</cite> 構造体に追加する.</p>
+</div>
+<div class="section" id="id3">
+<h3>カーネルにドライバを登録する<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>モジュールがロードされるタイミング, つまり <cite>mydevice_init</cite> の中で, <cite>register_chrdev</cite> 関数によって, 本デバイスドライバをキャラクターデバイスとしてカーネルに登録する. ( <a class="reference internal" href="../../Library/Kernel/linux/fs.h.html"><span class="doc">fs.h</span></a> に定義してある)</p>
+<p>メジャー番号とは, 本デバイスを特定するのに使われる重要な番号であり, ローカル実験用に60〜63, 120〜127, 240〜254がreservedされている.</p>
+<p>登録を解除するには, <cite>unregister_chrdev</cite> を呼び出し, ドライバを開放する.</p>
+</div>
+<div class="section" id="id4">
+<h3>インクルード<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>上記で見たとおり, 本当はURL先のソースコードのように多くのライブラリをインポートしなくても動作する(先を見越してインポートしているものもあるが).
+ただし, これは一見わかりにくい(なぜ関数定義がhoge.hなのに, fuga.h(内部的にhoge.hをインポートしている)をインポートするだけでいいのか?など)こともあり, 本当であれば定義されているファイルをちゃんと読み込んだほうがいいだろう.
+ただ, 初学では何が必要で何が不必要かわからなくなるため, なんとも言えないなというのが個人的な感想.
+とはいえ, この程度の内容を確認するにも時間がかかる(とっくにカーネルのプログラムは膨大なので)ため, 重複云々よりも判り易いに特化したほうがいいのかもしれない.</p>
+<p>一応記しておくと, 上記URLと全く同じソースコードは, <cite>#include&lt;linux/module.h&gt;</cite> と <cite>#include&lt;linux/fs.h&gt;</cite> のインポートでビルドできた.</p>
+</div>
+<div class="section" id="id5">
+<h3>ビルドしてロード<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ビルドしてロードすると, <a class="reference internal" href="../../Library/Kernel/linux/fs.h.html"><span class="doc">fs.h</span></a> にも記述してあるが, <cite>register_chrdev</cite> 関数で登録する際に引数として渡したメジャー番号と名前を, <cite>/proc/devices</cite> で確認できる.</p>
+</div>
+<div class="section" id="id6">
+<h3>デバイスファイルを作り, ユーザアクセスする<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>作成したデバイスドライバに対して, デバイスファイルを使用してアクセスする.
+そのためにまず, デバイスファイルを作成する.</p>
+<p><cite>mknod</cite> コマンドを利用し, <cite>/dev/XXX</cite> にデバイスファイル(スペシャルファイル)を作成する.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mknod</span> <span class="n">name</span> <span class="nb">type</span> <span class="n">major</span> <span class="n">minor</span>
+
+<span class="o">*</span> <span class="n">name</span> <span class="p">:</span> <span class="n">作成するスペシャルファイル名</span>
+<span class="o">*</span> <span class="nb">type</span> <span class="p">:</span> <span class="n">スペシャルファイルの種類</span>
+    <span class="o">*</span> <span class="n">b</span> <span class="p">:</span> <span class="n">ブロック</span>
+    <span class="o">*</span> <span class="n">c</span> <span class="p">:</span> <span class="n">キャラクタ</span>
+    <span class="o">*</span> <span class="n">u</span> <span class="p">:</span> <span class="n">キャラクタ</span><span class="p">(</span><span class="n">バッファなし</span><span class="p">)</span>
+    <span class="o">*</span> <span class="n">p</span> <span class="p">:</span> <span class="n">FIFO</span>
+<span class="o">*</span> <span class="n">major</span><span class="p">,</span> <span class="n">minor</span> <span class="p">:</span> <span class="n">メジャー番号</span><span class="p">,</span> <span class="n">マイナー番号</span>
+</pre></div>
+</div>
+<p>今回は, 以下のような感じでいい.
+(名前は何でもいい, キャラクタデバイスなのでc, マイナー番号はひとまず1)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">insmod</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mydevice</span> <span class="n">c</span> <span class="mi">63</span> <span class="mi">1</span>
+<span class="n">sudo</span> <span class="n">chmod</span> <span class="mi">666</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mydevice</span>
+</pre></div>
+</div>
+<p>デバイスファイルができたのでシェルから読み書きしてみる.
+(もちろん, <cite>/dev/mydevice</cite> をopenして, read/writeして, closeするようなプログラムを書いてもいい. 今回は簡単のためシェルから確認する.)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="s1">&#39;a&#39;</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mydevice</span>
+<span class="n">dmesg</span>
+</pre></div>
+</div>
+<p>コマンド発行後, dmesgでログを見ると, 実装したwrite用の関数が呼ばれているのが確認できる.
+また, <cite>cat /dev/mydevice</cite> でコンソール上で延々と&#8217;A&#8217;を出力するはずである.
+これは, <cite>mydevice_read</cite> 関数が常に値を返すため.</p>
+<p>使い終わったら, デバイスドライバのアンロード及び,
+デバイスファイルの削除を行う.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">rmmod</span> <span class="n">MyDeviceModule</span>
+<span class="n">sudo</span> <span class="n">rm</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mydevice</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="03.driver_register_dynamic.html" class="btn btn-neutral float-right" title="03. Driver Register (Dynamic)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="01.create_simple_kernel_module.html" class="btn btn-neutral" title="01. Create Simple Kernel Module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

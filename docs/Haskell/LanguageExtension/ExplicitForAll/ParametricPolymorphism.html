@@ -1,0 +1,390 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Parametric Polymorphism (パラメータ多相型) &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="ExplicitForAll" href="index.html"/>
+        <link rel="next" title="Hyper-Order Polymorphism" href="HyperOrderPolymorphism.html"/>
+        <link rel="prev" title="ExplicitForAll" href="index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Haskell Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Monad/index.html">Monad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../MyProjects/index.html">Haskell MyProject</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">LanguageExtension</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../TemplateHaskell/index.html">TemplateHaskell</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">ExplicitForAll</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Parametric Polymorphism (パラメータ多相型)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="HyperOrderPolymorphism.html">Hyper-Order Polymorphism</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../Monoid/index.html">Monoid</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../C/index.html">C Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Haskell Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">LanguageExtension</a> &raquo;</li>
+      
+          <li><a href="index.html">ExplicitForAll</a> &raquo;</li>
+      
+    <li>Parametric Polymorphism (パラメータ多相型)</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/Haskell/LanguageExtension/ExplicitForAll/ParametricPolymorphism.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="parametric-polymorphism">
+<h1>Parametric Polymorphism (パラメータ多相型)<a class="headerlink" href="#parametric-polymorphism" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>基礎としてパラメータ多相型について記述していく.</p>
+<div class="section" id="forall-a">
+<h2>forall a<a class="headerlink" href="#forall-a" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>polymorphic (ポリモーフィック, 多相型) 関数とは, 「多くの異なる型に対して作用する」関数である.
+例えば, Length関数である.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">length</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">Int</span>
+</pre></div>
+</div>
+<p>これはどのようなリストに対しても(リストの要素が何であれ)適用できる.
+そのため, length関数の定義にある型変数 <cite>a</cite> はどのような型も取りうる
+ほかにも, 例えば以下のようなものがあるだろう.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">fst</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="c1">-- タプルの最初を取り出す first 関数</span>
+<span class="nf">snd</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="c1">-- タプルの二番目を取り出す second 関数</span>
+<span class="nf">map</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="c1">-- リストからリストへマップする map 関数</span>
+</pre></div>
+</div>
+<p>型変数は, 通常の型(具象型)のように大文字から始めるのではなく, 必ず小文字から始める.
+逆に小文字から始まるものは, 型変数として認識される.
+これは処理系の話である.</p>
+<p>また, 「型変数であることを明示したい」ならば, <cite>forall</cite> を使う.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">length</span> <span class="ow">::</span> <span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">Int</span>
+</pre></div>
+</div>
+<p>これは「全ての型 <cite>a</cite> に対して (for all type <cite>a</cite>), length関数は, 型 <cite>a</cite> の要素を持つリストを引数にとり, 整数を返す」となる.
+つまり, 最初に示した例は単に <cite>forall</cite> を省略したものであるといえる.
+この <cite>forall</cite> のような, 「変数を修飾してすべてのものを指すようにするキーワード」を「全称量子化子」と呼ぶ.</p>
+</div>
+<div class="section" id="polymorphism">
+<h2>Polymorphism 高階型<a class="headerlink" href="#polymorphism" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>さて話を戻すと, polymorphic (ポリモーフィック, 多相型) 関数とは, 「多くの異なる型に対して作用する」関数であった.
+先程 <cite>forall</cite> キーワードを導入したため, 我々はPolymorphicな引数を取る関数を定義できるようになった.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">foo</span> <span class="ow">::</span> <span class="p">(</span><span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Char</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">)</span>
+<span class="nf">foo</span>  <span class="n">f</span> <span class="ow">=</span> <span class="p">(</span><span class="n">f</span> <span class="sc">&#39;c&#39;</span><span class="p">,</span> <span class="n">f</span> <span class="kt">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>定義から第一引数 <cite>f</cite> は「任意の型をとり, それと同型を返す関数(多相型関数)」であり, この foo 関数はその多相型関数に &#8216;c&#8217; と True を与えたものをタプルにしている.
+この多相型関数は必ず同型を返すため, 返り値の定義は(Char, Bool)と定まる.</p>
+<p>さて, ここで似たようなシグネチャを持つ関数barを以下のようにかんがえる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">bar</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Char</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>これはすなわち以下のような定義と同値である.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">bar</span> <span class="ow">::</span> <span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="p">((</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Char</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>さてこの定義, 先程の定義とは少し形が違うが, これは先ほどと同じなのだろうか, 違うのだろうか...というのがこの議題.
+答えを先に行っておくと, これは先程のものとは異なる, つまり</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="c1">-- これらは明確に異なる</span>
+<span class="nf">foo</span> <span class="ow">::</span> <span class="p">(</span><span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Char</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">)</span>
+<span class="nf">bar</span> <span class="ow">::</span> <span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="p">((</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Char</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>では, どう違うのだろうか. 冷静に見てみると, forall a. がかかっている範囲をあえてくくりだすと, 前者は ( a -&gt; a ), 後者は ((a -&gt; a) -&gt; (Char -&gt; Bool)) である.
+fooを言語化するならば「どのような型でも受け取って同じ型を返すような関数 (ex: id :: a -&gt; a) ならば入力する」であり,
+barを言語化するならば「ある特定の型に対して, それと同じ型を返すような関数ならば, どのような関数fでも (ex: abs :: Num a =&gt; a -&gt; a) 入力する」である.
+少しの違いが, 意味において重大に異なることがわかるだろう.</p>
+<p>このbarのような単純な多相型関数を1階型(rank-1 type)と呼ぶ.
+またfooの型は2階型に属する.
+さらに, (n-1)階型の引数を1つ以上取る関数をn階型と呼ぶ.</p>
+<div class="section" id="my-recognition">
+<h3>My Recognition<a class="headerlink" href="#my-recognition" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>さて, ここで私は初めイマイチ理解できなかったので実装を元に考えていくことにした.
+プログラムは, <span class="xref doc">Program/ParametricPolymorphism.hs</span> に記述しているが, 以下に示す程度のものである.</p>
+<p>ひとまず, fooを実装してみる. 言語拡張を忘れずに行う.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="cm">{-# LANGUAGE RankNTypes #-}</span>
+
+<span class="c1">-- これは上述した実装まま</span>
+<span class="nf">foo</span> <span class="ow">::</span> <span class="p">(</span><span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Char</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">)</span>
+<span class="nf">foo</span> <span class="n">f</span> <span class="ow">=</span> <span class="p">(</span><span class="n">f</span> <span class="sc">&#39;c&#39;</span><span class="p">,</span> <span class="n">f</span> <span class="kt">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>これは問題なく動作する.
+さて, いまいちわからないbarの実装であるが, とりあえずfooのマネを試みたところ失敗した.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="c1">-- fooと同じと仮定して同様に実装する ---&gt; Error</span>
+<span class="nf">bar</span> <span class="ow">::</span> <span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="p">((</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Char</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">))</span>
+<span class="nf">bar</span> <span class="n">f</span> <span class="ow">=</span> <span class="p">(</span><span class="n">f</span> <span class="sc">&#39;c&#39;</span><span class="p">,</span> <span class="n">f</span> <span class="kt">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>こんな愚かなことをしてはいけない.
+さて, ここでピンときた(というよりちゃんと記述してあるんだが...)のは,
+この定義型は以下のようであった.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">bar</span> <span class="ow">::</span> <span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Char</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">)</span>
+<span class="nf">bar</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Char</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>さてこれで明確に理解できた.
+すなわちbar関数は, 「ある関数を受け取るが, その関数はある特定の任意型を取り, それと同じ型を返す」というものである.
+言ってること同じじゃねぇかと思うかもしれないが冷静に考えて欲しい.
+この場合に取る任意の関数 f は例えば, (Int -&gt; Int) であったり, (Char -&gt; Char), (Bool -&gt; Bool) であったりするわけだが,
+これは関数に渡される時点で決まる必要がある.
+すなわち, これらの関数を同じ型に適用できても, 異なる型に適用できないのだ.</p>
+<p>具体例を考える.
+今, ある関数 f を (Char -&gt; Char) と考えると, bar関数はそれを &#8216;c&#8217; と &#8216;True&#8217; に適用することになる.
+しかしながら, &#8216;c&#8217; には適用できても, &#8216;True&#8217; には適用できないのは自明である.
+それ故エラーになるのだ.</p>
+<p>これを解決したいならば, 「引数となる関数 f 自体が任意の型を取れる関数」であるようになっていないと行けない.
+つまり, 引数として適用する関数の定義(型)が (a -&gt; a) でないといけないのだ.
+そうであれば, 例えば <cite>id :: a -&gt; a</cite> を考えると, id 関数に引数として &#8216;c&#8217; を返渡すとその時点で型が決まり &#8216;Char&#8217; を返し,
+同様に &#8216;True&#8217; を渡すと &#8216;Bool&#8217; を返すのである.</p>
+<p>これを実行するのが, 先の foo 関数である.
+再度定義を見て考えてみる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">foo</span> <span class="ow">::</span> <span class="p">(</span><span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Char</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>さて先程のよく分からない状況と比べていくらかわかるようになっただろうか?
+つまり, <cite>(forall a. a -&gt; a)</cite> が示すのは, 「任意の型 <cite>a</cite> を取って, どの同型を返す関数ならば...」である.
+また, ここまで見てきたら分かる通り, この第一引数の関数は要するに <cite>(a -&gt; a)</cite> という型定義の関数であることを示している.
+このように, 「現在の関数に渡す関数を多相関数であるようにする」という階層のような定義になっており, rank と言われるわけなのだろう.</p>
+<p>さて, ながなが書いたがまぁ簡潔にまとめると.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span>(forall a. a -&gt; a) -&gt; (Char, Bool) : 第一引数の関数が多相型関数である.
+forall a. ((a -&gt; a) -&gt; (Char, Bool))
+= forall a. (a -&gt; a) -&gt; (Char, Bool)
+= (a -&gt; a) -&gt; (Char, Bool) : 第一引数は「ある特定の型を受け取り(なんでもいいが決まっている型), 同型を返す」と決まっている関数.
+</pre></div>
+</div>
+<p>ということである.
+言葉で表すのは難しいな...</p>
+</div>
+</div>
+<div class="section" id="rankntypes">
+<h2>RankNTypes<a class="headerlink" href="#rankntypes" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>せっかくなので少し触れておく.
+一般の高階型のシステムは <cite>System F</cite> によって論理的に解析できるそうな.
+<cite>System F</cite> は <cite>second-order lambda calculus</cite> としても知られているとか.
+上のfoo/barの例で示したものは, 別のセクション(興味があれば書く)で解説する.</p>
+<p>Haskell98は, <cite>System F</cite> よりも制約条件の強い <cite>Hindley-Milner</cite> の型システムに基づいているらしく, <cite>forall</cite> を使った2階型や, 高階型をサポートしていないそうな.
+それゆえ, これらの制約を外し, <cite>System F</cite> の強力な力を得るために, <cite>RankNType</cite> 拡張を利用するということらしい.</p>
+</div>
+<div class="section" id="runst">
+<h2>runST<a class="headerlink" href="#runst" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>(*) ここの話はもう少し私がSTモナドに詳しくなったら再度確認して編集.</p>
+<p>Haskellで実用的なプログラムを書く人間にとっては, <cite>ST Monad</cite> が実際に使う型としては初めての rank-2 type になるだろう.
+この型は, <cite>IO Monad</cite> と同じ様に「変更可能な参照と変更可能な配列」を与える.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">newSTRef</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">ST</span> <span class="n">s</span> <span class="p">(</span><span class="kt">STRef</span> <span class="n">s</span> <span class="n">a</span><span class="p">)</span>
+<span class="nf">readSTRef</span> <span class="ow">::</span> <span class="kt">STRef</span> <span class="n">s</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">ST</span> <span class="n">s</span> <span class="n">a</span>
+<span class="nf">writeSTRef</span> <span class="ow">::</span> <span class="kt">STRef</span> <span class="n">s</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">ST</span> <span class="n">s</span> <span class="nb">()</span>
+</pre></div>
+</div>
+<p>型変数 <cite>s</cite> は read/write で変更される状態を表現している.
+しかし, IOとは異なり, このステートフルな計算を純粋なコードの中で行うことができる.
+特に次の <cite>runST</cite> 関数は, 初期状態を設定し, 計算を実行し, 状態を捨てて計算結果を返す.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runST</span> <span class="ow">::</span> <span class="p">(</span><span class="n">forall</span> <span class="n">s</span><span class="o">.</span> <span class="kt">ST</span> <span class="n">s</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>これには rank-2 type が使われている. なぜだろうか?</p>
+<p>ポイントは, 「変更可能は参照は一つの <cite>runST</cite> に対してローカルであるべき」ということである.
+具体的には,</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">v</span> <span class="ow">=</span> <span class="n">runST</span> <span class="p">(</span><span class="n">newSTRef</span> <span class="s">&quot;abc&quot;</span><span class="p">)</span>
+<span class="nf">foo</span> <span class="ow">=</span> <span class="n">runST</span> <span class="p">(</span><span class="n">readVar</span> <span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>これは間違っている.
+なぜなら, 一つ目の <cite>runST</cite> のコンテキスト内で生成した変更可能な参照を, 二番目の <cite>runST</cite> で再び使おうとしているからである.
+言い換えれば, <cite>v</cite> の場合, <cite>(forall s. ST s a) -&gt; a</cite> の結果の型 <cite>a</cite> は <cite>STRef s String</cite> で無いかもしれない.
+しかし, rank-2 type はまさにそれを保証してくれるのだ!
+なぜなら, 引数の型 <cite>(forall s. ST s a)</cite> の <cite>s</cite> は多相型でなければならず, 全ての <cite>s</cite> に対して, 同じ型 <cite>a</cite> を返さなければならない.
+結果の型 <cite>a</cite> は <cite>s</cite> に依存することはできないのである.
+従って, この望ましくないコード片は上記のエラーを含み, コンパイルエラーとなる.</p>
+<p>これは, STモナドのオリジナル論文で, より詳細な解説を見ることができる.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="HyperOrderPolymorphism.html" class="btn btn-neutral float-right" title="Hyper-Order Polymorphism" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="ExplicitForAll" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

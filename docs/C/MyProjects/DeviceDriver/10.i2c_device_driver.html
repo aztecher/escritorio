@@ -1,0 +1,860 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>10.I2C Device Driver &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="Device Driver" href="index.html"/>
+        <link rel="next" title="11. Add I2C Device to DeviceTree" href="11.add_i2c_device_to_device_tree.html"/>
+        <link rel="prev" title="09. call other kernel module" href="09.call_other_kernel_module.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">C MyProjects</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Device Driver</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="01.create_simple_kernel_module.html">01. Create Simple Kernel Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="02.driver_register_static.html">02. Driver Register (Static)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03.driver_register_dynamic.html">03. Driver Register (Dynamic)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="04.read_write_and_memory.html">04. read/write and Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="05.raspi_gpio_device_driver.html">05. Raspi GPIO Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="06.ioctl_implementation.html">06. ioctl Implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="07.interface_for_procfs.html">07. interface for procfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="08.interface_for_debugfs.html">08. interface for debugfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="09.call_other_kernel_module.html">09. call other kernel module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">10.I2C Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="11.add_i2c_device_to_device_tree.html">11. Add I2C Device to DeviceTree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="12.bootloading_device_driver.html">12. bootloading device driver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">C MyProjects</a> &raquo;</li>
+      
+          <li><a href="index.html">Device Driver</a> &raquo;</li>
+      
+    <li>10.I2C Device Driver</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/C/MyProjects/DeviceDriver/10.i2c_device_driver.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="i2c-device-driver">
+<h1>10.I2C Device Driver<a class="headerlink" href="#i2c-device-driver" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>参考URL</p>
+<ul class="simple">
+<li><a class="reference external" href="https://qiita.com/take-iwiw/items/dbc544864f0e9873270a">組み込みLinuxデバイスドライバの作り方</a></li>
+</ul>
+<p>前回, GPIO制御関数を使ってLED/ボタンを制御するデバイスドライバを作成した. 今回はI2Cで接続されたデバイスのデバイスドライバを作成する. I2Cそのもののデバイスドライバではないので注意. 前回GPIOと同様に, I2Cデバドラ自体は <a class="reference internal" href="#soc">SoC</a> メーカーなどが実装したものが用意されている. そしてそのデバイスドライバは <cite>&lt;linux/i2c.h&gt;</cite> で宣言されている標準的な関数で呼ぶことができる. そのため, これを積極的に利用することで, 移植性, 汎用性, 信頼性が高まる.</p>
+<p>(ここからは手元にあるものなので少し内容は異なる)
+対象ボードとしてはRaspberry Pi 3. 対象I2Cデバイスはジャイロセンサー(L3GD20)として説明する. (今回はデバイスIDの取得しか行わないのでデバイス制御が目的ではなくデバイス自体は重要ではない). これはシンプルに通信確認だけをしたいためである. 以下の情報だけ事前に固定する. (ここの情報は上記サイトとL3GD20センサの取説を突き合わせている)</p>
+<ul class="simple">
+<li>ラズパイのI2C_1とL3GD20のSCL, SDAを接続する.</li>
+<li>L3GD20のスレーブアドレスは0x6b (もしくは0x6a, これは取説と回路参照)</li>
+<li>L3GD20のデバイスIDを読むには, 0x0F番地のレジスタを読む. 正しく読めたら0xD4が読み取れる.</li>
+</ul>
+<p>接続の回路に関してはL3GDの取説を参照する. ピンが8つあり, 1がVCC(2.4~3.6V), 2がSCL, 3がSDA, 4がスレーブアドレス下位ビット選択でVDDに接続すると(0b)1101011(0x6b), GNDに接続すると(0b)1101010(0x6a)になる.(I2Cの場合は必ずどちらかに接続する/今回はVCCに接続した), 5はCS(VDDに接続するとI2Cモード/VCCに接続), 6, 7はインターラプト(今回は不要), 8はGNDである. そのため下図のような接続でいいだろう.</p>
+<img alt="../../../_images/RaspiGPIO_L3GD20.jpg" src="../../../_images/RaspiGPIO_L3GD20.jpg" />
+<div class="section" id="id1">
+<h2>事前準備と確認(ラズパイ用)<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ラズパイにssh接続し,</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo raspi-config
+&gt;&gt; I2Cをenabledにする.
+
+sudo apt-get install -y i2c-tools
+</pre></div>
+</div>
+<p>で設定Windowが開くため, そこで「Interfacing Options」 -&gt; 「I2C」でenableにする. ついで, I2C関係のコマンドを利用できるように必要なツールをインストールする.</p>
+<p>正しく回路を接続した状態で, <cite>i2cdetect -y 1</cite> でデバイスの情報が読めればOK! (ここではデバイスのアドレスビット, つまり上述した0x6a/0x6bのどちらかが読めていればよい). この状態で, <cite>i2cget -y 1 0x6b 0x0f b</cite> を打ち込むと, 0xd4が読めるはずである(最後のbは省略可能. <cite>i2cget</cite> コマンドヘルプで分かる)</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>i2cdetect -y 1
+&gt;&gt; .... <span class="o">(</span>6bが見えればOK<span class="o">)</span>
+
+i2cget -y <span class="m">1</span> 0x6b 0xff b
+&gt;&gt; 0xd4
+</pre></div>
+</div>
+</div>
+<div class="section" id="i2c">
+<h2>I2C周りの話<a class="headerlink" href="#i2c" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>GPIOのように, 関数コール一つで簡単に制御できればいいが, I2Cの場合は少し複雑である. いくつか事前知識が必要になる.</p>
+<p>I2Cデバイスの制御は, 複数の階層に分かれたモジュール達によって実現されている. ハードウェアから見ていく. まず, I2Cそのものがある(I2C Bus). Raspberry Piの場合は, I2Cは全部で3つあり, それぞれI2C_0, I2C_1, I2C_2で, 別々のI2Cバスになる. それぞれのバスにつながった, I2C機器がある. 例えば, I2C_1のバスにジャイロセンサ(L3GD20, アドレス0x6b)が接続されたら, それは一つのI2C Clientになる.</p>
+<p>ソフトウェア側から下を見ていく. まず, I2C Busを制御するI2C Adapterがある. I2Cそのものの制御はSoCに依存する処理のため, SoC毎に別々のソースコードがある. ラズパイの場合, i2c-bcm2835.cになる. また, 通信時に用いられるアルゴリズムが書かれたi2c-algoがある. i2c-core.cがメインの処理で, <cite>i2c_smbus_read_byte()</cite> といった汎用的な関数を提供する. I2C Client Driversがその, <cite>i2c_smbus_read_byte()</cite> などを利用して, 各I2C機器の制御を行う. また, 汎用的なi2cデバイスファイル(<cite>/dev/i2-c</cite>)を用意するために, i2c-dev.cがある. これらは全てカーネル側のコードである.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="29%" />
+<col width="57%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>レイヤ</td>
+<td>名称</td>
+<td>説明</td>
+</tr>
+<tr class="row-even"><td>SoftWare</td>
+<td>I2C Client Drivers</td>
+<td>各I2C機器のデバイスドライバ, i2c-dev</td>
+</tr>
+<tr class="row-odd"><td>&nbsp;</td>
+<td>i2c-core</td>
+<td>I2C通信のメイン処理</td>
+</tr>
+<tr class="row-even"><td>&nbsp;</td>
+<td>i2c-alog-XXX</td>
+<td>通信用アルゴリズム</td>
+</tr>
+<tr class="row-odd"><td>&nbsp;</td>
+<td>I2C Adapters</td>
+<td>I2Cそのものを制御する所.
+レジスタをいじったり, チップ依存の処理</td>
+</tr>
+<tr class="row-even"><td>HardWare</td>
+<td>I2C Bus</td>
+<td>例えば, I2C_0 I2C_1</td>
+</tr>
+<tr class="row-odd"><td>&nbsp;</td>
+<td>I2C Client</td>
+<td>各I2C機器(ex. ジャイロセンサ(L3GD20))</td>
+</tr>
+</tbody>
+</table>
+<p>今回我々が作るのは, 上記の表にあるI2C Client Driver, 具体的にはI2C接続されたジャイロセンサー(L3GD20)のデバイスドライバである. そのため, 「i2c-coreの関数を呼ぶだけでは?」と思うかもしれないが, そう簡単にはいかない. ひとまず今は上の表の関係を理解しておくといい.</p>
+</div>
+<div class="section" id="id2">
+<h2>整理<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>コードの記述に入る前にここまでの話を整理しておく.</p>
+<p>まず, これまでラズパイのGPIOのデバイスドライバを書いてきた. これはラズパイのARMのレジスタを操作することで, GPIOの状態を変化させる行為である. デバイスドライバをカーネル空間で動作させ, それをユーザ空間のプロセスが実行できるようにデバイスファイル(/dev/mydevice*)を作成してハンドラ関数を登録するという流れのもので, ユーザ空間のプロセスはそのデバイスファイルに対してシステムコールを行うことで, そこに登録されたハンドラ(カーネル空間で動作するため, 物理アドレスへのフルアクセスが可能)が処理され, レジスタ値を操作するというものであった.</p>
+<p>第5回では, ARMのレジスタ操作に関係するハンドラ関数を記述する場合に, レジスタのアドレスを直接指定して値を書き換えるという芸当を行った. ここでは, 物理アドレスと論理アドレスのマッピングの話なども行った. デバイスファイルに対する処理をユーザプロセスから行うプログラムの作成は行っていないが, そのかわりにデバイスファイルに対して, read/writeの変わりに cat/echo を利用して動作の確認を行ったわけである.</p>
+<p>第9回では, 第5回のコードの汎用化を行った. すなわち第5回のようなコードはチップ特有のコードであり, GPIOの処理が抽象化できていないため(例えば, このラズパイのGPIO操作は同じGPIO操作であってもArduino上で動作できないということ), インターフェース(linix/gpio.h)を利用することで汎用化したわけである. これ以外の処理は第5回と同じ(というかより第5回の処理が基本である)ため, ここでは説明を省略する.</p>
+<p>さて, ここで今回である. 今回は「ラズパイのGPIOで(I2Cで)接続されたI2C機器(L3GD20)のレジスタの情報をユーザ空間のプロセスから取得できるようにする」というのが目的である. そのため, これまでのようにGPIOのレジスタの値の書き換えを行うハンドラを登録したデバイスファイルの設定の他に, I2C機器からデータを取得する関係のハンドラやI2C機器を認識させる関係のコードを書く必要がある. これらを以降順番に見ていく.</p>
+<p>下図に簡単ではあるが図解を示しておく.</p>
+<img alt="../../../_images/I2C_DeviceDriverArch.jpg" src="../../../_images/I2C_DeviceDriverArch.jpg" />
+</div>
+<div class="section" id="id3">
+<h2>簡単なI2C機器のデバイスドライバ<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>まずは, デバイスファイルの作成は行わず, デバイスドライバがロード/アンロードされたときに, I2C機器を登録/解除するコードを実行し, I2C機器が接続された時/取り除かれた時にハンドラを実行させ, 動作結果をprintkするようなコードを見る.</p>
+<p>本コードの外観としては.</p>
+<ol class="arabic simple">
+<li>デバイスドライバで取り扱うI2Cデバイスを識別するためのテーブル構造体を作成し登録する(I2Cデバイスは複数接続されることがあるため).</li>
+<li>I2Cデバイスが接続された時/取り除かれたときに実行するハンドラ関数をそれぞれ定義し, 先程のテーブル構造体やその他情報とともにI2Cデバイスドライバの構造体のメンバにする.</li>
+<li>これまで通り, デバドラがロード(insmod)/アンロード(rmmod)された際に呼ばれるハンドラを定義し, その内部の処理で2で作成したI2Cデバイスドライバの登録/削除を行う.</li>
+</ol>
+<p>という流れである. また, 実行の際には,</p>
+<ol class="arabic simple">
+<li>make で本コードからカーネルモジュールを作成.</li>
+<li>insmodコマンドでカーネルモジュールの登録.</li>
+<li>I2C機器の認識を手動で行う(通常, 自動で行われない)</li>
+<li>動作確認 (dmesg)</li>
+<li>I2C機器の取り外しを手動で行う(通常, 自動で行われない)</li>
+<li>rmmmodコマンドでカーネルモジュールの登録を削除.</li>
+</ol>
+<p>以降, コード詳細に移る.</p>
+<p>一番基本的な, I2C機器のデバドラコードが下記になる. コード下部から見ていくと, <cite>mydevice_init()</cite>, <cite>mydevice_exit()</cite> が本デバイスドライバがロード(insmod)/アンロード(rmmod)されたときの処理であり, その中で, <cite>i2c_add_driver()</cite>, <cite>i2c_del_driver()</cite> を, 引数にI2Cデバイスドライバ構造体を与える形で呼んでいる.</p>
+<p>I2Cは「 <strong>バス</strong> 」で接続するインターフェースであるため, デバドラがロードされているからといって, 常に対象となるI2C機器が接続されているとは限らない. そのため, I2Cバスに機器が接続/切断された場合の処理が必要になる. その時の処理などを登録/解除するのが <cite>i2c_add_driver()</cite> と <cite>i2c_del_driver()</cite> になる. 登録するテーブルの型は <cite>struct i2c_driver</cite> になる. このデバドラでサポートするI2C機器の情報を <cite>.id_table</cite> に登録する. 登録内容は先頭の方で宣言している, <cite>struct i2c_device_id mydevice_i2c_idtable[]</cite> になる. 第一メンバーが対応するデバイス名になる. カーネルはこの名前で対応するデバドラを検索するため, 非常に重要なメンバである(ユニーク番号などではない!). 第二メンバーはこのデバドラ内で使うプライベートデータになる. 何でも良いが通常は識別用番号(数字)を入れる. カーネルがI2C機器から接続/切断のときに呼ぶ関数 <cite>.probe</cite>, <cite>.remove</cite> に登録する. <cite>.driver</cite> にはこのデバドラの名前などを登録する.</p>
+<p><cite>mydevice_i2c_probe()</cite> 内で, <cite>i2c_smbus_read_byte_data()</cite> 関数を呼んで, 認識されたI2C機器と通信している. 今回の場合は, L3GD20が接続されたとしているので, 0x0F番地の値(機器ID, WHO_AM_I)を読む. <cite>i2c_smbus_read_byte_data()</cite> に渡す第一引数は, <cite>struct i2c_client</cite> で, その中にI2Cバス情報(使用するI2C Adapter)やスレーブアドレスを格納する. これらの情報は, この関数 <cite>mydevice_i2c_probe()</cite> が呼ばれるときにもらえる.</p>
+<p>以上, 概要の図に記載する. これを見ながらコードを眺めるといい.</p>
+<img alt="../../../_images/I2C_DeviceDriver1.jpg" src="../../../_images/I2C_DeviceDriver1.jpg" />
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * I2C Device Driver</span>
+<span class="cm"> *</span>
+<span class="cm"> * Date :  2018.08.24</span>
+<span class="cm"> * @author Mikiya Michishita</span>
+<span class="cm"> */</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;linux/module.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;linux/i2c.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// Device Information</span>
+<span class="n">MODULE_LICENSE</span><span class="p">(</span><span class="s">&quot;Dual BSD/GPL&quot;</span><span class="p">);</span>
+<span class="cp">#define DRIVER_NAME &quot;MyDevice&quot;</span>
+
+<span class="c1">// このデバイスドライバで取り扱うデバイスを識別するテーブルを登録する.</span>
+<span class="c1">// 重要なのは最初のnameフィールド. これでデバイス名を決める.</span>
+<span class="c1">// 後ろはこのドライバで自由に使えるデータ</span>
+<span class="k">static</span> <span class="k">struct</span> <span class="n">i2c_device_id</span> <span class="n">mydevice_i2c_idtable</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">{</span><span class="s">&quot;MyI2CDevice&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span>
+  <span class="p">{}</span>
+<span class="p">};</span>
+<span class="n">MODULE_DEVICE_TABLE</span><span class="p">(</span><span class="n">i2c</span><span class="p">,</span> <span class="n">mydevice_i2c_idtable</span><span class="p">);</span>
+
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_i2c_probe</span><span class="p">(</span><span class="k">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">i2c_device_id</span> <span class="o">*</span><span class="n">id</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;i2c_lcd_probe</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;id.name = %s, id.driver_data = %ld</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">id</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="n">id</span><span class="o">-&gt;</span><span class="n">driver_data</span><span class="p">);</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;slave address = 0x%02X</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">client</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">);</span>
+
+  <span class="c1">// 通常はここで, このデバドラでサポートしているデバイスかチェックする.</span>
+
+  <span class="kt">int</span> <span class="n">version</span><span class="p">;</span>
+  <span class="c1">// I2C接続されている, L3GD20のWHO_AM_I の呼び出し</span>
+  <span class="n">version</span> <span class="o">=</span> <span class="n">i2c_smbus_read_byte_data</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="mh">0x0f</span><span class="p">);</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;id = 0x%02X</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_i2c_remove</span><span class="p">(</span><span class="k">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">client</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_i2c_remove</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="k">struct</span> <span class="n">i2c_driver</span> <span class="n">mydevice_driver</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">.</span><span class="n">driver</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">DRIVER_NAME</span><span class="p">,</span>
+    <span class="p">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">THIS_MODULE</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="p">.</span><span class="n">id_table</span> <span class="o">=</span> <span class="n">mydevice_i2c_idtable</span><span class="p">,</span> <span class="c1">// このデバドラがサポートするI2Cデバイス</span>
+  <span class="p">.</span><span class="n">probe</span> <span class="o">=</span> <span class="n">mydevice_i2c_probe</span><span class="p">,</span> <span class="c1">// 対象とするI2Cデバイスが認識された時に呼ばれる処理</span>
+  <span class="p">.</span><span class="n">remove</span> <span class="o">=</span> <span class="n">mydevice_i2c_remove</span><span class="p">,</span> <span class="c1">// 対象とするI2Cデバイスが取り外されたときに呼ばれる処理</span>
+<span class="p">};</span>
+
+<span class="c1">// ロード(insmod)時に呼ばれる関数</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_init</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+  <span class="c1">// 本デバイスドライバを, I2Cバスを使用するデバドラとして登録する.</span>
+  <span class="n">i2c_add_driver</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mydevice_driver</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// アンロード(rmmod)時に呼ばれる関数</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">mydevice_exit</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_exit</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="n">i2c_del_driver</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mydevice_driver</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">module_init</span><span class="p">(</span><span class="n">mydevice_init</span><span class="p">);</span>
+<span class="n">module_exit</span><span class="p">(</span><span class="n">mydevice_exit</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><cite>i2c_add_driver</cite>, <cite>i2c_driver</cite>, <cite>i2c_client</cite>, <cite>module_i2c_driver</cite> : <a class="reference internal" href="../../Library/Kernel/linux/i2c.h.html"><span class="doc">i2c.h</span></a></p>
+<p><cite>device_driver(in i2c_driver structure)</cite> : <a class="reference internal" href="../../Library/Kernel/linux/device.h.html"><span class="doc">device.h</span></a></p>
+<p><cite>i2c_del_driver</cite>, <cite>i2c_smbus_read_byte_data</cite> : <a class="reference internal" href="../../Library/Kernel/linux/i2c-core.h.html"><span class="doc">i2c-core.h</span></a></p>
+<p><cite>i2c_device_id</cite> : <a class="reference internal" href="../../Library/Kernel/linux/mod_devicetable.h.html"><span class="doc">mod_devicetable.h</span></a></p>
+<p><cite>MODULE_DEVICE_TABLE</cite> : <a class="reference internal" href="../../Library/Kernel/linux/module.h.html"><span class="doc">module.h</span></a></p>
+<div class="section" id="note">
+<h3>Note : お決まりの処理を簡略化<a class="headerlink" href="#note" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>I2C機器用のデバドラでは, ロード/アンロード時に行う処理は, 殆どの場合 <cite>struct i2c_driver</cite> を登録するだけである(上記のコードの様に). そのため, 以下のように簡略化できる.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">module_i2c_driver</span><span class="p">(</span><span class="n">mydevice_driver</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>今回は利用していないが試してみるといいだろう.</p>
+</div>
+<div class="section" id="id4">
+<h3>動かしてみる<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>以下のように, ビルド, ロードして, ログを見てみる.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>make
+sudo insmod MyDeviceModule.ko
+dmesg
+&gt;&gt; ....
+&gt;&gt; <span class="o">[</span>...<span class="o">]</span> mydevice_init
+</pre></div>
+</div>
+<p>ログを見ると, <cite>mydevice_init()</cite> が呼ばれただけで, <cite>mydevice_i2c_probe()</cite> が呼ばれていない. これは先に説明したとおり, <cite>mydevice_i2c_probe()</cite> は機器が認識されたときに呼ばれるのだが, 現時点では何のI2C機器も接続されていないためである. USBの場合は恐らく自動認識されるだろうが, I2Cの場合は手動で教えて上げる必要がある. <cite>/sys/bus/i2c/devices/i2c-1/new_device</cite> に値を書き込むことで, カーネルに新しいデバイスを認識させる. 本デバドラ用の危機が接続されたことにしたいので, 「MyI2CDevice」という名前のデバイスがスレーブアドレス(=0x6b)で接続されたことにする. このセットの情報が, 先程の表で見た「I2C Client」の実体である.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo bash -c <span class="s1">&#39;echo MyI2CDevice 0x6b &gt; /sys/bus/i2c/devices/i2c-1/new_device&#39;</span>
+dmesg
+&gt;&gt; ....
+&gt;&gt; <span class="o">[</span>...<span class="o">]</span> mydevice_i2c_probe
+&gt;&gt; <span class="o">[</span>...<span class="o">]</span> id.name <span class="o">=</span> MyI2CDevice, id.driver_data <span class="o">=</span> 0
+&gt;&gt; <span class="o">[</span>...<span class="o">]</span> slave <span class="nv">address</span> <span class="o">=</span> 0x6b
+&gt;&gt; <span class="o">[</span>...<span class="o">]</span> <span class="nv">id</span> <span class="o">=</span> 0xd4
+&gt;&gt; <span class="o">[</span>...<span class="o">]</span> i2c i2c-1: new_device: Instantiated device MyI2CDevice at 0x6b
+</pre></div>
+</div>
+<p>すると, 上のログのように, <cite>mydevice_i2c_probe()</cite> が呼ばれている.
+また, そのときに渡される <cite>client</cite> パラメータには, 実体化したI2C Clientの情報が入っていることが分かる. そして, その情報(client)を使って, 通信ができ, 正しいidを取得できていることが分かる.</p>
+<div class="section" id="note1">
+<h4>Note1<a class="headerlink" href="#note1" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>今回は「&#8217;MyI2CDevice&#8217;という名前の危機を取り扱う」, と決めた. そのため, <cite>struct i2c_device_id</cite> テーブルに「MyI2CDevice」という名前を設定してカーネルに登録した. そして, 手動で「MyI2CDevice」というデバイスをカーネルに認識させたので, 本デバイスドライバの <cite>mydevice_i2c_probe()</cite> が呼ばれた. カーネルはあくまで名前だけで判断しているため, 他のデバイスと名前が被ってしまった場合などに, 間違った機器を制御しようとしてしまう可能性がある. <cite>mydevice_i2c_probe()</cite> の <strong>probe</strong> というところに注意してほしいが, この関数で本来やるべきことは, このデバドラでこの危機を取り扱うかどうかのチェックになる. もしも対応機器であれば0を返して, そうでなければ-1を返す. その確認のため, 通常はスレーブアドレスを確認したり, 通信して機器のIDやバージョン情報を取得したり刷る. 今回は決め打ちで常に0を返している.</p>
+</div>
+<div class="section" id="note2">
+<h4>Note2<a class="headerlink" href="#note2" title="このヘッドラインへのパーマリンク">¶</a></h4>
+<p>機器の取り外しには以下のコマンドを使用する.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo bash -c <span class="s1">&#39;echo 0x6b &gt; /sys/bus/i2c/devices/i2c-1/delete_device&#39;</span>
+</pre></div>
+</div>
+<p>これを実行した後, dmesgを確認すると, <cite>mydevice_i2c_remove()</cite> が呼ばれていることが確認できる.</p>
+</div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>コード上でI2C機器を認識される<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">警告</p>
+<p class="last">本コードは恐らく非推奨. 本来は <a class="reference internal" href="11.add_i2c_device_to_device_tree.html"><span class="doc">11. Add I2C Device to DeviceTree</span></a> に記載されている方法を利用するのが良いらしい.</p>
+</div>
+<p>次に, 先程のコードに少し追加でコードを記述する. 先程「I2Cの認識/取りだし」を手動(new_deviceへの書き込み/delete_deviceへの書き込み)で行った. この部分を, デバイスドライバがカーネルモジュールとして登録されるタイミング(insmod時)と, 取り外されるタイミング(rmmod時)に自動で行うようにしてみる. (以下に先のコードの修正部分のみを記述する)</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="c1">// 機器の認識を自動化するように mydevice_init を修正</span>
+<span class="k">static</span> <span class="k">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">i2c_clie</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_init</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+  <span class="c1">// 本デバイスドライバを, I2Cバスを使用するデバドラとして登録する.</span>
+  <span class="n">i2c_add_driver</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mydevice_driver</span><span class="p">);</span>
+
+  <span class="c1">// 動的にデバイスを作る.</span>
+  <span class="c1">// https://www.kernel.org/doc/Documentation/i2c/instantiating-devices</span>
+  <span class="c1">// I2C1に接続された, &quot;MyI2CDevice&quot; という名前で,</span>
+  <span class="c1">// スレーブアドレスが 0x6b のデバイスを作る.</span>
+  <span class="k">struct</span> <span class="n">i2c_adapter</span> <span class="o">*</span><span class="n">i2c_adap</span><span class="p">;</span>
+  <span class="n">i2c_adap</span> <span class="o">=</span> <span class="n">i2c_get_adapter</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="k">struct</span> <span class="n">i2c_board_info</span> <span class="n">i2c_board_info</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">I2C_BOARD_INFO</span><span class="p">(</span><span class="s">&quot;MyI2CDevice&quot;</span><span class="p">,</span> <span class="mh">0x6b</span><span class="p">)</span>
+  <span class="p">};</span>
+  <span class="n">i2c_clie</span> <span class="o">=</span> <span class="n">i2c_new_device</span><span class="p">(</span><span class="n">i2c_adap</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">i2c_board_info</span><span class="p">);</span>
+  <span class="n">i2c_put_adapter</span><span class="p">(</span><span class="n">i2c_adap</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 機器認識を自動化したため, アンロード時の関数にも少し手続きが必要</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">mydevice_exit</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_exit</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+  <span class="n">i2c_del_driver</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mydevice_driver</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">i2c_clie</span><span class="p">)</span> <span class="n">i2c_unregister_device</span><span class="p">(</span><span class="n">i2c_clie</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">module_init</span><span class="p">(</span><span class="n">mydevice_init</span><span class="p">);</span>
+<span class="n">module_exit</span><span class="p">(</span><span class="n">mydevice_exit</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>この方法は, Linuxドキュメントにも記載されていたので, 実装自体はOKだが, 実装場所がよろしくない. どのような機器が接続されているかというのはボード依存の情報なので, board_bcm2835.c の <cite>bcm2835_init(void)</cite> あたりに書くべきである. さらに, <cite>i2c_register_board_info()</cite> を使ったほうがいいようである.</p>
+<p>また, デバイスツリー(.dts)に記載する方法もあるようだ. これは <a class="reference internal" href="11.add_i2c_device_to_device_tree.html"><span class="doc">11. Add I2C Device to DeviceTree</span></a> に詳細を記述しているのでそちらを本来参考にすべきである.</p>
+<p>今回の話はくどいようだが非推奨のため, 関数に関する説明は省略する.</p>
+</div>
+<div class="section" id="sysfs">
+<h2>sysfsを使ったインターフェース<a class="headerlink" href="#sysfs" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ここまでで, I2C機器の認識と最初の通信ができた. 続いて, ユーザ, あるいはユーザ空間のプログラムとのインターフェースを作成する. 基本的にはいつもどおり, デバイスファイルを使ったやり取りになる. まずは簡単にできるsysfsを使ったインターフェースを作る.</p>
+<p>言葉では分かりづらいが下図を見ればわかるだろう.</p>
+<img alt="../../../_images/I2C_DeviceDriver2.jpg" src="../../../_images/I2C_DeviceDriver2.jpg" />
+<p>sysfsについては, <a class="reference internal" href="07.interface_for_procfs.html"><span class="doc">07. interface for procfs</span></a> で軽く触れた. この時は, モジュールのパラメータとして扱ったが, 今回は, I2C機器のパラメータとして取り扱う必要がある. <a class="reference internal" href="07.interface_for_procfs.html"><span class="doc">07. interface for procfs</span></a> では, 一番簡単にパラメータを見せる方法として, <cite>module_params()</cite> というヘルパーマクロを使用して実装していたが, 今回はもう少し真面目に実装してみる.</p>
+<p>機器ID(バージョン情報)を取得するだけの簡単なインターフェース(sysfsの実装)を考える. 順序は非常に簡単で,</p>
+<ol class="arabic simple">
+<li>readされたときのハンドラ関数の定義 (<cite>get_version</cite>)</li>
+<li>作成するデバイスファイルの属性設定 (<cite>DEVICE_ATTR</cite>)</li>
+<li>カーネルに登録 (<cite>device_create_file</cite>)</li>
+</ol>
+<p>である. 1に関しては, <cite>get_version</cite> 関数の定義(これが <cite>DEVICE_ATTR</cite> でreadのハンドラとして登録される. writeのハンドラは今回NULL). 2のために, <cite>DEVICE_ATTR</cite> というヘルパーマクロを使用する. 3のために, <cite>device_create_file()</cite> 関数をprobeのタイミングで呼ぶ.</p>
+<p>「version」というファイルを作成して, 呼んだときに <cite>get_version()</cite> という関数を呼ぶコードを下記に示す. <cite>DEVICE_ATTR</cite> の第1引数が作成するファイル名, 第二引数がアクセス権限, 第三引数がread時のハンドラ関数, 第四引数がwrite時のハンドラ関数である. 今回, write操作は行わないので, NULL指定しておく. read時のハンドラ関数に設定した <cite>get_version()</cite> では, 先程と同じく, 機器のID情報を呼んで, bufに詰めて返しているだけである.</p>
+<p>I2C関数を使うためには, <cite>struct i2c_client</cite> の情報が必要だが, この関数には, <cite>struct device</cite> が渡されている. しかし, <cite>struct i2c_client</cite> の中にこの構造体が入っているので, <cite>container_of</cite> を <cite>i2c_client</cite> でラップした関数 <cite>to_i2c_client</cite> で簡単に取得できる. probeのタイミングで <cite>device_crate_file()</cite> を使用して登録する. 第一引数は同じく <cite>struct device</cite> , 第二引数は登録するファイルの属性一式になる. これは先程の <cite>DEVICE_ATTR</cite> マクロによって作られている. <cite>DEVICE_ATTR</cite> の第一引数に指定した名前に, &#8220;<a href="#id10"><span class="problematic" id="id11">dev_attr_</span></a>&#8221; というプレフィックスをつけたものを渡す.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">ssize_t</span> <span class="nf">get_version</span><span class="p">(</span><span class="k">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="k">struct</span> <span class="n">device_attribute</span> <span class="o">*</span><span class="n">dev_attr</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;get_version</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="k">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">client</span> <span class="o">=</span> <span class="n">to_i2c_client</span><span class="p">(</span><span class="n">dev</span><span class="p">);</span>
+
+  <span class="kt">int</span> <span class="n">version</span><span class="p">;</span>
+  <span class="n">version</span> <span class="o">=</span> <span class="n">i2c_smbus_read_byte_data</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="mh">0x0f</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;id=0x%02X</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">static</span> <span class="nf">DEVICE_ATTR</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">S_IRUGO</span><span class="p">,</span> <span class="n">get_version</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_i2c_probe</span><span class="p">(</span><span class="k">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">i2c_device_id</span> <span class="o">*</span><span class="n">id</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_i2c_probe</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;id.name = %s, id.driver_data = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">id</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)(</span><span class="n">id</span><span class="o">-&gt;</span><span class="n">driver_data</span><span class="p">));</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;slave address = 0x%02X</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">client</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">);</span>
+
+  <span class="c1">// 通常はここで, このデバドラでサポートしているデバイスかどうかチェックする</span>
+  <span class="c1">// このデバドラの属性読み書き用のsysfsファイルを作成.</span>
+  <span class="n">device_create_file</span><span class="p">(</span><span class="o">&amp;</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dev_attr_version</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_i2c_remove</span><span class="p">(</span><span class="k">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">client</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_i2c_remove</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="n">device_remove_file</span><span class="p">(</span><span class="o">&amp;</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dev_attr_version</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>その後, 以下のようにビルド, ロード, デバイスの認識を行う(デバイス認識の自動化をしている場合, ロードまででいいが). すると, <cite>/sys/devices/platform/soc/3f804000.i2c/i2c-1/1-006b/version</cite> というファイルが作成され, catで読むと, idが取得できていることが分かる.</p>
+<p><cite>DEVICE_ATTR</cite>, <cite>device_crate_file</cite>, <cite>device_remove_file</cite> : <a class="reference internal" href="../../Library/Kernel/linux/device.h.html"><span class="doc">device.h</span></a></p>
+<p><cite>to_i2c_client</cite> : <span class="xref doc">./../../Library/Kernel/linux/i2c.h.rst</span>
+<cite>container_of</cite> : <a class="reference internal" href="../../Library/Kernel/linux/kernel.h.html"><span class="doc">kernel.h</span></a></p>
+</div>
+<div class="section" id="dev">
+<h2>/devを使ったインターフェース<a class="headerlink" href="#dev" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>sysfsだとお手軽に出来て便利だが, やはりいつものopen/close/read/write/ioctl(+select/poll/seekなど)を使いたい場合もあるだろう. そのためには, 今までどおりの方法でデバイスファイルを作る必要がある.</p>
+<p>今まではロードのタイミングでデバイスファイルを作っていた(メジャー番号とかマイナー番号とか扱って, /dev/mydevice* を作る部分の実装)が, 今回はprobeのタイミングになる. また, I2C制御関数を使うためには, <cite>struct i2c_client</cite> が必要になる. probeのタイミングで貰った <cite>struct i2c_client</cite> をどこかに保持して, readやwriteのときに参照する必要がある. これはstatic変数で保持すれば簡単にできるが, 少し真面目にやってみる. これを実現するために, <cite>container_of()</cite> というヘルパーマクロを使う.</p>
+<div class="section" id="id6">
+<h3>事前知識<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><strong>container_of</strong></p>
+<p><cite>container_of()</cite> は以下で定義されるヘルパーマクロで, コンパイル時に実行される. (<a class="reference internal" href="../../Library/Kernel/linux/kernel.h.html"><span class="doc">kernel.h</span></a>)</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define container_of(ptr, type, member) ({ \</span>
+<span class="cp">    const typeof(((type *)0)-&gt;member) *__mptr = (ptr); \</span>
+<span class="cp">    (type *)((char *)__mptr - offsetof(type, member)); })</span>
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+<p><cite>type</cite> には構造体名, <cite>member</cite> にはその構造体のメンバ名を入れる. そして, <cite>ptr</cite> にはそのメンバの実際のポインタを入れる. すると, その <cite>ptr</cite> を格納する構造体の先頭アドレスを返してくれる.</p>
+<p><strong>i2c_set_clientdata</strong></p>
+<p><cite>i2c_set_clientdata()</cite> は以下で定義される関数. <cite>struct i2c_client</cite> に紐付いた情報を自由に保存することができる. この情報は何でもいいが, 通常は, probe時にalloc下デバドラ独自の構造体へのポインタを保持する. 取り出すときは, <cite>i2c_get_clientdata()</cite> を使う. (<a class="reference internal" href="../../Library/Kernel/linux/i2c.h.html"><span class="doc">i2c.h</span></a>)</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">i2c_set_clientdata</span><span class="p">(</span><span class="k">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>コード<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>probe時に貰った, <cite>struct i2c_client</cite> を, open/close/read/write時に参照できるようにしたコードが下記になる. コード全体を載せている.</p>
+<p>構造体の包含関係は以下の図に示す. コードを読む参考にされたい.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * I2C Device Driver</span>
+<span class="cm"> *</span>
+<span class="cm"> * これまでのコードの集大成</span>
+<span class="cm"> * 独自構造体などを利用しているが, やっていることはこれまでと同じ.</span>
+<span class="cm"> *</span>
+<span class="cm"> * Date :  2018.08.24</span>
+<span class="cm"> * @author Mikiya Michishita</span>
+<span class="cm"> */</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;linux/module.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;linux/i2c.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;linux/cdev.h&gt; // cdev</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;linux/device.h&gt; // struct class (device class)</span><span class="cp"></span>
+
+<span class="c1">// Device Information</span>
+<span class="n">MODULE_LICENSE</span><span class="p">(</span><span class="s">&quot;Dual BSD/GPL&quot;</span><span class="p">);</span>
+<span class="cp">#define DRIVER_NAME &quot;MyDevice&quot;</span>
+
+<span class="c1">// dev/mydevice* で作成するデバイスファイルの数に関わる値</span>
+<span class="k">static</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">MINOR_BASE</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">static</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">MINOR_NUM</span>  <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="c1">// I2Cデバイスの管理情報</span>
+<span class="c1">// このデバドラで取り扱うI2Cデバイス</span>
+<span class="k">enum</span> <span class="n">mydevice_i2c_model</span> <span class="p">{</span>
+  <span class="n">MYDEVICE_MODEL_A</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="n">MYDEVICE_MODEL_NUM</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="c1">// このデバドラで取り扱うデバイスを識別するテーブルを登録する.</span>
+<span class="k">static</span> <span class="k">struct</span> <span class="n">i2c_device_id</span> <span class="n">mydevice_i2c_idtable</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">{</span><span class="s">&quot;MyI2CDevice&quot;</span><span class="p">,</span> <span class="n">MYDEVICE_MODEL_A</span><span class="p">},</span>
+  <span class="p">{}</span>
+<span class="p">};</span>
+<span class="n">MODULE_DEVICE_TABLE</span><span class="p">(</span><span class="n">i2c</span><span class="p">,</span> <span class="n">mydevice_i2c_idtable</span><span class="p">);</span>
+
+<span class="c1">// 各i2cデバイス(client)に紐づく情報.</span>
+<span class="c1">// probe時に設定して, i2c_set_clientdataで保持しておく.</span>
+<span class="c1">//</span>
+<span class="c1">// cdev : probeされたI2Cデバイス(client)とcdevを対応付けるために必要</span>
+<span class="c1">//        open時にcontainer_ofで探す</span>
+<span class="c1">// mydevice_major : このデバイスドライバのメジャー番号(動的に決める)</span>
+<span class="c1">// mydevice_class : デバドラのクラスオブジェクト</span>
+<span class="k">struct</span> <span class="n">mydevice_device_info</span> <span class="p">{</span>
+  <span class="k">struct</span> <span class="n">cdev</span> <span class="n">cdev</span><span class="p">;</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">mydevice_major</span><span class="p">;</span>
+  <span class="k">struct</span> <span class="n">class</span> <span class="o">*</span><span class="n">mydevice_class</span><span class="p">;</span>
+  <span class="k">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">client</span><span class="p">;</span>
+  <span class="c1">// 他に必要なら追加する, mutexとか</span>
+<span class="p">};</span>
+
+<span class="c1">// /dev/mydevice* のopenハンドラ</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_open</span><span class="p">(</span><span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">inode</span><span class="p">,</span> <span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_open</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+  <span class="c1">// このopenを持つcdev(inode-&gt;i_cdev)を持つmydevice_device_infoを探す</span>
+  <span class="k">struct</span> <span class="n">mydevice_device_info</span> <span class="o">*</span><span class="n">dev_info</span><span class="p">;</span>
+  <span class="n">dev_info</span> <span class="o">=</span> <span class="n">container_of</span><span class="p">(</span><span class="n">inode</span><span class="o">-&gt;</span><span class="n">i_cdev</span><span class="p">,</span> <span class="k">struct</span> <span class="n">mydevice_device_info</span><span class="p">,</span> <span class="n">cdev</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">dev_info</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">client</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printk</span> <span class="p">(</span><span class="n">KERN_ERR</span> <span class="s">&quot;container_of</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">file</span><span class="o">-&gt;</span><span class="n">private_data</span> <span class="o">=</span> <span class="n">dev_info</span><span class="p">;</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;i2c address = %02X</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// /dev/mydevice* のcloseハンドラ</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_close</span><span class="p">(</span><span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">inode</span><span class="p">,</span> <span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_close&quot;</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// /dev/mydevice* のreadハンドラ</span>
+<span class="k">static</span> <span class="kt">ssize_t</span> <span class="nf">mydevice_read</span><span class="p">(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">filp</span><span class="p">,</span> <span class="kt">char</span> <span class="n">__user</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">,</span> <span class="n">loff_t</span> <span class="o">*</span><span class="n">f_pos</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_read</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+  <span class="k">struct</span> <span class="n">mydevice_device_info</span> <span class="o">*</span><span class="n">dev_info</span> <span class="o">=</span> <span class="n">filp</span><span class="o">-&gt;</span><span class="n">private_data</span><span class="p">;</span>
+  <span class="k">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">client</span> <span class="o">=</span> <span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">client</span><span class="p">;</span>
+
+  <span class="kt">int</span> <span class="n">version</span><span class="p">;</span>
+  <span class="n">version</span> <span class="o">=</span> <span class="n">i2c_smbus_read_byte_data</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="mh">0x0f</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;id=0x%02X</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// /dev/mydevice* のwriteハンドラ</span>
+<span class="k">static</span> <span class="kt">ssize_t</span> <span class="nf">mydevice_write</span><span class="p">(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">filp</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">__user</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">,</span> <span class="n">loff_t</span> <span class="o">*</span><span class="n">f_pos</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_write</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 各種システムコールに対応するハンドラテーブル</span>
+<span class="k">struct</span> <span class="n">file_operations</span> <span class="n">s_mydevice_fops</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">.</span><span class="n">open</span> <span class="o">=</span> <span class="n">mydevice_open</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">release</span> <span class="o">=</span> <span class="n">mydevice_close</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">read</span> <span class="o">=</span> <span class="n">mydevice_read</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">write</span> <span class="o">=</span> <span class="n">mydevice_write</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="c1">// /dev/mydevice* を作成する関数.</span>
+<span class="c1">// I2Cデバイスが認識されたときに呼ばれるハンドラ内で呼ばれる.</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_i2c_create_cdev</span><span class="p">(</span><span class="k">struct</span> <span class="n">mydevice_device_info</span> <span class="o">*</span><span class="n">dev_info</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="kt">int</span> <span class="n">alloc_ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">cdev_err</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="kt">dev_t</span> <span class="n">dev</span><span class="p">;</span>
+
+  <span class="c1">// メジャー番号を確保する</span>
+  <span class="n">alloc_ret</span> <span class="o">=</span> <span class="n">alloc_chrdev_region</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev</span><span class="p">,</span> <span class="n">MINOR_BASE</span><span class="p">,</span> <span class="n">MINOR_NUM</span><span class="p">,</span> <span class="n">DRIVER_NAME</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">alloc_ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printk</span><span class="p">(</span><span class="n">KERN_ERR</span> <span class="s">&quot;alloc_chrdev_region = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">alloc_ret</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">// 取得したdev(=メジャー番号 + マイナー番号)</span>
+  <span class="c1">// メジャー番号を取得して保存</span>
+  <span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">mydevice_major</span> <span class="o">=</span> <span class="n">MAJOR</span><span class="p">(</span><span class="n">dev</span><span class="p">);</span>
+  <span class="n">dev</span> <span class="o">=</span> <span class="n">MKDEV</span><span class="p">(</span><span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">mydevice_major</span><span class="p">,</span> <span class="n">MINOR_BASE</span><span class="p">);</span> <span class="c1">// 不要?</span>
+
+  <span class="c1">// cdev構造体の初期化とシステムコールハンドラテーブルの登録</span>
+  <span class="n">cdev_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">cdev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">s_mydevice_fops</span><span class="p">);</span>
+  <span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">cdev</span><span class="p">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">THIS_MODULE</span><span class="p">;</span>
+
+  <span class="c1">// このデバイスドライバ(cdev)をカーネルに登録する.</span>
+  <span class="n">cdev_err</span> <span class="o">=</span> <span class="n">cdev_add</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">cdev</span><span class="p">,</span> <span class="n">dev</span><span class="p">,</span> <span class="n">MINOR_NUM</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">cdev_err</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printk</span><span class="p">(</span><span class="n">KERN_ERR</span> <span class="s">&quot;cdev_add = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">alloc_ret</span><span class="p">);</span>
+    <span class="n">unregister_chrdev_region</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">MINOR_NUM</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">// このデバイスのクラス登録をする(/sys/class/mydevice/ を作る)</span>
+  <span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">mydevice_class</span> <span class="o">=</span> <span class="n">class_create</span><span class="p">(</span><span class="n">THIS_MODULE</span><span class="p">,</span> <span class="s">&quot;mydevice&quot;</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">IS_ERR</span><span class="p">(</span><span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">mydevice_class</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">printk</span><span class="p">(</span><span class="n">KERN_ERR</span> <span class="s">&quot;class_create</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">cdev_del</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">cdev</span><span class="p">);</span>
+    <span class="n">unregister_chrdev_region</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">MINOR_NUM</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">// /sys/class/mydevice/mydevice* を作る</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">minor</span> <span class="o">=</span> <span class="n">MINOR_BASE</span><span class="p">;</span> <span class="n">minor</span> <span class="o">&lt;</span> <span class="n">MINOR_BASE</span> <span class="o">+</span> <span class="n">MINOR_NUM</span><span class="p">;</span> <span class="n">minor</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">device_create</span><span class="p">(</span><span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">mydevice_class</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">MKDEV</span><span class="p">(</span><span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">mydevice_major</span><span class="p">,</span> <span class="n">minor</span><span class="p">),</span> <span class="nb">NULL</span><span class="p">,</span> <span class="s">&quot;mydevice%d&quot;</span><span class="p">,</span> <span class="n">minor</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// /dev/mydevice* を削除する関数.</span>
+<span class="c1">// I2Cデバイスが取り除かれたときに呼ばれるハンドラ内で呼ばれる.</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">mydevice_i2c_delete_cdev</span><span class="p">(</span><span class="k">struct</span> <span class="n">mydevice_device_info</span> <span class="o">*</span><span class="n">dev_info</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="kt">dev_t</span> <span class="n">dev</span> <span class="o">=</span> <span class="n">MKDEV</span><span class="p">(</span><span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">mydevice_major</span><span class="p">,</span> <span class="n">MINOR_BASE</span><span class="p">);</span>
+
+  <span class="c1">// /sys/class/mydevice/mydevice* を削除する</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">minor</span> <span class="o">=</span> <span class="n">MINOR_BASE</span><span class="p">;</span> <span class="n">minor</span> <span class="o">&lt;</span> <span class="n">MINOR_BASE</span> <span class="o">+</span> <span class="n">MINOR_NUM</span><span class="p">;</span> <span class="n">minor</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">device_destroy</span><span class="p">(</span><span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">mydevice_class</span><span class="p">,</span> <span class="n">MKDEV</span><span class="p">(</span><span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">mydevice_major</span><span class="p">,</span> <span class="n">minor</span><span class="p">));</span>
+  <span class="p">}</span>
+
+  <span class="c1">// このデバイスのクラス登録を取り除く(/sys/class/mydevice/を削除する)</span>
+  <span class="n">class_destroy</span><span class="p">(</span><span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">mydevice_class</span><span class="p">);</span>
+
+  <span class="c1">// このデバイスドライバ(cdev)をカーネルから取り除く</span>
+  <span class="n">cdev_del</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">cdev</span><span class="p">);</span>
+
+  <span class="c1">// このデバイスドライバで使用していたメジャー番号の登録を取り除く</span>
+  <span class="n">unregister_chrdev_region</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">MINOR_NUM</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// I2Cデバイスが認識されたときに呼ばれるハンドラ</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_i2c_probe</span><span class="p">(</span><span class="k">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">i2c_device_id</span> <span class="o">*</span><span class="n">id</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_i2c_probe</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;id.name = %s, id.driver_data = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">id</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)(</span><span class="n">id</span><span class="o">-&gt;</span><span class="n">driver_data</span><span class="p">));</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;slave address = 0x%02X</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">client</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">);</span>
+
+  <span class="c1">// 通常はここで, このデバドラでサポートしているデバイスかどうかチェック</span>
+
+  <span class="c1">// open/close/read/write でも i2c_clientは使うので, 保持する.</span>
+  <span class="k">struct</span> <span class="n">mydevice_device_info</span> <span class="o">*</span><span class="n">dev_info</span><span class="p">;</span>
+  <span class="n">dev_info</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">mydevice_device_info</span><span class="o">*</span><span class="p">)</span><span class="n">devm_kzalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">mydevice_device_info</span><span class="p">),</span> <span class="n">GFP_KERNEL</span><span class="p">);</span>
+  <span class="n">dev_info</span><span class="o">-&gt;</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span><span class="p">;</span>
+  <span class="n">i2c_set_clientdata</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">dev_info</span><span class="p">);</span>
+
+  <span class="c1">// このデバイスドライバをキャラクタ型としてカーネルに登録する.</span>
+  <span class="c1">// (/sys/class/mydevice/mydevice* を作る)</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">mydevice_i2c_create_cdev</span><span class="p">(</span><span class="n">dev_info</span><span class="p">))</span> <span class="k">return</span> <span class="o">-</span><span class="n">ENOMEM</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// I2Cデバドラが抜かれたときに呼ばれるハンドラ</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_i2c_remove</span><span class="p">(</span><span class="k">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">client</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_i2c_remove</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="k">struct</span> <span class="n">mydevice_device_info</span> <span class="o">*</span><span class="n">dev_info</span><span class="p">;</span>
+  <span class="n">dev_info</span> <span class="o">=</span> <span class="n">i2c_get_clientdata</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+  <span class="n">mydevice_i2c_delete_cdev</span><span class="p">(</span><span class="n">dev_info</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// I2C用デバイスドライバ</span>
+<span class="k">static</span> <span class="k">struct</span> <span class="n">i2c_driver</span> <span class="n">mydevice_driver</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">.</span><span class="n">driver</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">DRIVER_NAME</span><span class="p">,</span>
+    <span class="p">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">THIS_MODULE</span><span class="p">,</span>
+  <span class="p">},</span>
+  <span class="p">.</span><span class="n">id_table</span> <span class="o">=</span> <span class="n">mydevice_i2c_idtable</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">probe</span> <span class="o">=</span> <span class="n">mydevice_i2c_probe</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">remove</span> <span class="o">=</span> <span class="n">mydevice_i2c_remove</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="c1">// 本デバドラを, I2Cバスを使用するデバドラとして登録する.</span>
+<span class="c1">// これまで作成していた mydevice_init/mydevice_exit を作っても</span>
+<span class="c1">// やることがI2Cバスを利用するデバドラの登録なので,</span>
+<span class="c1">// 簡易化する関数を利用する.</span>
+<span class="n">module_i2c_driver</span><span class="p">(</span><span class="n">mydevice_driver</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>コードの先頭で, <cite>struct mydevice_device_info</cite> という独自構造体を定義し, <cite>struct_i2c_client</cite>, つまり, 各I2Cデバイス(クライアント)に紐づく(<cite>struct i2c_client</cite> が与えられたら, 格納した情報(<cite>struct mydevice_device_info</cite>) を取得できる)情報を格納する.</p>
+<p>今回, I2Cデバイスが接続されるたび, つまり, probeのタイミングで新しいデバイスファイル(cdev)を作ることにする. これは, 今までロード時にやっていたのと全く同じ処理. デバイスファイル作成処理では <cite>mydevice_i2c_create_cdev()</cite> 関数に抽出している. 今までは, <cite>struct cdev cdev;</cite>, <cite>unsigned int mydevice_major;</cite>, <cite>struct class *mydevice_class;</cite> は, staticで保存していたが, 今回は <cite>struct mydevice_device_info</cite> 構造体内に入れ, probeのタイミングで <cite>devm_kzalloc</cite> で動的に領域確保する. <cite>devm_kzalloc</cite> を使うことで, デバイスが消えたタイミングでこのメモリを自動的に開放してくれる. また, 同じ <cite>struct mydevice_device_info</cite> 構造体の中に, I2C制御に必要な <cite>struct i2c_client</cite> も保存しておき, この <cite>struct mydevice_device_info</cite> 構造体を <cite>i2c_set_clientdata()</cite> によって, I2Cクライアントに関連付けられた領域に保存する. これらの処理は, すべて機器が接続されたタイミング(<cite>mydevice_i2c_probe()</cite>)で行う.</p>
+<p><cite>mydevice_i2c_probe()</cite> 内で, キャラクタ型デバイスファイル(cdev)を作ったので, open/close/read/writeが使える. まず, <cite>mydevice_open()</cite> を見る. 第一引数 <cite>struct inode *inode</cite> 内に, cdevへのポインタが格納されており, <cite>inode-&gt;i_cdev</cite> で参照できる. 先程, probeのタイミングでデバイスファイルを作成するときに, cdevは独自構造体 <cite>struct mydevice_device_info</cite> 内に保存した. そのため, <cite>container_of</cite> を使用して, このcdevが格納されている構造体の先頭アドレスを求めることができる(<cite>dev_info = container_of(inode-&gt;i_cdev, struct mydevice_device_ino, cdev);</cite>). そして, この中に <cite>struct i2c_client</cite> の情報も入れたので, これを使ってI2C制御が可能となる. 実際には, read/write時に使うので, さらに <cite>file</cite> 構造体内の <cite>private_data</cite> に入れて, read/writeのタイミングで参照できるようにしている.</p>
+<p><cite>devm_kzalloc</cite> : <a class="reference internal" href="../../Library/Kernel/linux/device.h.html"><span class="doc">device.h</span></a></p>
+<p>以下, 本コードの簡易図解</p>
+<img alt="../../../_images/I2C_CodeDescription.jpg" src="../../../_images/I2C_CodeDescription.jpg" />
+<img alt="../../../_images/I2C_CodeDescription2.jpg" src="../../../_images/I2C_CodeDescription2.jpg" />
+</div>
+<div class="section" id="id8">
+<h3>動かしてみる<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>以下のように, ビルド, ロードして, I2C機器を認識させる. すると, <cite>/dev/mydevice0</cite> が作成されている. そして, このデバイスをcatで読むと, <cite>mydevice_read()</cite> 関数が呼ばれて, その中でI2C通信して, ID値を返していることが分かる.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>make
+sudo insmod MyDeviceDriver.ko
+sudo bash -c <span class="s1">&#39;echo MyI2CDevice 0x6b &gt; /sys/bus/i2c/devices/i2c-1/new_device&#39;</span>
+ls /dev/mydevice0
+&gt;&gt; /dev/mydevice0
+cat /dev/mydevice0
+&gt;&gt; <span class="nv">id</span> <span class="o">=</span> 0xD4
+&gt;&gt; <span class="nv">id</span> <span class="o">=</span> 0xD4
+&gt;&gt; ...
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id9">
+<h2>用語解説<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p id="soc"><strong>SoC (System on a Chip)</strong></p>
+<div class="line-block">
+<div class="line">SoCは, チップ上にあらゆるパーツを搭載(内蔵)したプロセッサのことを指す. 「CPU」は一般に <strong>CPU単独でシステムを動かすことができない</strong> . 当然ながら, CPU以外にも映像を担当するグラボ, 記憶域を担当するHDD/SSD, そしてメモリやこれらのパーツを統合するマザーボードなど様々なパーツがまとまってようやくシステムとして動かせるようになっている. そのようなシステムを動かすために必要なパーツを予めまとめてしまったものが「SoC」である.</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="11.add_i2c_device_to_device_tree.html" class="btn btn-neutral float-right" title="11. Add I2C Device to DeviceTree" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="09.call_other_kernel_module.html" class="btn btn-neutral" title="09. call other kernel module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

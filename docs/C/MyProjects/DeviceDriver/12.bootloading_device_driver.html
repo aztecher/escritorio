@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>12. bootloading device driver &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="Device Driver" href="index.html"/>
+        <link rel="next" title="Infrastructure Documents" href="../../../Infrastructure/index.html"/>
+        <link rel="prev" title="11. Add I2C Device to DeviceTree" href="11.add_i2c_device_to_device_tree.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">C MyProjects</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Device Driver</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="01.create_simple_kernel_module.html">01. Create Simple Kernel Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="02.driver_register_static.html">02. Driver Register (Static)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03.driver_register_dynamic.html">03. Driver Register (Dynamic)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="04.read_write_and_memory.html">04. read/write and Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="05.raspi_gpio_device_driver.html">05. Raspi GPIO Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="06.ioctl_implementation.html">06. ioctl Implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="07.interface_for_procfs.html">07. interface for procfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="08.interface_for_debugfs.html">08. interface for debugfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="09.call_other_kernel_module.html">09. call other kernel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="10.i2c_device_driver.html">10.I2C Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="11.add_i2c_device_to_device_tree.html">11. Add I2C Device to DeviceTree</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">12. bootloading device driver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">C MyProjects</a> &raquo;</li>
+      
+          <li><a href="index.html">Device Driver</a> &raquo;</li>
+      
+    <li>12. bootloading device driver</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/C/MyProjects/DeviceDriver/12.bootloading_device_driver.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bootloading-device-driver">
+<h1>12. bootloading device driver<a class="headerlink" href="#bootloading-device-driver" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>参考URL</p>
+<ul class="simple">
+<li><a class="reference external" href="https://qiita.com/take-iwiw/items/b9dd02724e83e36dabc3">組み込みLinuxデバイスドライバの作り方</a></li>
+</ul>
+<p>これまで, デバイスドライバを作ってきたが, 毎回手動で <cite>insmod</cite> してきた. 開発時はこれでもいいが, 実際にプロダクトに組み込むときにはカーネル起動時に自動でロードしてもらえるようにしたい.</p>
+<div class="section" id="id1">
+<h2>起動時に自動的にロードさせる<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id2">
+<h3>デバイスドライバを正式(?)な場所に配置する<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>今まで, 自分の開発用ディレクトリでビルドして, MyDeviceModule.ko ファイルを作ってきた. これをカーネルモジュールの正式な置き場所にコピーする. この場所はカーネルのバージョンによって変わるため, <cite>uname</cite> によって取得する. その後, カーネルモジュールの依存関係情報を更新する必要がある. そのために, <cite>depmod</cite> コマンドを使う.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo cp MyDeviceModule.ko /lib/modules/<span class="k">$(</span>uname -r<span class="k">)</span>/kernel/drivers/.
+sudo depmod -ae
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>起動時にロードするモジュールに登録する<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>先程のコピーと設定に寄って, どこからでも <cite>modprobe MyDeviceModule</cite> で作成したデバイスドライバをロードできるようになった. これを, 起動時に実行させるスクリプト(例えば, rcスクリプト)に記載すればOK. 色々と環境依存はあるが, ラズパイでは <cite>/etc/modules-load.d/modules.conf</cite> にモジュール名を記載すればいい. 実際には, 他のモジュールとの依存関係や, 製品使用上どのくらい早くロードしてほしいか, などを考慮して決めるのだろう.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo bash -c <span class="s1">&#39;echo MyDeviceModule &gt;&gt; /etc/modules-load.d/modules.conf&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>確認する<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>再起動してdmesgでログを見る. 起動時に本デバイスドライバがロードされていることが分かる.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>dmesg
+&gt;&gt; ...
+&gt;&gt; <span class="o">[</span>...<span class="o">]</span> MyDeviceModule: loading out-of-tree module taints kernel.
+&gt;&gt; <span class="o">[</span>...<span class="o">]</span> mydevice_i2c_probe
+&gt;&gt; <span class="o">[</span>...<span class="o">]</span> slave <span class="nv">address</span> <span class="o">=</span> 0x6b
+&gt;&gt; <span class="o">[</span>...<span class="o">]</span> <span class="nv">id</span> <span class="o">=</span> 0xd4
+&gt;&gt; ...
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>デバイスツリー対応デバドラの場合<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>前回作成した, デバイスツリーに対応したデバドラの場合, <cite>/etc/modules-load.d/modules.conf</cite> を編集して明示的にロードしないでもカーネルが自動で MyDeviceModule.ko をロードしてくれる. これはデバイスツリーに登録されたデバイスに対応するデバイスドライバを, カーネルが自動的に探してロードしてくれるためだろう.</p>
+</div>
+<div class="section" id="id6">
+<h2>最後に<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ここで終わりになるが, 色々と抜けている部分がある. 例えば変数アクセス刷るときの排他制御, アドレス変換前に, そのアドレスにアクセスできるかどうかの確認など, コードや説明の簡略化のために省略している. 実際はこれらのことも考える必要があるだろう.</p>
+<p>また, 今回の話はLinuxデバイスドライバのほんの一部の話であり, 実装方法やルールは日々変わっている. 最新情報を正しく理解するために, やはりLinuxのソースココードやドキュメントを読む必要があるだろう. このテキストが次の一歩を踏み出すための足がかりになれば.</p>
+<p>.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../../Infrastructure/index.html" class="btn btn-neutral float-right" title="Infrastructure Documents" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="11.add_i2c_device_to_device_tree.html" class="btn btn-neutral" title="11. Add I2C Device to DeviceTree" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

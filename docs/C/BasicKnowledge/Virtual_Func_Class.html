@@ -1,0 +1,644 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Virtual (Function/Class) &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../index.html"/>
+        <link rel="up" title="BasicKnowledge" href="index.html"/>
+        <link rel="next" title="GDB" href="../GDB/index.html"/>
+        <link rel="prev" title="Const and Pointer" href="ConstPointer.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">BasicKnowledge</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Build.html">Build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PreProcessor.html">PreProcessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VisualStudio/index.html">VisualStudio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MemoryAllocation.html">Dynamic Memory Allocation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Inline.html">inline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Static.html">static</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Extern.html">extern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ConstPointer.html">Const and Pointer</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Virtual (Function/Class)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">継承とポインタ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">仮想関数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">仮想クラス</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Library/index.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MyProjects/index.html">C MyProjects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="index.html">BasicKnowledge</a> &raquo;</li>
+      
+    <li>Virtual (Function/Class)</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/C/BasicKnowledge/Virtual_Func_Class.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="virtual-function-class">
+<h1>Virtual (Function/Class)<a class="headerlink" href="#virtual-function-class" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>ここでは主に, <code class="docutils literal"><span class="pre">仮想関数</span></code> と <code class="docutils literal"><span class="pre">仮想基本クラス</span></code> に関して記述していく. もっと単順には, <code class="docutils literal"><span class="pre">virtual</span></code> の動作について説明する.</p>
+<p>その前段階兼復習として, <code class="docutils literal"><span class="pre">継承とポインタ</span></code> に関しても少し議論しておく. この議論は特に, <code class="docutils literal"><span class="pre">仮想関数</span></code> で例示するコードサンプルを読むときに必要になるだろう.</p>
+<div class="section" id="id1">
+<h2>継承とポインタ<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id2">
+<h3>派生クラスのポインタ<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>C++ では, クラス型の変数のポインタを生成することができる.</p>
+<p>さらに, なんとクラス型のポインタ変数には 「派生クラスのアドレスを代入」できる. これは, オブジェクト指向未経験の方であればかなり斬新なものだろう.</p>
+<p>派生クラスは, 基本クラスの情報を保有している. つまり, 基本クラス型に互換性があるため, ポインターに代入できる.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">derived</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">derived</span><span class="p">.</span><span class="n">str</span> <span class="o">=</span> <span class="s">&quot;Kitty on your lap&quot;</span><span class="p">;</span>
+
+  <span class="c1">// 派生クラスのインスタンスのアドレスを基本クラスのポインタ変数に代入</span>
+  <span class="c1">// 派生クラスDerivedは, Baseクラスのメンバーを持っているためこれは有効</span>
+  <span class="c1">// 基本クラスのポインタは, 派生クラスのオブジェクトを指すことが可能.</span>
+  <span class="n">Base</span> <span class="o">*</span><span class="n">poly</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">derived</span><span class="p">;</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">poly</span><span class="o">-&gt;</span><span class="n">str</span><span class="p">;</span> <span class="c1">// ポインタで参照</span>
+
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>上記でも書いたが, 派生クラスは基本クラスのメンバーを持っているため, 基本クラスのポインターでそれを指すことができた. しかし, 基本クラスのポインタは基本クラスの情報しか持たない. そのため, 基本クラスのポインタで派生クラスのオブジェクトを指していても, 派生クラスのメンバーを呼び出すことはできない. つまり, 以下のようなコードはコンパイルエラーとなる.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">derived</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">derived</span><span class="p">.</span><span class="n">str</span> <span class="o">=</span> <span class="s">&quot;Kitty on your lap&quot;</span><span class="p">;</span>
+  <span class="n">derived</span><span class="p">.</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+  <span class="n">Derived</span> <span class="o">*</span><span class="n">d</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">derived</span><span class="p">;</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">str</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+  <span class="n">Base</span> <span class="o">*</span><span class="n">b</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">derived</span><span class="p">;</span> <span class="c1">// OK</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">str</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="c1">// OK</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="c1">// ERROR: no membaer named &#39;i&#39; in &#39;Base&#39;</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>ポインタで上記のようなことができたのだから, 参照でも可能とかんがえるのは妥当だろう. 参照も, 派生クラスのオブジェクト型を受け取ることができる.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">derive</span><span class="p">;</span>
+
+<span class="c1">// Base型のオブジェクトの参照を受け取る.</span>
+<span class="c1">// ポインタ同様に, 派生クラスの参照を渡すことができる.</span>
+<span class="kt">void</span> <span class="nf">getRef</span><span class="p">(</span><span class="n">Base</span> <span class="o">&amp;</span><span class="n">d</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">d</span><span class="p">.</span><span class="n">str</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">derive</span><span class="p">.</span><span class="n">str</span> <span class="o">=</span> <span class="s">&quot;Kitty on your lap&quot;</span><span class="p">;</span>
+  <span class="c1">// Base型のオブジェクトの参照を受け取る関数に対し,</span>
+  <span class="c1">// Derived型のオブジェクトの参照を渡している.</span>
+  <span class="n">getRef</span><span class="p">(</span><span class="n">derive</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>上記の機能は, 同名のメンバ名を持つクラス間で面白い現象を生じる. メンバ名が基本クラスと派生クラスで衝突している時, クラスを明示しなかった場合は, 常に自分のクラスのメンバを郵政んした.</p>
+<p>しかし, ポインタが指すオブジェクトは基本クラスの情報しかない. そのため  基本クラスのメンバを呼び出すという現象が生じる.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">paint</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Kitty on your lap</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">print</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Di Gi Gharat</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span> <span class="n">derived</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="n">Base</span> <span class="o">*</span><span class="n">b</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">derived</span><span class="p">;</span>
+  <span class="n">derived</span><span class="p">.</span><span class="n">paint</span><span class="p">();</span>
+  <span class="n">b</span><span class="o">-&gt;</span><span class="n">paint</span><span class="p">();</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>これをより発展させると, 動的なポリモーフィズムが実現できる. このことを理解した上で次のセクションからは, 高度なポリモーフィズムの関数のオーバーライドについて説明していく.</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>仮想関数<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>基本クラスにおける仮想関数について取り上げ, 派生クラスによる関数オーバーライドと <code class="docutils literal"><span class="pre">virtual</span></code> に関して説明する.</p>
+<div class="section" id="id4">
+<h3>関数のオーバーライド<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>一般に基本クラスは汎用的な情報しか含まないため, 基本クラスの機能を拡張していく形で派生クラスを構築していく. このとき, 基本クラスのメンバー関数を <cite>再定義</cite> することができる. このような関数を <code class="docutils literal"><span class="pre">仮想関数</span></code> という. 仮想関数は <cite>基本クラスで再定義可能であるということを明示する必要がある</cite>. そのときに, <code class="docutils literal"><span class="pre">virtual</span></code> 宣言を行ない, これは基本クラスのみに記述すればよい(派生クラスでの再定義時には必要がない). 仮想関数の呼び出しは, 通常のメンバー関数と変わりなく行う.</p>
+</div>
+<div class="section" id="id5">
+<h3>ポリモーフィズム<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>この仮想関数を利用することで, ポインタが仮想関数を呼び出した場合に, <cite>オブジェクトの型によって呼び出す関数が決定する</cite> ことになり, いわゆる動的なポリモーフィズムを表現することができる. 例を以下に示す.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="c1">// 基本クラス</span>
+<span class="k">class</span> <span class="nc">Kitty</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="c1">// 仮想関数 (これをオーバーライドする)</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">paint</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Kitty on your lap</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span> <span class="n">kitty</span><span class="p">;</span>
+
+<span class="c1">// 派生クラス</span>
+<span class="k">class</span> <span class="nc">Chobits</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Kitty</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="c1">// 基本クラスの仮想関数を再定義</span>
+    <span class="kt">void</span> <span class="n">paint</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Chobits</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span> <span class="n">chobits</span><span class="p">;</span>
+
+<span class="c1">// 派生クラス</span>
+<span class="k">class</span> <span class="nc">Di_Gi_Gharat</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Chobits</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="c1">// 基本クラスの仮想関数を再定義</span>
+    <span class="kt">void</span> <span class="n">paint</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Di Gi Gharat</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span> <span class="n">di_gi_gharat</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// TODO</span>
+  <span class="n">Kitty</span> <span class="o">*</span><span class="n">ki</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">kitty</span><span class="p">;</span>
+  <span class="n">Kitty</span> <span class="o">*</span><span class="n">cho</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">chobits</span><span class="p">;</span>
+  <span class="n">Kitty</span> <span class="o">*</span><span class="n">digi</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">di_gi_gharat</span><span class="p">;</span>
+
+  <span class="c1">// polymorphism</span>
+  <span class="c1">// ポインタから呼び出された時, オブジェクトの型に合わせて呼び出す.</span>
+  <span class="c1">// この判断は, 「コンパイル時ではなく実行時にしている」</span>
+  <span class="n">ki</span><span class="o">-&gt;</span><span class="n">paint</span><span class="p">();</span>
+  <span class="n">cho</span><span class="o">-&gt;</span><span class="n">paint</span><span class="p">();</span>
+  <span class="n">digi</span><span class="o">-&gt;</span><span class="n">paint</span><span class="p">();</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>上記の例を少し拡張したものを以下に示す. 実行されるメンバー関数(仮想関数とそのオーバーライド関数)が動的に決定される(実行時に決定される)ことをより直接的に表現したプログラムである. ユーザー入力を受け取り, その結果によって呼び出す関数が変化している事がわかる.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Chobits</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">paint</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Chobits</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span> <span class="n">chobits</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Di_Gi_Gharat</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Chobits</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">paint</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Di Gi Gharat</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span> <span class="n">di_gi_gharat</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Chobits</span> <span class="o">*</span><span class="n">poly</span><span class="p">;</span>
+  <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">ch</span><span class="p">;</span>
+
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;ちぃ? y/n &gt;&quot;</span><span class="p">;</span>
+  <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">ch</span><span class="p">;</span>
+
+  <span class="c1">// ユーザー入力によって, どちらのクラスのポインタか変更する</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">ch</span> <span class="o">==</span> <span class="sc">&#39;y&#39;</span><span class="p">)</span> <span class="n">poly</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">chobits</span><span class="p">;</span>
+  <span class="k">else</span> <span class="n">poly</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">di_gi_gharat</span><span class="p">;</span>
+
+  <span class="n">poly</span><span class="o">-&gt;</span><span class="n">paint</span><span class="p">();</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>仮想関数を再定義しない場合の例. 仮想関数は必要がなければ再定義しなくてももちろんいい. その場合, 再定義していないオブジェクト型は最後に再定義したクラスのメンバ関数を参照する. これまで継承したクラスの中で, 再定義しているクラスがなければ, virtualを宣言した基本クラスの最初の仮想メンバー関数を参照する.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Kitty</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">paint</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Kitty on your lap</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 派生クラス. 関数のオーバーライドをしている</span>
+<span class="k">class</span> <span class="nc">Chobits</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Kitty</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="c1">// この関数が, Di_Gi_Gharat の関数を呼び出す</span>
+    <span class="kt">void</span> <span class="n">paint</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Chobits</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span> <span class="n">chobits</span><span class="p">;</span>
+
+<span class="c1">// 派生クラスだが, 関数のオーバーライドをしていない</span>
+<span class="k">class</span> <span class="nc">Di_Gi_Gharat</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Chobits</span> <span class="p">{</span>
+<span class="p">}</span> <span class="n">di_gi_gharat</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Kitty</span> <span class="o">*</span><span class="n">poly</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">di_gi_gharat</span><span class="p">;</span>
+
+  <span class="n">poly</span><span class="o">-&gt;</span><span class="n">paint</span><span class="p">();</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>最後に, 少しネイティブな動作について説明する. 通常の関数やフレンド関数, メンバ関数などはコンパイル時にアドレスが判明する. これらは, コンパイル時点でそれぞれの関数を呼ぶアドレス情報が確定されるため, 関数の呼び出しにかかるオーバーヘッドが少なく, 非常に効率がいい. このように, コンパイル時点で確定している情報を「コンパイル時バインディング」と呼ぶ.</p>
+<p>コンパイル時バインディングは, 高速に動作するが柔軟性に欠ける. 似たような動作でも, 異なるイベントとしてソースコードを記述しなければいけない.</p>
+<p>これに対して, オーバーライドのようなオブジェクト指向における実行時に決定される情報を「実行寺バインディング」と呼ぶ. オーバーヘッドは大きくなるが, 非常に高い柔軟性がある.</p>
+<p>仮想関数は実行時バインディングになる. どのオブジェクト型を実行するかは, 実行するまでわからないからである. これは非常に柔軟なプログラムを書くことができる反面, オーバーヘッドが大きいことを忘れないように.</p>
+</div>
+<div class="section" id="id6">
+<h3>仮想関数とデストラクタ<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>仮想関数が唯一思うように動いてくれない場合がある. これを知らないと, 設計時に思いがけない障害に突き当たることになる.</p>
+<p>デストラクタは, 派生クラスから基本クラスに向かって順にコールされる. すなわち, 派生クラスから順にデータを開放していかないといけない. もしデストラクタが, 仮想関数を呼び出した場合, 派生クラスの情報はすでに崩壊している可能性がある.</p>
+<p>そのため, C++のデストラクタはオーバーライドを行わない. デストラクタで仮想関数を呼び出しても, 実態関数にアクセスせずにデストラクタが発生しているクラスの仮想関数を呼び出す. これは, 参照回数などを管理する特殊な構造を設計するときに注意する必要がある.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Test1</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="c1">// 仮想関数</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">func</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Kitty on your lap</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">}</span>
+    <span class="o">~</span><span class="n">Test1</span> <span class="p">()</span> <span class="p">{</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">func</span><span class="p">();</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// Test1クラスを継承するTest2クラス</span>
+<span class="c1">// インスタンスtest2が破壊されると, 最終的に</span>
+<span class="c1">// ~Test1() が呼び出され, この時, 仮想関数 func() が呼び出されている.</span>
+<span class="c1">//</span>
+<span class="c1">// Test2クラスのインスタンスが~Test1() を呼び出しているため</span>
+<span class="c1">// (Test1に関してはインスタンスの作成が行われていないからそうなるよね)</span>
+<span class="c1">// 一見すると, Test2::func() が呼び出されることを期待するが,</span>
+<span class="c1">// そうはならず, Test1::func() が呼び出されている.</span>
+<span class="k">class</span> <span class="nc">Test2</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Test1</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">func</span><span class="p">()</span> <span class="p">{</span>
+      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Tokyo mew mew</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+      <span class="n">Test1</span><span class="o">::</span><span class="n">func</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="n">test2</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id7">
+<h2>仮想クラス<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>仮想クラスについて取り上げ, その継承時の問題点と, その解決策としての <code class="docutils literal"><span class="pre">virtual</span></code> に関して説明する.</p>
+<div class="section" id="id8">
+<h3>クラスの継承と問題点<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>C++の継承は非常に柔軟だが, 継承が複雑になるに連れ, 同じクラスを二度継承するという自体が発生してしまうという問題が生じる.</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>基本クラス -------&gt; 派生クラス1 --------&gt; 派生クラス3
+             |                             ^
+             |                             |
+             \----&gt; 派生クラス2 -----------/
+</pre></div>
+</div>
+<p>上の図を見て分かる通り, 派生クラス3は基本クラスを2度継承していしまっている. これは派生クラス1, 2がどちらも基本クラスを継承していることに起因する.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived1</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived2</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">sex</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Derive1, 2の基本クラスが同一なので,</span>
+<span class="c1">// Baseを2解継承することになり, コンパイルエラーとなる.</span>
+<span class="k">class</span> <span class="nc">Derived3</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Derived1</span><span class="p">,</span> <span class="k">public</span> <span class="n">Derived2</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">print</span><span class="p">()</span> <span class="p">{</span>
+      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;名前: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">name</span><span class="p">;</span>
+      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">年齢: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">age</span><span class="p">;</span>
+      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">性別: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sex</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span> <span class="n">derive</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">derive</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Mikiyaf&quot;</span><span class="p">;</span> <span class="c1">// 非常に曖昧</span>
+  <span class="n">derive</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="mi">24</span><span class="p">;</span>
+  <span class="n">derive</span><span class="p">.</span><span class="n">sex</span> <span class="o">=</span> <span class="s">&quot;男&quot;</span><span class="p">;</span>
+  <span class="n">derive</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>上記のような問題を解決する方法として <code class="docutils literal"><span class="pre">仮想基本クラス</span></code> がある. Baseクラスを仮想基本クラスと宣言すると, 派生クラスで2度継承する自体を避けることができる. これを宣言する際に, <code class="docutils literal"><span class="pre">virtual</span></code> キーワードを利用する.</p>
+<p><code class="docutils literal"><span class="pre">virtual</span></code> とアクセス指定子(public, private, protected)の順番は任意.
+(おそらく, virtualが頭につくことが多い)</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived1</span> <span class="o">:</span> <span class="k">virtual</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived2</span> <span class="o">:</span> <span class="k">virtual</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">sex</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived3</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Derived1</span><span class="p">,</span> <span class="k">public</span> <span class="n">Derived2</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">print</span><span class="p">()</span> <span class="p">{</span>
+      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;名前: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">name</span><span class="p">;</span>
+      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">年齢: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">age</span><span class="p">;</span>
+      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">性別: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sex</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="n">derive</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">derive</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Mikiyaf&quot;</span><span class="p">;</span>
+  <span class="n">derive</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="mi">24</span><span class="p">;</span>
+  <span class="n">derive</span><span class="p">.</span><span class="n">sex</span> <span class="o">=</span> <span class="s">&quot;男&quot;</span><span class="p">;</span>
+  <span class="n">derive</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Derived3 が継承した基本クラスは, 仮想基本クラスとして Base を継承する. そのため, Derived3 オブジェクトは, Baseのコピーを一つしか持たない. こうすることで, 並列的多重継承を保証することができる.</p>
+<p>virtual キーワードは, 仮想基本クラスを持つ <code class="docutils literal"><span class="pre">派生クラスからしか意味を持たない</span></code> つまり, 上のプログラムのDerived1, Derived2からは継承した, Baseクラスは通常の基本クラスとして機能する.</p>
+</div>
+<div class="section" id="id9">
+<h3>基本仮想クラスのアクセス制御<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>仮想基本クラスを持つ, 二つの基本クラスがそれぞれ別のアクセス指定子で継承している場合, 派生クラスからアクセス制御は, 最もオープンなアクセス制御を取る.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived1</span> <span class="o">:</span> <span class="k">virtual</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">age</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Derived2</span> <span class="o">:</span> <span class="k">virtual</span> <span class="k">private</span> <span class="n">Base</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">sex</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// そもそも, Derive3が継承時にpublicで継承していないと,</span>
+<span class="c1">// printで各変数名でアクセスすることはできない.</span>
+<span class="k">class</span> <span class="nc">Derived3</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Derived1</span><span class="p">,</span> <span class="k">public</span> <span class="n">Derived2</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">print</span><span class="p">()</span> <span class="p">{</span>
+      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;名前; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">name</span><span class="p">;</span> <span class="c1">// ここのアクセスは, publicになる</span>
+      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">年齢: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">age</span><span class="p">;</span>
+      <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">性別: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">sex</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="n">derive</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">derive</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Mikiyaf&quot;</span><span class="p">;</span>
+  <span class="n">derive</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="mi">24</span><span class="p">;</span>
+  <span class="n">derive</span><span class="p">.</span><span class="n">sex</span> <span class="o">=</span> <span class="s">&quot;male&quot;</span><span class="p">;</span>
+  <span class="n">derive</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../GDB/index.html" class="btn btn-neutral float-right" title="GDB" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ConstPointer.html" class="btn btn-neutral" title="Const and Pointer" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

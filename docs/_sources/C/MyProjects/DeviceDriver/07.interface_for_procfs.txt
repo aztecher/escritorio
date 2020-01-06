@@ -1,0 +1,186 @@
+=================================
+07. interface for procfs
+=================================
+
+.. warning::
+
+    詳しくは後述するが, 今回の内容はいまでは非推奨になっているらしいのでそのつもりで見ていく.
+
+前回までで, 基本的なシステムコール(open, close, read, write)に加えて, ioctlの実装を行った. これで, デバドラとして最低限必要なインターフェイスはほぼ網羅できた (select/poll に関してはスキップ)
+
+実際に, デバイス(例えば, センサやアクチュエータ)を制御する開発をしていると, デバッグ用にパラメータを変えたり, パラメータを取得したりしたいことがある. このようなことが, シェルからできると非常に便利である. これは, procファイルシステム(procfs)のファイルに対して read/write することで実現できる(`注意`_) 例えば, 以下のようなファイルを作るとする.
+
+* /proc/mydevice_sensor0
+* /proc/mydevice_motor0
+
+`/proc/mydevice_sensor0` の値を読むことでセンサーの値を確認できたり(例えば `cat`), `/proc/mydevice_motor0` に値を書き込むことでモータを制御できる (例えば `echo`). 基本的には, 今まで作ってきたデバドラの read/write と同じだが, 今まではデバイスファイル (`/dev/mydevice`)に対しての read/write だった. 今回は, `procfs` のファイルに対して行う. これはいくらでも作ることが可能. そのため, デバイスが一つでも, 確認したいパラメータがいくつもあるときに便利.
+
+NOTE: procfs
+---------------
+
+.. _注意:
+
+procfsはあくまでもプロセスの情報を配置するのに使用して, 上述したようなデバッグ用途には `debugfs` を使用することが推奨されているようである. `debugfs` については次回記載する. デバイス用には使うべきではないが, `procfs` の作り方としては有効なため, このまま記す.
+
+参考URL
+
+* 組み込みLinuxデバイスドライバの作り方_
+
+
+procfs用インターフェースの実装
+=================================
+
+procfs用インターフェースを作るには, ドライバがロード(insmod)される所で, `proc_create` という関数によって, ファイル名と read/write 時に呼んでほしい関数を登録するだけである. 登録するときには, `struct file_operations` テーブルに read/write ハンドラ関数を設定する. 実はこれは, 使用する関数が違うだけで, 通常のデバドラのハンドラ登録と全く同じ手順である. 取り除くためには, `remove_proc_entry` 関数を使用する.
+
+これまで書いてきたデバドラとほぼ同じだが, procfs用の登録という意味では違うので, 一応コードを以下に記述しておく.
+
+
+.. code-block:: c
+    #include <linux/module.h>
+    #include <linux/fs.h>
+    #include <linux/proc_fs.h>
+    #include <linux/uaccess.h>
+
+    // Device Information
+    MODULE_LICENSE("Dual BSD/GPL");
+    #define DRIVER_NAME "MyDevice" // /proc/device 等で表示されるデバイス名
+    #define PROC_NAME "MyDevice_name" // /procに作るprocfsの名前
+
+    // procfsテスト用変数
+    static char proc_test_string[16];
+    static int flag_read = 0;
+
+    // /proc/MyDevice_test にアクセスしたときに呼ばれる関数
+    static int mydevice_proc_open(struct inode *inode, struct file *file)
+    {
+      printk ("mydevice_proc_open\n");
+      flag_read = 0;
+      return 0;
+    }
+
+    // /proc/MyDevice_test のread時に呼ばれる関数
+    static ssize_t mydevice_proc_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
+    {
+      printk ("mydevice_proc_read\n");
+
+      if (flag_read == 0){
+        int len;
+        len = sprintf(buf, "%s\n", proc_test_string);
+        flag_read = 1;
+        return len;
+      } else {
+        return 0;
+      }
+    }
+
+    // /proc/MyDevice_test のwrite時に呼ばれる関数
+    static ssize_t mydevice_proc_write(struct file *filp, const char __user *buf, size_t count, loff_t *f_pos)
+    {
+      printk ("mydevice_proc_write\n");
+
+      if (count > sizeof(proc_test_string)) count = sizeof(proc_test_string) - 1;
+      if (copy_from_user(proc_test_string, buf, count)) {
+        return -EFAULT;
+      }
+      proc_test_string[count] = '\0';
+      return count;
+    }
+
+    // procfs用のハンドラテーブル
+    static struct file_operations mydevice_proc_fops = {
+      .owner = THIS_MODULE,
+      .open = mydevice_proc_open,
+      .read = mydevice_proc_read,
+      .write = mydevice_proc_write,
+    };
+
+    // ロード(insmod)時に呼ばれる関数
+    static int mydevice_init(void)
+    {
+      printk ("mydevice_init\n");
+
+      struct proc_dir_entry *entry;
+
+      // procfsを作成する
+      entry = proc_create(PROC_NAME, S_IRUGO | S_IWUGO, NULL, &mydevice_proc_fops);
+      if (entry == NULL) {
+        printk(KERN_ERR "proc_create\n");
+        return -ENOMEM;
+      }
+
+      return 0;
+    }
+
+    // アンロード(rmmod)時に呼ばれる関数
+    static void mydevice_exit(void)
+    {
+      printk ("mydevice_exit\n");
+
+      // procfsを取り除く.
+      remove_proc_entry(PROC_NAME, NULL);
+    }
+
+    module_init(mydevice_init);
+    module_exit(mydevice_exit);
+
+`/proc/MyDevice_test` というファイルをつくることにする. このファイルをreadした時の処理(`mydevice_proc_read`), writeした時の処理(`mydevice_proc_write`), openした時の処理(`mydevice_proc_open`)を実装する. open時の処理は, シェルから読み書きするたびに必ず呼ばれる. (実際, closeは省略しているため, なくても大丈夫だと思う)
+
+`mydevice_proc_write` では, ユーザが設定した文字列を内部のstatic変数(`proc_test_string`)に保持している. `mydevice_proc_read` で保持した内容を返す. 1回の読み出し(`cat`)につき, 1回だけ呼んでほしいので, フラグ管理してopen時にクリアする. (これはもっといい方法がある)
+
+モジュールのロード時に, `proc_create` 関数で, `/proc/MyDevice_test` ファイルを作る. `S_IRUGO | S_IWUGO` は `0666` と同じで, 全ユーザにRWアクセス権を付与する. これを格納する構造体として, `proc_dir_entry` が定義されている. モジュールのアンロード時には, `remove_proc_entry` を呼び出す.
+
+* `proc_dir_entry`, `proc_create`, `remove_proc_entry` : :doc:`./../../Library/Kernel/linux/proc_fs.h`
+
+procfs経由でパラメータを読み書きしてみる
+============================================
+
+下記コマンドでビルド, ロードする.
+
+.. code-block:: sh
+
+    make
+    sudo insmod MyDeviceModule.ko
+    ls /proc/MyDevice_test
+    >> /proc/MyDevice_test
+
+    echo "abc" > /proc/MyDevice_test
+    cat /proc/MyDevice_test
+    >> abc
+
+ロード後, `/proc/MyDevice_test` が作られている. これに対して, echoで値を書き込む. その後, catで読み込むと, 先程書いた値が出力されている.
+
+
+NOTE: sysfs
+=============
+
+`注意`_ でも指摘しているが, procfsでは, 本来はプロセスに関する情報をやり取りする. 次回の記事で記載するが, debugfs ではデバッグ用の情報をやり取りしている.
+
+これらとは別に, モジュールとパラメータをやり取りする仕組みがある. モジュールの情報やパラメータを, `/sys` ディレクトリ以下にできる, sysfs として確認することができる. これは, procfs とおなじに見えるが, procfs は古い方法で, 上述したとおりデバドラ開発者が自由に追加できるものであるため, 無秩序状態になってしまう. sysfs は正しいお作法に則って登録する必要がある. そして, 各ファイルはディレクトリごとに整理され管理される.
+
+色々な方法があるが, 単にパラメータを見せるだけなら, `module_param()` というヘルパーマクロで実現できる. これによって, モジュールロード時にパラメータを設定したり, パラメータ(変数)の値を読むことができる. ただし, カーネルロード後に, パラメータを変えることはできないようだ.
+
+実際に使ってみる. 変数の宣言と, `module_param()` の読み出しの2文だけでOK. `param1` という変数をパラメータとして使う例を下記に示す.
+
+.. code-block:: c
+
+    static int param1 = 10;
+    module_param(param1, int, S_IRUGO);
+
+`/sys/module/MyDeviceModule/parameters/param1` を読むことで, `param1` の値を確認できる. また, insmod時に値を指定することができる.
+
+.. code-block:: sh
+
+    sudo insmod MyDeviceModule.ko
+    cat /sys/module/MyDeviceModule/parameters/param1
+    >> 10
+
+    sudo rmmod MyDeviceModule
+    sudo insmod MyDeviceModule.ko param1 = 20
+    cat /sys/module/MyDeviceModule/parameters/param1
+    >> 20
+
+.. ==============================
+.. リンク
+.. ==============================
+
+.. _組み込みLinuxデバイスドライバの作り方: https://qiita.com/take-iwiw/items/548444999d2dfdc06f46

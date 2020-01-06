@@ -1,0 +1,294 @@
+=================================
+09. call other kernel module
+=================================
+
+参考URL
+
+* 組み込みLinuxデバイスドライバの作り方_
+
+以前ラズパイ用のGPIOデバイスドライバを実装した. その時には, レジスタで直接叩くことで制御を行った. レジスタ番地や設定値はBCM2835のデータシートを見ながら設定した. これらは「チップ依存」の情報である. センサーやモーターといった外付けのデバイスを制御するデバイスドライバを作るときに, いちいちチップのデータシートなどは見たくないものである. GPIO制御用の関数があるので, それを使ってみる.
+
+これと関連して, まずは他のカーネルモジュールで定義された関数を呼んでみる, ということを行ってみる.
+
+
+他のカーネルモジュールで定義された関数を呼ぶ
+================================================
+
+以前述べたように, カーネルは全体で1つのメモリ空間を共有する. これにはカーネルモジュールも含まれる. そのため, 自分が実装しているカーネルモジュールから, 他のカーネルモジュールの関数を呼んだり, カーネルそのものに静的に組み込まれている関数を呼ぶことができる.
+
+関数を提供するカーネルモジュールAを作る
+-----------------------------------------
+
+(以下, コードは参考までに全て記述する)
+
+他のモジュールからも呼べるような関数を作るには, 関数を定義した後に, `EXPORT_SYMBOL` でエクスポートしてあげるだけ. `EXPORT_SYMBOL` によって, その関数がカーネルのシンボルテーブルに登録されて, 他のカーネルモジュールから呼べるようになる.
+
+ロード(insmod)とアンロード(rmmod)用のエントリ関数と, 関数(`mydevicea_func()`)だけを定義したモジュールを作る. これを, MyDeviceDriverAとする. 本来は関数宣言をヘッダに記載すべきだが, 面倒なので省略する.
+
+`make` して, MyDeviceDriverA.ko を作っておく.
+
+.. code-block:: c
+
+
+    /*
+     * 他のモジュールから呼べるような関数
+     *
+     * Date :  2018.08.24
+     * @author Mikiya Michishita
+     */
+    #include <linux/module.h>
+
+    // Device Information
+    MODULE_LICENSE("Dual BSD/GPL");
+    #define DRIVER_NAME "MyDeviceA"
+
+    // 他のカーネルモジュールから呼べるようにする関数
+    void mydevicea_func(void)
+    {
+      printk("This is a message in mydevicea_func\n");
+    }
+    // カーネルのシンボルテーブルに登録する
+    EXPORT_SYMBOL(mydevicea_func);
+
+    // ロード(insmod)時に呼ばれる関数
+    static int mydevicea_init(void)
+    {
+      printk("[A]: mydevice_init\n");
+      mydevicea_func();
+
+      return 0;
+    }
+
+    // アンロード(rmmod)時に呼ばれる関数
+    static void mydevicea_exit(void)
+    {
+      printk("[A]: mydevice_exit\n");
+    }
+
+    module_init(mydevicea_init);
+    module_exit(mydevicea_exit);
+
+提供された関数を呼ぶカーネルモジュールBを作る
+-------------------------------------------------
+
+先程用意した関数を呼ぶカーネルモジュールBを作成する. 通常のC言語と同じように呼べる. 今回は関数宣言ヘッダを省略したので, externで呼び出し側で宣言している. あまりお行儀はよくない. このモジュールBをロード(insmod)するタイミングで, 先程の関数(`mydevicea_func()`)を呼んでみる.
+
+`make` して, MyDeviceDriverB.koを作っておく. `mydevicea_func()` の実体はここにはないが, カーネルモジュールを作るときには問題ない. カーネルモジュール用のmakeでは, コンパイルしてオブジェクトファイルを作るだけで, リンクを行わないためである.
+
+.. code-block:: c
+
+    /*
+     * 別モジュールの関数を呼び出すカーネルモジュール
+     *
+     * Date :  2018.08.24
+     * @author Mikiya Michishita
+     */
+
+    #include <linux/module.h>
+
+    // Device Information
+    MODULE_LICENSE("Dual BSD/GPL");
+    #define DRIVER_NAME "MyDeviceB"
+
+    // ロード時(insmod)時に呼ばれる関数
+    static int mydeviceb_init(void)
+    {
+      printk("[B]: mydevice_init\n");
+
+      // ヘッダーを使わない, お行儀の悪い書き方
+      extern void mydevicea_func(void);
+      mydevicea_func();
+
+      return 0;
+    }
+
+    // アンロード時(rmmod)時に呼ばれる関数
+    static void mydeviceb_exit(void)
+    {
+      printk("[B]: mydevice_exit\n");
+    }
+
+    module_init(mydeviceb_init);
+    module_exit(mydeviceb_exit);
+
+実行
+-----
+
+下記コマンドで実行してみる.
+
+.. code-block:: sh
+
+    sudo insmod MyDeviceModuleA.ko
+    dmesg
+    >> ... [A]: mydevice_init
+    >> ... This is a message in mydevicea_func
+
+ロード後, dmesgでログを見ると, モジュールAのinit処理と, init内で関数を呼んだことが分かる. これは特に問題ない.
+
+続いて, MyDeviceDriverB.koをロードする
+
+.. code-block:: sh
+
+    sudo insmod MyDeviceModuleB.ko
+    dmesg
+    >> ... [B]: mydeviceb_init
+    >> ... This is a message in mydevicea_func
+
+モジュールBからモジュールA内で定義した関数を呼べていることが分かる.
+
+依存関係
+---------
+
+モジュールBがモジュールAを使用しているという依存関係になる. そのため, モジュールBをロードする前にモジュールAをロードしておく必要がある. そうでないと, モジュールBのロード時にエラーが発生する. 同様に, モジュールAをアンロード刷る前にモジュールBをアンロードしておく必要がある. 先にモジュールAのアンロードをしようとするとエラーが発生する.
+
+必要な内容をちゃんと実装して, 作成したカーネルモジュール(.ko)を適切な場所に配置すれば, `insmod` の代わりに `modprobe` を使うことで自動的に依存関係のあるモジュールをロードしてくれるらしい.
+
+
+GPIO制御関数を使用するカーネルモジュール
+===========================================
+
+チップ依存のGPIO制御関数
+---------------------------
+
+冒頭で述べたように, 外部デバイスやオンボードデバイスのデバドラを作る限り, チップのデータをみてレジスタ設定をするといったことは行わないと思う. (融資でチップ依存のデバイスの開発をする場合は必要になるかもだが...)
+
+デバドラからGPIOを制御するときには, そういった方々が作成してくれた関数を呼ぶ. この時, みんなバラバラなフォーマットで実装してるのではなく, `linux/gpio.h` にあるようなインターフェースになるよう実装してくれている. そのため, ユーザ(デバドラ開発者)は, `linux/gpio.h` にある関数を使ってGPIO制御ができる. ここにある関数を使用していれば, 別のチップ状でも同じコードを使用することができる(ものによってはわからんが代替できるはず)
+
+どのチップ用のGPIO制御処理を行うかは, カーネルビルド時の設定できまる. ラズパイの場合, bcm2835用の処理を使うようになっているはずである. BCM2835用のGPIO処理は, `pinctl-bcm2835.c` にあった. 深く追えていないが, `linux/gpio.h` にある関数を呼ぶと, 最終的に `pinctl-bcm2835.c` の各処理にたどり着くのだろう.
+
+**とにかく, `linux/gpio.h` にある関数を使ってGPIO制御を行えばいい**
+
+GPIO制御関数
+-------------
+
+基本的なGPIO制御をするのに必要な関数を以下に示す
+
+* `int gpio_direction_output(unsigned gpio, int value)`
+    * GPIOを出力に設定する. gpioはピン番号. valueは初期出力値(0=low, 1=high)
+
+* `int gpio_direction_input(unsigned gpio)`
+    * GPIOを入力に設定する. gpioはピン番号.
+
+* `void gpio_set_value(unsigned gpio, int value)`
+    * GPIOに出力する. gpioはピン番号. valueは出力値(0=low, 1=high)
+
+* `int request_irq(unsigned int irq, irq_handler_t handler, unsigned long flags, const char *name, void *dev)`
+    * 割り込みハンドラの登録をする. これはGPIOに限った関数ではない.
+
+詳細は :doc:`./../../Library/Kernel/linux/gpio.h`, :doc:`./../../Library/Kernel/linux/interrupt.h`
+
+GPIO制御関数を使用するカーネルモジュールを作る
+------------------------------------------------
+
+read/writeとかを実装するのが面倒なので, 以下のようなシンプルな仕様のデバドラ(カーネルモジュール)を作成する. 前提として, ラズパイのGPIO4にLEDを, GPIO17にボタンを接続しているとする. LEDは抵抗経由で3.3Vに接続. ボタンはGNDに接続し, GPIO17側はプルアップする.
+
+作成するカーネルモジュールの仕様は以下
+
+* モジュールのロード(insmod)時に,
+    * GPIO4(LED)を出力に設定し, Lowを出力する.
+    * GPIO17(ボタン)を入力に設定し, 割り込みハンドラを登録する.
+
+* モジュールのアンロード(rmmod)時に,
+    * 登録した割り込みハンドラを取り除く.
+
+* 割り込みハンドラ内で
+    * GPIO17(ボタン)の入力値をprintkする
+
+コードは以下(全文記載). 割り込みハンドラは, `mydevice_gpio_intr()` になる. これをロード時に `request_irq()` で登録する.
+
+.. code-block:: c
+
+    /*
+     * Using GPIO Functions (lunix/gpio)
+     *
+     * Date :  2018.08.24
+     * @author Mikiya Michishita
+     */
+
+    #include <linux/module.h>
+    #include <linux/gpio.h>
+    #include <linux/interrupt.h> // 割り込み関係の関数など
+
+    // Device Information
+    MODULE_LICENSE("Dual BSD/GPL");
+    #define DRIVER_NAME "MyDevice"
+
+    #define GPIO_PIN_LED 4
+    #define GPIO_PIN_BTN 17
+
+    // 割り込みハンドラの定義
+    static irqreturn_t mydevice_gpio_intr(int irq, void *dev_id)
+    {
+      printk ("mydevice_gpio_intr\n");
+
+      int btn;
+      btn = gpio_get_value(GPIO_PIN_BTN);
+      printk ("button = %d\n", btn);
+      return IRQ_HANDLED;
+    }
+
+    // ロード(insmod)時に呼ばれる関数
+    static int mydevice_init(void)
+    {
+      printk("mydevice_init\n");
+
+      // LED用のGPIO4を出力にする. 初期値は1(High)
+      gpio_direction_output(GPIO_PIN_LED, 1);
+      // LED用のGPIO4に0(Low)を出力する
+      gpio_set_value(GPIO_PIN_LED, 0);
+
+      // ボタン用のGPIO17を入力にする
+      gpio_direction_input(GPIO_PIN_BTN);
+
+      // ボタン用のGPIO17の割り込み番号を取得する.
+      int irq = gpio_to_irq(GPIO_PIN_BTN);
+      printk("gpio_to_irq = %d\n", irq);
+
+      // ボタン用のGPIO17の割り込みハンドラをと登録する.
+      if (request_irq(irq, (void*)mydevice_gpio_intr, IRQF_SHARED | IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING, "mydevice_gpio_intr", (void*)mydevice_gpio_intr) < 0) {
+        printk (KERN_ERR "request_irq\n");
+        return -1;
+      }
+
+      return 0;
+    }
+
+    // アンロード(rmmod)時に呼ばれる関数
+    static void mydevice_exit(void)
+    {
+      printk("mydevice_exit\n");
+      int irq = gpio_to_irq(GPIO_PIN_BTN);
+      gpio_set_value(GPIO_PIN_LED, 1); // rmmod時にLED消す
+      free_irq(irq, (void*)mydevice_gpio_intr);
+    }
+
+    module_init(mydevice_init);
+    module_exit(mydevice_exit);
+
+* `gpio_direction_output`, `gpio_direction_input`, `gpio_set_value`, `gpio_to_irq` : :doc:`./../../Library/Kernel/linux/gpio.h`
+* `request_irq`, `free_irq`, `irqreturn_t`, `irq_handler_t` : :doc:`./../../Library/Kernel/linux/interrupt.h`
+
+
+実行してみる
+--------------
+
+以下の通りビルドしてロードする.
+
+.. code-block:: sh
+
+    make
+    sudo insmod MyDeviceDriver.ko
+
+すると, LEDが点灯するはずである. その後何度かボタンを押してdmesgでログを見ると, 登録したとおり割り込みハンドラが呼ばれていて, その中でGPIOの入力値がprintされていることが分かる.
+ちなみに割り込み状況は `/proc/interrupts` で確認できる.
+
+.. code-block:: sh
+
+    cat /proc/interrupt
+
+
+.. ==============================
+.. リンク
+.. ==============================
+
+.. _組み込みLinuxデバイスドライバの作り方: https://qiita.com/take-iwiw/items/e92a950a2cf57d1a3ded

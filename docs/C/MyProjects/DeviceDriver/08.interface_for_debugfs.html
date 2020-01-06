@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>08. interface for debugfs &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="Device Driver" href="index.html"/>
+        <link rel="next" title="09. call other kernel module" href="09.call_other_kernel_module.html"/>
+        <link rel="prev" title="07. interface for procfs" href="07.interface_for_procfs.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">C MyProjects</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Device Driver</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="01.create_simple_kernel_module.html">01. Create Simple Kernel Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="02.driver_register_static.html">02. Driver Register (Static)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03.driver_register_dynamic.html">03. Driver Register (Dynamic)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="04.read_write_and_memory.html">04. read/write and Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="05.raspi_gpio_device_driver.html">05. Raspi GPIO Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="06.ioctl_implementation.html">06. ioctl Implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="07.interface_for_procfs.html">07. interface for procfs</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">08. interface for debugfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="09.call_other_kernel_module.html">09. call other kernel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="10.i2c_device_driver.html">10.I2C Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="11.add_i2c_device_to_device_tree.html">11. Add I2C Device to DeviceTree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="12.bootloading_device_driver.html">12. bootloading device driver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">C MyProjects</a> &raquo;</li>
+      
+          <li><a href="index.html">Device Driver</a> &raquo;</li>
+      
+    <li>08. interface for debugfs</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/C/MyProjects/DeviceDriver/08.interface_for_debugfs.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="interface-for-debugfs">
+<h1>08. interface for debugfs<a class="headerlink" href="#interface-for-debugfs" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>参考URL</p>
+<ul class="simple">
+<li><a class="reference external" href="https://qiita.com/take-iwiw/items/1ef4b629f9b9bab4d222">組み込みLinuxデバイスドライバの作り方</a></li>
+</ul>
+<p>前回, procfsを使用してデバドラのデバッグ用インターフェースを作成した. しかし, 本来 <cite>procfs</cite> はプロセスに関する情報を配置するところで, デバッグ用に使うことはよくない. デバッグ用には <cite>debugfs</cite> を使用することが推奨されている.</p>
+<p>今回は前回と同じ事を, <cite>debugfs</cite> を使用して実装してみる. 具体的には,</p>
+<p><cite>/sys/kernel/debug/MyDevice/prm1</cite></p>
+<p>にアクセスすることで, デバッグ用のパラメータを読んだり書いたりできるようにする. なお, このパスは環境によって変わる可能性がある.</p>
+<div class="section" id="debugfs">
+<h2>debugfs用インターフェースの実装<a class="headerlink" href="#debugfs" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>debugfs用インターフェースの作成方法は大きく2種類ある. それぞれの方法について記載する.</p>
+<div class="section" id="method1-file-operations">
+<h3>Method1: file_operationsを使用する<a class="headerlink" href="#method1-file-operations" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>debugfs用インターフェースを作成するには, ドライバがロード(insmod)されるところで, <cite>debugfs_create_file()</cite> という関数によって, ファイル名とread/write時に呼んでほしい関数を登録するだけ. 登録するときには, <cite>struct file_operations</cite> テーブルにread/writeハンドラ関数を設定する. これは, 前回のprocfs, 通常のデバドラハンドラ登録と同じ.</p>
+<p>しかし, これだとdebugfsアクセス用のファイルが, debugfsのルートディレクトリに作成されてしまう. 当然そこには他のカーネルモジュールのファイルもあるため, ディレクトリで整理する. debugfs用にディレクトリを作るには, <cite>debugfs_create_dir()</cite> を使う. <cite>debigfs_create_dir()</cite> の戻り値(entry)を, 先程の <cite>debugfs_create_dir()</cite> の第3引数に入れてあげることで, 作成したディレクトリの下にファイルが作られるようになる.</p>
+</div>
+<div class="section" id="method2-helper">
+<h3>Method2: Helper関数を使用する<a class="headerlink" href="#method2-helper" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>デバッグ用にパラメータを読み書きしたいだけなのに, 毎回read/write関数を定義するのが面倒な場合がある. read/write操作だけが必要な場合には, ヘルパー関数1つでdebugfsを作ることができる. 例えば, 32-bitの変数にアクセスする場合には, <cite>debugfs_create_u32()</cite> を使用する. (定義はunsigned型だが, 一応負数の入力もできた). 16進数で読み書きしたい場合, <cite>debugfs_create_x32()</cite> にする. 他にも, bool型やレジスタセット(アドレスと数値), バイナリデータに使えるblob用の関数も用意されている. 今回はひとまず, 32bitの数値だけ扱う.</p>
+</div>
+<div class="section" id="id1">
+<h3>終了処理<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>カーネルをアンロードするときに, 作成したdebugfsファイルを削除する必要がある. 削除するためには, <cite>debugfs_remove()</cite> を使用する. これで作成したファイルを削除できる. しかし一つ一つ消していくのは面倒である. 何より作成したときのentry情報を覚えておくのが面倒. そのため, <cite>debugfs_remove_recursive()</cite> が用意されている. この関数を作成したディレクトリのentry(<cite>debugfs_create_dir()</cite> の戻り値)を入れることで, その下のファイルも再帰的に削除してくれる)</p>
+</div>
+<div class="section" id="id2">
+<h3>コード<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>(一応debugfs用のコード自体は記載していないので)コードを以下に記述しておく. デバッグ用のパラメータとして, <cite>debug_prm1</cite> をstaticで持っている. debugfsルートディレクトリの下につくる自分用のディレクトリは <cite>MyDevice</cite> にし, entry情報を <cite>debug_entry_dir</cite> に保持している.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * interface for debugfs</span>
+<span class="cm"> *</span>
+<span class="cm"> * Date :  2018.08.24</span>
+<span class="cm"> * @author Mikiya Michishita</span>
+<span class="cm"> */</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;linux/module.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;linux/debugfs.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;linux/fs.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// Device Information</span>
+<span class="n">MODULE_LICENSE</span><span class="p">(</span><span class="s">&quot;Dual BSD/GPL&quot;</span><span class="p">);</span>
+<span class="cp">#define DRIVER_NAME &quot;MyDevice&quot;</span>
+
+<span class="c1">// Debug variables</span>
+<span class="k">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="n">debug_entry_dir</span><span class="p">;</span>  <span class="c1">// debugfsディレクトリのエントリ</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="n">debug_prm1</span><span class="p">;</span>           <span class="c1">// デバッグ用パラメータ(テスト用)</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="n">debug_read_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// 1回のopenでreadするバイト数</span>
+
+<span class="c1">// /sys/kernel/debug/MyDevice/debug_prm1 にアクセスしたときに呼ばれる関数</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_debug_open</span><span class="p">(</span><span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">inode</span><span class="p">,</span> <span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_proc_open</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="n">debug_read_size</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span> <span class="c1">// 1回につき4byte readする</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// /sys/kernel/debug/MyDevice/debug_prm1 のread時に呼ばれる関数</span>
+<span class="k">static</span> <span class="kt">ssize_t</span> <span class="nf">mydevice_debug_read</span><span class="p">(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">filp</span><span class="p">,</span> <span class="kt">char</span> <span class="n">__user</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">,</span> <span class="n">loff_t</span> <span class="o">*</span><span class="n">f_pos</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_proc_read</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">debug_read_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// まだ出力すべきデータがあるとき.</span>
+    <span class="c1">// 保持している整数型の数字(debug_prm1)を文字列で出力する.</span>
+    <span class="kt">int</span> <span class="n">len</span><span class="p">;</span>
+    <span class="n">len</span> <span class="o">=</span> <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">debug_prm1</span><span class="p">);</span> <span class="c1">// 本当はcopy_to_userすべき</span>
+    <span class="n">debug_read_size</span> <span class="o">-=</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">len</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// /sys/kernel/debug/MyDevice/debug_prm1 のwrite時に呼ばれる関数</span>
+<span class="k">static</span> <span class="kt">ssize_t</span> <span class="nf">mydevice_debug_write</span><span class="p">(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">filp</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">__user</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">,</span> <span class="n">loff_t</span> <span class="o">*</span><span class="n">f_pos</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span> <span class="p">(</span><span class="s">&quot;mydevice_proc_write</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+  <span class="c1">// 入力された文字列を整数型の数字(debug_prm1)として保持する.</span>
+  <span class="n">sscanf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;%d&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">debug_prm1</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// debugfs用のハンドラテーブル</span>
+<span class="k">static</span> <span class="k">struct</span> <span class="n">file_operations</span> <span class="n">debug_debug_prm1_fops</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">THIS_MODULE</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">open</span> <span class="o">=</span> <span class="n">mydevice_debug_open</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">read</span> <span class="o">=</span> <span class="n">mydevice_debug_read</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">write</span> <span class="o">=</span> <span class="n">mydevice_debug_write</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="c1">// ロード(insmod)時に呼ばれる関数</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">mydevice_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_init</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+  <span class="c1">// debugfs用ディレクトリを作成する.</span>
+  <span class="n">debug_entry_dir</span> <span class="o">=</span> <span class="n">debugfs_create_dir</span><span class="p">(</span><span class="n">DRIVER_NAME</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">debug_entry_dir</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printk</span> <span class="p">(</span><span class="n">KERN_ERR</span> <span class="s">&quot;debugfs_create_dir</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">ENOMEM</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">// method1: ハンドラテーブル登録方式</span>
+  <span class="n">debugfs_create_file</span><span class="p">(</span><span class="s">&quot;prm1&quot;</span><span class="p">,</span> <span class="n">S_IRUGO</span> <span class="o">|</span> <span class="n">S_IWUGO</span><span class="p">,</span> <span class="n">debug_entry_dir</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">debug_debug_prm1_fops</span><span class="p">);</span>
+
+  <span class="c1">// method2: ヘルパー関数方式</span>
+  <span class="n">debugfs_create_u32</span><span class="p">(</span><span class="s">&quot;_prm1&quot;</span><span class="p">,</span> <span class="n">S_IRUGO</span> <span class="o">|</span> <span class="n">S_IWUGO</span><span class="p">,</span> <span class="n">debug_entry_dir</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">debug_prm1</span><span class="p">);</span>
+  <span class="n">debugfs_create_x32</span><span class="p">(</span><span class="s">&quot;_prm1_hex&quot;</span><span class="p">,</span> <span class="n">S_IRUGO</span> <span class="o">|</span> <span class="n">S_IWUGO</span><span class="p">,</span> <span class="n">debug_entry_dir</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">debug_prm1</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// アンロード(rmmod)時に呼ばれる関数</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">mydevice_exit</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">printk</span><span class="p">(</span><span class="s">&quot;mydevice_exit</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+  <span class="c1">// debugfs用を取り除く(子ファイルも自動的に削除される)</span>
+  <span class="n">debugfs_remove_recursive</span><span class="p">(</span><span class="n">debug_entry_dir</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">module_init</span><span class="p">(</span><span class="n">mydevice_init</span><span class="p">);</span>
+<span class="n">module_exit</span><span class="p">(</span><span class="n">mydevice_exit</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>method1だと, エントリ関数やハンドラテーブルを定義したりする必要がある. method2だと1行で終わる. 当然2のほうが簡単だが, パラメータ書き換えと同時に何かしら処理する必要がある場合(例えば, i2cで接続されたデバイスのレジスタを変えて見る場合など)には, 方法1にする必要がある.</p>
+</div>
+<div class="section" id="id3">
+<h3>debugfs経由でパラメータを読み書きしてみる<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>下記コマンドでビルド, ロードする.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>make
+sudo insmod MyDeviceModule.ko
+sudo ls /dev/kernel/debug/MyDevice
+&gt;&gt; prm1 _prm1 _prm1_hex
+</pre></div>
+</div>
+<p>すると, <cite>/sys/kernel/debug/MyDevice</cite> の下に, <cite>prm1</cite>, <cite>_prm1</cite>, <cite>_prm1_hex</cite> が出来ていることが分かる. <cite>prm1</cite> は方法1での実装, <cite>_prm1</cite>, <cite>_prm1_hex</cite> は方法2で実装になる. 全ての同じ変数へアクセスを行う.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo bash -c <span class="s1">&#39;echo 32 &gt; /sys/kernel/debug/MyDevice/prm1&#39;</span>
+sudo cat /sys/kernel/debug/MyDevice/prm1
+&gt;&gt; 12
+sudo cat /sys/kernel/debug/MyDevice/_prm1
+&gt;&gt; 12
+sudo cat /sys/kernel/debug/MyDevice/_prm1_hex
+&gt;&gt; 0x0000000c
+
+sudo bash -c <span class="s1">&#39;echo 13 &gt; /sys/kernel/debug/MyDevice/_prm1&#39;</span>
+sudo bash -c <span class="s1">&#39;echo 0x0f &gt; /sys/kernel/debug/MyDevice/_prm1_hex&#39;</span>
+</pre></div>
+</div>
+<p>その後, cat や echo で読み書きができる. 全て同じ変数の値を入出力をしているので結果はおなじになる. 16進数のときには自動的に0xがつくようである.</p>
+<ul class="simple">
+<li><cite>dentry</cite> : <a class="reference internal" href="../../Library/Kernel/linux/dcache.h.html"><span class="doc">dcache.h</span></a></li>
+<li><cite>debugfs_create_dir</cite>, <cite>debugfs_create_file</cite>, <cite>debugfs_create_u32</cite>, <cite>debugfs_create_x32</cite>, <cite>debugfs_remove_recursive</cite> : <a class="reference internal" href="../../Library/Kernel/linux/debugfs.h.html"><span class="doc">debugfs.h</span></a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>アクセス権について<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>これは, ラズパイだけかもしれない.</p>
+<p>今回, 各debugfsファイルを作るときに, アクセス権として <cite>S_IRUGO | S_IWUGO</cite> を指定した. これによって全ユーザが読み書きできるはずである. しかし, 実際は実行するときに <cite>sudo</cite> をつける必要がある. これは親ディレクトリである <cite>/sys</cite> 及び <cite>/sys/kernel</cite>, <cite>/sys/kernel/debug</cite> に対して一般ユーザのアクセス権付与されないためである.</p>
+<p>これらのディレクトリのマウントオプションを変えることで変更はできるだろう(恐らく起動時に実行されるスクリプトのどこかにある...だろう). しかし, 深くは追わないし, そもそも変えるべきではないだろう.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="09.call_other_kernel_module.html" class="btn btn-neutral float-right" title="09. call other kernel module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="07.interface_for_procfs.html" class="btn btn-neutral" title="07. interface for procfs" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

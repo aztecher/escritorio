@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>07. interface for procfs &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="Device Driver" href="index.html"/>
+        <link rel="next" title="08. interface for debugfs" href="08.interface_for_debugfs.html"/>
+        <link rel="prev" title="06. ioctl Implementation" href="06.ioctl_implementation.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">C MyProjects</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Device Driver</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="01.create_simple_kernel_module.html">01. Create Simple Kernel Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="02.driver_register_static.html">02. Driver Register (Static)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03.driver_register_dynamic.html">03. Driver Register (Dynamic)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="04.read_write_and_memory.html">04. read/write and Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="05.raspi_gpio_device_driver.html">05. Raspi GPIO Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="06.ioctl_implementation.html">06. ioctl Implementation</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">07. interface for procfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="08.interface_for_debugfs.html">08. interface for debugfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="09.call_other_kernel_module.html">09. call other kernel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="10.i2c_device_driver.html">10.I2C Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="11.add_i2c_device_to_device_tree.html">11. Add I2C Device to DeviceTree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="12.bootloading_device_driver.html">12. bootloading device driver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">C MyProjects</a> &raquo;</li>
+      
+          <li><a href="index.html">Device Driver</a> &raquo;</li>
+      
+    <li>07. interface for procfs</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/C/MyProjects/DeviceDriver/07.interface_for_procfs.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="interface-for-procfs">
+<h1>07. interface for procfs<a class="headerlink" href="#interface-for-procfs" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="admonition warning">
+<p class="first admonition-title">警告</p>
+<p class="last">詳しくは後述するが, 今回の内容はいまでは非推奨になっているらしいのでそのつもりで見ていく.</p>
+</div>
+<p>前回までで, 基本的なシステムコール(open, close, read, write)に加えて, ioctlの実装を行った. これで, デバドラとして最低限必要なインターフェイスはほぼ網羅できた (select/poll に関してはスキップ)</p>
+<p>実際に, デバイス(例えば, センサやアクチュエータ)を制御する開発をしていると, デバッグ用にパラメータを変えたり, パラメータを取得したりしたいことがある. このようなことが, シェルからできると非常に便利である. これは, procファイルシステム(procfs)のファイルに対して read/write することで実現できる(<a class="reference internal" href="#id1">注意</a>) 例えば, 以下のようなファイルを作るとする.</p>
+<ul class="simple">
+<li>/proc/mydevice_sensor0</li>
+<li>/proc/mydevice_motor0</li>
+</ul>
+<p><cite>/proc/mydevice_sensor0</cite> の値を読むことでセンサーの値を確認できたり(例えば <cite>cat</cite>), <cite>/proc/mydevice_motor0</cite> に値を書き込むことでモータを制御できる (例えば <cite>echo</cite>). 基本的には, 今まで作ってきたデバドラの read/write と同じだが, 今まではデバイスファイル (<cite>/dev/mydevice</cite>)に対しての read/write だった. 今回は, <cite>procfs</cite> のファイルに対して行う. これはいくらでも作ることが可能. そのため, デバイスが一つでも, 確認したいパラメータがいくつもあるときに便利.</p>
+<div class="section" id="note-procfs">
+<h2>NOTE: procfs<a class="headerlink" href="#note-procfs" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p id="id1">procfsはあくまでもプロセスの情報を配置するのに使用して, 上述したようなデバッグ用途には <cite>debugfs</cite> を使用することが推奨されているようである. <cite>debugfs</cite> については次回記載する. デバイス用には使うべきではないが, <cite>procfs</cite> の作り方としては有効なため, このまま記す.</p>
+<p>参考URL</p>
+<ul class="simple">
+<li><a class="reference external" href="https://qiita.com/take-iwiw/items/548444999d2dfdc06f46">組み込みLinuxデバイスドライバの作り方</a></li>
+</ul>
+<div class="section" id="procfs">
+<h3>procfs用インターフェースの実装<a class="headerlink" href="#procfs" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>procfs用インターフェースを作るには, ドライバがロード(insmod)される所で, <cite>proc_create</cite> という関数によって, ファイル名と read/write 時に呼んでほしい関数を登録するだけである. 登録するときには, <cite>struct file_operations</cite> テーブルに read/write ハンドラ関数を設定する. 実はこれは, 使用する関数が違うだけで, 通常のデバドラのハンドラ登録と全く同じ手順である. 取り除くためには, <cite>remove_proc_entry</cite> 関数を使用する.</p>
+<p>これまで書いてきたデバドラとほぼ同じだが, procfs用の登録という意味では違うので, 一応コードを以下に記述しておく.</p>
+<p><cite>/proc/MyDevice_test</cite> というファイルをつくることにする. このファイルをreadした時の処理(<cite>mydevice_proc_read</cite>), writeした時の処理(<cite>mydevice_proc_write</cite>), openした時の処理(<cite>mydevice_proc_open</cite>)を実装する. open時の処理は, シェルから読み書きするたびに必ず呼ばれる. (実際, closeは省略しているため, なくても大丈夫だと思う)</p>
+<p><cite>mydevice_proc_write</cite> では, ユーザが設定した文字列を内部のstatic変数(<cite>proc_test_string</cite>)に保持している. <cite>mydevice_proc_read</cite> で保持した内容を返す. 1回の読み出し(<cite>cat</cite>)につき, 1回だけ呼んでほしいので, フラグ管理してopen時にクリアする. (これはもっといい方法がある)</p>
+<p>モジュールのロード時に, <cite>proc_create</cite> 関数で, <cite>/proc/MyDevice_test</cite> ファイルを作る. <cite>S_IRUGO | S_IWUGO</cite> は <cite>0666</cite> と同じで, 全ユーザにRWアクセス権を付与する. これを格納する構造体として, <cite>proc_dir_entry</cite> が定義されている. モジュールのアンロード時には, <cite>remove_proc_entry</cite> を呼び出す.</p>
+<ul class="simple">
+<li><cite>proc_dir_entry</cite>, <cite>proc_create</cite>, <cite>remove_proc_entry</cite> : <a class="reference internal" href="../../Library/Kernel/linux/proc_fs.h.html"><span class="doc">proc_fs.h</span></a></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h3>procfs経由でパラメータを読み書きしてみる<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>下記コマンドでビルド, ロードする.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>make
+sudo insmod MyDeviceModule.ko
+ls /proc/MyDevice_test
+&gt;&gt; /proc/MyDevice_test
+
+<span class="nb">echo</span> <span class="s2">&quot;abc&quot;</span> &gt; /proc/MyDevice_test
+cat /proc/MyDevice_test
+&gt;&gt; abc
+</pre></div>
+</div>
+<p>ロード後, <cite>/proc/MyDevice_test</cite> が作られている. これに対して, echoで値を書き込む. その後, catで読み込むと, 先程書いた値が出力されている.</p>
+</div>
+<div class="section" id="note-sysfs">
+<h3>NOTE: sysfs<a class="headerlink" href="#note-sysfs" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><a class="reference internal" href="#id1">注意</a> でも指摘しているが, procfsでは, 本来はプロセスに関する情報をやり取りする. 次回の記事で記載するが, debugfs ではデバッグ用の情報をやり取りしている.</p>
+<p>これらとは別に, モジュールとパラメータをやり取りする仕組みがある. モジュールの情報やパラメータを, <cite>/sys</cite> ディレクトリ以下にできる, sysfs として確認することができる. これは, procfs とおなじに見えるが, procfs は古い方法で, 上述したとおりデバドラ開発者が自由に追加できるものであるため, 無秩序状態になってしまう. sysfs は正しいお作法に則って登録する必要がある. そして, 各ファイルはディレクトリごとに整理され管理される.</p>
+<p>色々な方法があるが, 単にパラメータを見せるだけなら, <cite>module_param()</cite> というヘルパーマクロで実現できる. これによって, モジュールロード時にパラメータを設定したり, パラメータ(変数)の値を読むことができる. ただし, カーネルロード後に, パラメータを変えることはできないようだ.</p>
+<p>実際に使ってみる. 変数の宣言と, <cite>module_param()</cite> の読み出しの2文だけでOK. <cite>param1</cite> という変数をパラメータとして使う例を下記に示す.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="n">param1</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">module_param</span><span class="p">(</span><span class="n">param1</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="n">S_IRUGO</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><cite>/sys/module/MyDeviceModule/parameters/param1</cite> を読むことで, <cite>param1</cite> の値を確認できる. また, insmod時に値を指定することができる.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>sudo insmod MyDeviceModule.ko
+cat /sys/module/MyDeviceModule/parameters/param1
+&gt;&gt; 10
+
+sudo rmmod MyDeviceModule
+sudo insmod MyDeviceModule.ko <span class="nv">param1</span> <span class="o">=</span> 20
+cat /sys/module/MyDeviceModule/parameters/param1
+&gt;&gt; 20
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="08.interface_for_debugfs.html" class="btn btn-neutral float-right" title="08. interface for debugfs" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="06.ioctl_implementation.html" class="btn btn-neutral" title="06. ioctl Implementation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

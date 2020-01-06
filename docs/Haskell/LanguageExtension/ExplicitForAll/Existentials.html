@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>存在量化 &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../C/index.html">C Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+    <li>存在量化</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/Haskell/LanguageExtension/ExplicitForAll/Existentials.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>存在量化<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>このページでは, <cite>Existential Type</cite> ないし <cite>Existentials</cite> と呼ばれる存在型に関して記述していく.
+これは, 多相型などとも密接に関わってくる.</p>
+<div class="section" id="id2">
+<h2>全称量化<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>全称量化は, Haskellで多相性を実現する根幹となる仕組みである.
+全称量化の本質は,
+「型の集合に対して同じ方法で操作し, 振る舞いが扱っている範囲のすべての型の振る舞い <cite>のみ</cite> により定められるような関数を表現できること」
+である</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="cm">{-# LANGUAGE ExplicitForAll #-}</span>
+
+<span class="nf">example1</span> <span class="ow">::</span> <span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+<span class="nf">example1</span> <span class="ow">=</span> <span class="kt">[]</span>
+
+<span class="nf">example2</span> <span class="ow">::</span> <span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+<span class="nf">example2</span> <span class="ow">=</span> <span class="p">[</span><span class="n">undefined</span><span class="p">]</span>
+
+<span class="nf">map&#39;</span> <span class="ow">::</span> <span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="n">forall</span> <span class="n">b</span><span class="o">.</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span>
+<span class="nf">map&#39;</span> <span class="n">f</span> <span class="ow">=</span> <span class="n">foldr</span> <span class="p">((</span><span class="kt">:</span><span class="p">)</span> <span class="o">.</span> <span class="n">f</span><span class="p">)</span> <span class="kt">[]</span>
+
+<span class="nf">reverse&#39;</span> <span class="ow">::</span> <span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+<span class="nf">reverse&#39;</span> <span class="ow">=</span> <span class="n">foldl</span> <span class="p">(</span><span class="n">flip</span> <span class="p">(</span><span class="kt">:</span><span class="p">))</span> <span class="kt">[]</span>
+</pre></div>
+</div>
+<p>通常, 量子化は型シグネチャでは省略される.
+なぜなら, Haskellのありきたりな表層言語では, 自由な <cite>束縛されていない</cite> 型変数は全称量化すると仮定しても曖昧さが生じないからである.
+つまり, 上記のコードは通常このようになる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">example1</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+<span class="nf">example1</span> <span class="ow">=</span> <span class="kt">[]</span>
+
+<span class="nf">example2</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+<span class="nf">example2</span> <span class="ow">=</span> <span class="p">[</span><span class="n">undefined</span><span class="p">]</span>
+
+<span class="nf">map&#39;</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span>
+<span class="nf">map&#39;</span> <span class="n">f</span> <span class="ow">=</span> <span class="n">foldr</span> <span class="p">((</span><span class="kt">:</span><span class="p">)</span> <span class="o">.</span> <span class="n">f</span><span class="p">)</span> <span class="kt">[]</span>
+
+<span class="nf">reverse&#39;</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+<span class="nf">reverse&#39;</span> <span class="ow">=</span> <span class="n">foldl</span> <span class="p">(</span><span class="n">flip</span> <span class="p">(</span><span class="kt">:</span><span class="p">))</span> <span class="kt">[]</span>
+</pre></div>
+</div>
+<p>これを見ると, いつもどおりである. ただその裏に <cite>forall</cite> などが隠れているということは知っておく.</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h1>自由定理<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>全称量化された型変数は実は, 関数の実装についてかなり多くの深淵な性質を示唆している.
+この性質は関数の型シグネチャから導ける.
+例えば, Haskellの恒等関数は, 型シグネチャに対する実装を一つしか持たないことが保証されている.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">id</span> <span class="ow">::</span> <span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<span class="nf">id</span> <span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">x</span>
+</pre></div>
+</div>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">fmap</span> <span class="ow">::</span> <span class="kt">Functor</span> <span class="n">f</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>fmapに対する自由定理が以下</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">forall</span> <span class="n">f</span> <span class="n">g</span><span class="o">.</span> <span class="n">fmap</span> <span class="n">f</span> <span class="o">.</span> <span class="n">fmap</span> <span class="n">g</span> <span class="ow">=</span> <span class="n">fmap</span> <span class="p">(</span><span class="n">f</span> <span class="o">.</span> <span class="n">g</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h1>型システム<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>今は省略. 必要ならお勉強.</p>
+</div>
+<div class="section" id="id5">
+<h1>存在量化<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>全称量化の本質は, 「いかなる型に対しても同じ方法で操作する関数を表現すること」である.
+一方, 存在量化は, 「ある未知の型に対して走査する関数を表現」できる.
+存在量化を使えば, 存在量化の下にある, 「データ型を操作するが型シグネチャがその情報を隠している関数」を使って,
+異種の複数の値をまとめて扱うことができる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="cm">{-# LANGUAGE ExistentialQuantification #-}</span>
+<span class="cm">{-# LANGUAGE RankNTypes #-}</span>
+
+<span class="c1">-- exist t. (t, t -&gt; t, t -&gt; String)</span>
+<span class="kr">data</span> <span class="kt">Box</span> <span class="ow">=</span> <span class="n">froall</span> <span class="n">a</span><span class="o">.</span> <span class="kt">Box</span> <span class="n">a</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">String</span><span class="p">)</span>
+
+<span class="c1">-- Box data : t = Int</span>
+<span class="nf">boxa</span> <span class="ow">::</span> <span class="kt">Box</span>
+<span class="nf">boxa</span> <span class="ow">=</span> <span class="kt">Box</span> <span class="mi">1</span> <span class="n">negate</span> <span class="n">show</span>
+
+<span class="c1">-- Box data : t = String</span>
+<span class="nf">boxb</span> <span class="ow">::</span> <span class="kt">Box</span>
+<span class="nf">boxb</span> <span class="ow">=</span> <span class="kt">Box</span> <span class="s">&quot;foo&quot;</span> <span class="n">reverse</span> <span class="n">show</span>
+
+<span class="nf">apply</span> <span class="ow">::</span> <span class="kt">Box</span> <span class="ow">-&gt;</span> <span class="kt">String</span>
+<span class="nf">apply</span> <span class="p">(</span><span class="kt">Box</span> <span class="n">x</span> <span class="n">f</span> <span class="n">p</span><span class="p">)</span> <span class="ow">=</span> <span class="n">p</span> <span class="p">(</span><span class="n">f</span> <span class="n">x</span><span class="p">)</span>
+
+
+<span class="c1">-- exist t. Show t =&gt; t</span>
+<span class="kr">data</span> <span class="kt">SBox</span> <span class="ow">=</span> <span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="kt">Show</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="kt">SBox</span> <span class="n">a</span>
+
+<span class="nf">boxes</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">SBox</span><span class="p">]</span>
+<span class="nf">boxes</span> <span class="ow">=</span> <span class="p">[</span><span class="kt">SBox</span> <span class="nb">()</span><span class="p">,</span> <span class="kt">SBox</span> <span class="mi">2</span><span class="p">,</span> <span class="kt">SBox</span> <span class="s">&quot;foo&quot;</span><span class="p">]</span>
+
+<span class="nf">showBox</span> <span class="ow">::</span> <span class="kt">SBox</span> <span class="ow">-&gt;</span> <span class="kt">String</span>
+<span class="nf">showBox</span> <span class="p">(</span><span class="kt">SBox</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=</span> <span class="n">show</span> <span class="n">a</span>
+
+<span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">main</span> <span class="ow">=</span> <span class="n">mapM_</span> <span class="p">(</span><span class="n">putStrLn</span> <span class="o">.</span> <span class="n">showBox</span><span class="p">)</span> <span class="n">boxes</span>
+</pre></div>
+</div>
+<p><cite>SBox</cite> による存在量化により, Showのインターフェースにより純粋に定義されたいくつかの値を集められるが, 値についての他の情報は手に入らず, 他のいかなる方法でもアクセスしたりアンパックすることはできない.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="cm">{-# LANGUAGE RankNTypes #-}</span>
+
+<span class="c1">-- この関手はライブラリの内部実装を修正したものである.</span>
+<span class="kr">type</span> <span class="kt">Exists</span> <span class="n">a</span> <span class="n">b</span> <span class="ow">=</span> <span class="n">forall</span> <span class="n">f</span><span class="o">.</span> <span class="kt">Functor</span> <span class="n">f</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">a</span><span class="p">)</span>
+
+<span class="kr">type</span> <span class="kt">Get</span> <span class="n">a</span> <span class="n">b</span> <span class="ow">=</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span>
+<span class="kr">type</span> <span class="kt">Set</span> <span class="n">a</span> <span class="n">b</span> <span class="ow">=</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+
+<span class="nf">example</span> <span class="ow">::</span> <span class="kt">Get</span> <span class="n">a</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="kt">Set</span> <span class="n">a</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="kt">Exists</span> <span class="n">a</span> <span class="n">b</span>
+<span class="nf">example</span> <span class="n">f</span> <span class="n">g</span> <span class="n">l</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">fmap</span> <span class="p">(</span><span class="n">g</span> <span class="n">a</span><span class="p">)</span> <span class="p">(</span><span class="n">l</span> <span class="p">(</span><span class="n">f</span> <span class="n">a</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>全称量化を使うと, いわゆる「オブジェクト指向パラダイム」と言われるある種の概念を再現できる.
+これは80年代後半に人気を博した学派で, 現代的な等式で再現する方法を使わず,
+プログラミングの理論を人間らしい実体と動作へと分離することを試みたものである.
+このモデルを Haskell で再現することは, 広くアンチパターンであると考えられている.</p>
+</div>
+<div class="section" id="id6">
+<h1>不可述型<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>興味があれば書く.
+GHCではまだ恐ろしく不安定らしいが, 型変数を多相型で実体化できるというよくわからないことができる.</p>
+</div>
+<div class="section" id="id7">
+<h1>スコープのある型変数<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>通常, 関数のトップレベルのシグネチャの内部で使われている型変数は, 型シグネチャ内部でのみスコープを持ち, 関数本体ではスコープを持たず, 項や let/where 節に対しては固定のシグネチャである.
+<cite>-XScopedTypeVariables</cite> を有効にすると, この制限が弱まり, トップレベルで言及された型変数が, 値のレベルの関数本体とそこに含まれるすべてのシグネチャの内部にスコープを持つようになる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="cm">{-# LANGUAGE ExplicitForAll #-}</span>
+<span class="cm">{-# LANGUAGE ScopedTypeVariables #-}</span>
+
+<span class="nf">poly</span> <span class="ow">::</span> <span class="n">forall</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span><span class="o">.</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+<span class="nf">poly</span> <span class="n">x</span> <span class="n">y</span> <span class="n">z</span> <span class="ow">=</span> <span class="p">(</span><span class="n">f</span> <span class="n">x</span> <span class="n">y</span><span class="p">,</span> <span class="n">f</span> <span class="n">x</span> <span class="n">z</span><span class="p">)</span>
+  <span class="kr">where</span>
+    <span class="c1">-- 2番目の引数は型推論により全称量化されている</span>
+    <span class="c1">-- f :: forall t0 t1. t0 -&gt; t1 -&gt; t0</span>
+    <span class="n">f</span> <span class="n">x&#39;</span> <span class="kr">_</span> <span class="ow">=</span> <span class="n">x&#39;</span>
+
+<span class="nf">mono</span> <span class="ow">::</span> <span class="n">forall</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span><span class="o">.</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+<span class="nf">mono</span> <span class="n">x</span> <span class="n">y</span> <span class="n">z</span> <span class="ow">=</span> <span class="p">(</span><span class="n">f</span> <span class="n">x</span> <span class="n">y</span><span class="p">,</span> <span class="n">f</span> <span class="n">x</span> <span class="n">z</span><span class="p">)</span>
+  <span class="kr">where</span>
+    <span class="c1">-- bは ---ここでミスってweb更新</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

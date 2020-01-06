@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Dynamic Memory Allocation &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../index.html"/>
+        <link rel="up" title="BasicKnowledge" href="index.html"/>
+        <link rel="next" title="inline" href="Inline.html"/>
+        <link rel="prev" title="詳細知識" href="VisualStudio/DetailedKnowledge.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">BasicKnowledge</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Build.html">Build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PreProcessor.html">PreProcessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VisualStudio/index.html">VisualStudio</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Dynamic Memory Allocation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new-delete">new/delete</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Inline.html">inline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Static.html">static</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Extern.html">extern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ConstPointer.html">Const and Pointer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Virtual_Func_Class.html">Virtual (Function/Class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Library/index.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MyProjects/index.html">C MyProjects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="index.html">BasicKnowledge</a> &raquo;</li>
+      
+    <li>Dynamic Memory Allocation</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/C/BasicKnowledge/MemoryAllocation.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dynamic-memory-allocation">
+<h1>Dynamic Memory Allocation<a class="headerlink" href="#dynamic-memory-allocation" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>ここでは, C++におけるメモリの動的割り当てに関してと, それに関わる <code class="docutils literal"><span class="pre">new</span></code> と <code class="docutils literal"><span class="pre">delete</span></code> について説明していく</p>
+<div class="section" id="new-delete">
+<h2>new/delete<a class="headerlink" href="#new-delete" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>C言語であれば, 動的メモリ割り当てといえば, <code class="docutils literal"><span class="pre">malloc()</span></code> 関数があった. C++はC言語を用いることができるため, これを利用することは当然問題ない.</p>
+<p>しかし, C++において, <code class="docutils literal"><span class="pre">malloc()</span></code> を使うことはあまり推奨されない. それは, C++には独自のメモリ割り当て演算子 <code class="docutils literal"><span class="pre">new</span></code> 演算子があるからである.</p>
+<p>new演算子はmalloc()とは異なり, 割り当てるべきバイト数を自動計算してくれる.
+sizeof()演算子を用いてこちらから指定する必要がないため, 割り当てミスの原因の一つが解消される.
+また, 指定したデータ型または, オブジェクトの領域をメモリの <code class="docutils literal"><span class="pre">ヒープ領域</span></code> に割り当て, そのポインタを返す.</p>
+<p>new演算子は, こうして割り当てたメモリへの <code class="docutils literal"><span class="pre">ポインタを返す</span></code>.
+問題は容量の関係でメモリを割り当てられなかったときの処理である.
+標準C++では, <code class="docutils literal"><span class="pre">例外</span></code> というものを作成する. (後述)
+しかし, これは最近の話でこれまではずっとNULLを返していた.
+そのため, newが何を返すかというのは, コンパイラによって違う.
+この講座は, 標準C++に基づいて解説してくるため, NULLを返すことは想定していない.</p>
+<p>newで割り当てたメモリ領域は解放する必要がある.
+<code class="docutils literal"><span class="pre">malloc()</span></code> 関数に対し, <code class="docutils literal"><span class="pre">free()</span></code> 関数でメモリの割り当てを開放していたのと同じで, newで割り当てたメモリは <code class="docutils literal"><span class="pre">delete</span></code> 演算子で解放する.</p>
+<p>pointerには, newで割り当てたメモリ領域へのポインタ変数を指定する.
+それ以外のポインタを渡すと, プログラムがクラッシュする可能性がある.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="c1">// 最も基本的な例</span>
+<span class="c1">// 必要な分のメモリを確保できなかった場合の処理をしていない.</span>
+<span class="c1">// ここで割り当てるメモリサイズはごく僅かなので, まず失敗はないだろう</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="o">*</span><span class="n">po</span><span class="p">;</span>
+  <span class="n">po</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">;</span>
+
+  <span class="o">*</span><span class="n">po</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;動的に割り当てたメモリの内容 = &quot;</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">po</span><span class="p">;</span>
+
+  <span class="k">delete</span> <span class="n">po</span><span class="p">;</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="id1">
+<h3>オブジェクトの割り当て<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>クラス型のオブジェクトを動的に割り当てることも可能.
+このとき, データ型と違うのは初期値を与えるという処理があること.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Kitty</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="n">Kitty</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">str</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Kitty</span> <span class="o">*</span><span class="n">obj</span><span class="p">;</span>
+  <span class="n">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Kitty</span><span class="p">(</span><span class="s">&quot;Kitty on your lap</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+  <span class="k">delete</span> <span class="n">obj</span><span class="p">;</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>delete でメモリを開放した時に, デストラクタ関数が呼び出される.</p>
+</div>
+<div class="section" id="id2">
+<h3>配列の割り当て<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>new演算子で1次元配列を動的に割り当てることもできる.
+ただし, 配列の場合は「初期化できない」ので注意.</p>
+<p>配列を要求した場合, new演算子は割り当てた配列の先頭へのポインタを返す.
+この場合, deleteでもnewで割り当てた配列の先頭へのポインタを指定する.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Kitty</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="o">~</span><span class="n">Kitty</span><span class="p">()</span> <span class="p">{</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Kitty on your lab</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Kitty</span> <span class="o">*</span><span class="n">obj</span><span class="p">;</span>
+  <span class="n">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Kitty</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+
+  <span class="k">delete</span><span class="p">[]</span> <span class="n">obj</span><span class="p">;</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>クラス型の配列を動的に割り当てた場合, メモリ解放時には全てオブジェクトのデストラクタが実行される.
+ただし, newで割り当てた領域が複数回解放されているわけではない.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Inline.html" class="btn btn-neutral float-right" title="inline" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="VisualStudio/DetailedKnowledge.html" class="btn btn-neutral" title="詳細知識" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

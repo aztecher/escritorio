@@ -1,0 +1,290 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>DI Logger &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../../index.html"/>
+        <link rel="up" title="DI" href="index.html"/>
+        <link rel="next" title="JSON" href="../JSON/index.html"/>
+        <link rel="prev" title="What is DI" href="What_is_DI.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Haskell Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Monad/index.html">Monad</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Haskell MyProject</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Haskell Tips</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="index.html">DI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../JSON/index.html">JSON</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../YAML/index.html">YAML</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Signals/index.html">Singals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../Web/index.html">Haskell Web Project</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../LanguageExtension/index.html">LanguageExtension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Monoid/index.html">Monoid</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../C/index.html">C Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Haskell Documents</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Haskell MyProject</a> &raquo;</li>
+      
+          <li><a href="../index.html">Haskell Tips</a> &raquo;</li>
+      
+          <li><a href="index.html">DI</a> &raquo;</li>
+      
+    <li>DI Logger</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/Haskell/MyProjects/Tips/DI/DI_Logger.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="di-logger">
+<h1>DI Logger<a class="headerlink" href="#di-logger" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>例えば, Loggerを作る例を考える.</p>
+<div class="section" id="id1">
+<h2>設計<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">class</span> <span class="kt">Logger</span> <span class="n">a</span> <span class="kr">where</span>
+  <span class="n">writeLog</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">String</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="nb">()</span>
+</pre></div>
+</div>
+<p>ロガーは文字列を受け取って何かをするというインターフェースを実装した型のことであろう. ここで <cite>a</cite> に, 具体的なLoggerの型が挿入される.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">data</span> <span class="kt">SomeLogger</span> <span class="ow">=</span> <span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="kt">Logger</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="kt">SomeLogger</span> <span class="n">a</span>
+
+<span class="kr">instance</span> <span class="kt">Logger</span> <span class="kt">SomeLogger</span> <span class="kr">where</span>
+  <span class="n">writeLog</span> <span class="p">(</span><span class="kt">SomeLogger</span> <span class="n">i</span><span class="p">)</span> <span class="ow">=</span> <span class="n">writeLog</span> <span class="n">i</span>
+</pre></div>
+</div>
+<p><cite>SomeLogger</cite> という型を用意しておく. SomeLoggerはロガーのinstanceが閉じ込められている. また, SomeLoggerは自明にLoggerとしての機能を与えることができるので, それも与えておく.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">type</span> <span class="kt">UserLoggger</span> <span class="ow">=</span> <span class="kt">Given</span> <span class="kt">SomeLogger</span>
+
+<span class="nf">useLogger</span> <span class="ow">::</span> <span class="kt">UseLogger</span> <span class="ow">=&gt;</span> <span class="kt">SomeLogger</span>
+<span class="nf">useLogger</span> <span class="ow">=</span> <span class="n">given</span>
+</pre></div>
+</div>
+<p><cite>reflection</cite> のAPIを専用関数としてラップしたものを用意しておく. この辺はこのみ(巷のDIコンテナのノリに合わせている)</p>
+</div>
+<div class="section" id="id2">
+<h2>実装<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>では実装してみる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">data</span> <span class="kt">StdoutLoggerImpl</span> <span class="ow">=</span> <span class="kt">StdoutLoggerImpl</span>
+
+<span class="kr">instance</span> <span class="kt">Logger</span> <span class="kt">StdoutLoggerImpl</span> <span class="kr">where</span>
+ <span class="n">writeLog</span> <span class="kr">_</span> <span class="n">str</span> <span class="ow">=</span> <span class="n">putStr</span> <span class="n">str</span>
+
+<span class="nf">newLogger</span> <span class="ow">::</span> <span class="kt">SomeLogger</span>
+<span class="nf">newLogger</span> <span class="ow">=</span> <span class="kt">SomeLogger</span> <span class="kt">StdoutLoggerImpl</span>
+</pre></div>
+</div>
+<p>せやなという感じ.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ロガーを使いたいときは次のようにすればいい.</p>
+<p>something :: UserLogger =&gt; ...
+something = do</p>
+<blockquote>
+<div>writeLog userLogger &#8220;write to log!&#8221;</div></blockquote>
+<p><cite>UserLogger =&gt;</cite> のなかでは, <cite>userLogger</cite> を使うことができてロガーを使うことができる. ここではロガーの具体的な型は言及しなくても良いところが大事.</p>
+</div>
+<div class="section" id="id3">
+<h2>注入<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>注入したいときは, <cite>give StdoutLoggerImpl.newLogger $ ...</cite> ってやる.
+アプリケーションの一番外側のレイヤでやればいい.</p>
+</div>
+<div class="section" id="id4">
+<h2>この手法について<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>多分, Someﾅﾝﾄｶの型を作るところとかがボイラープレートだらけなのでそこらへんはもう少し色々提供してあげたい. 例えば, 上のnewLoggerで間違えて <cite>StdoutLoggerImpl</cite> を提供した時, これをgiveしようとするとエラーになるがそういうときのエラーメッセージはあまり適切ではないと思う.</p>
+<p>ただ実際にやっていることは薄いのでフレームワークってほど難しくもなく, 使うのは簡単なはず.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../JSON/index.html" class="btn btn-neutral float-right" title="JSON" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="What_is_DI.html" class="btn btn-neutral" title="What is DI" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

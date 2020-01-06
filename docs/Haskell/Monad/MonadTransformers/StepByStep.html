@@ -1,0 +1,730 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Monad Transformer Step By Step &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="Monad Transformers" href="index.html"/>
+        <link rel="next" title="Haskell MyProject" href="../../MyProjects/index.html"/>
+        <link rel="prev" title="Monad Transformers" href="index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Haskell Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Monad</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../State/index.html">State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Writer/index.html">Writer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Continuation/index.html">Continuation</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Monad Transformers</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Monad Transformer Step By Step</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../MyProjects/index.html">Haskell MyProject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../LanguageExtension/index.html">LanguageExtension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Monoid/index.html">Monoid</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../C/index.html">C Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Haskell Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">Monad</a> &raquo;</li>
+      
+          <li><a href="index.html">Monad Transformers</a> &raquo;</li>
+      
+    <li>Monad Transformer Step By Step</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/Haskell/Monad/MonadTransformers/StepByStep.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="monad-transformer-step-by-step">
+<h1>Monad Transformer Step By Step<a class="headerlink" href="#monad-transformer-step-by-step" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>これは, <a class="reference external" href="http://bicycle1885.hatenablog.com/entry/2012/12/08/165236">モナドトランスフォーマーステップバイステップ</a> を元とした記事である. この引用元の記事も, 「Monad Transformer Step by Step (Martin Grabmuller)氏の記事を翻訳したものである.</p>
+<div class="section" id="abstract">
+<h2>0. Abstract<a class="headerlink" href="#abstract" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>このチュートリアルは, Haskellのプログラムに徐々に機能を追加していくためにどのようにモナドトランスフォーマーを利用したらよいかを説明する.</p>
+<p>これはモナドトランスフォーマー自体の「実装」に関するものではない. エレガントでスッキリしていて, かつ強力なHaskellプログラムを書くために, いかにモナドトランスフォーマーを「利用」するかについてのチュートリアルである.</p>
+<p>単純な式を評価する関数から始め, モナドスタイルに変えてから, モナドトランスフォーマーを構築しつつ, エラー処理, 環境渡し, 状態, ログ, 入出力といった機能を加えていく.</p>
+</div>
+<div class="section" id="introduction">
+<h2>1. Introduction<a class="headerlink" href="#introduction" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>モナドはプログラムを組み上げていく上で, 柔軟で拡張性を持つ非常にエレガントな手法である. モナドはHaskellのような遅延評価関数型言語ではとても興味深いもので, 純粋関数型のプログラムに副作用を統合させる事ができる. さらに, モナドを使ってプログラムを構築していくことで, ちょっとした定義があれば, 色々なアルゴリズムの必要な記録処理や裏側の処理の多くを隠すことができ, 注目しているアルゴリズムに集中することができる.</p>
+<p>モナドトランスフォーマーはモナドを使ったプログラミングをさらに便利にしてくれる. 違ったモナドや型やモナドを連結する関数のライブラリを提供してくれるので, 必要なモナドトランスフォーマを組み合わせて特性のモナドを作ることができる. 例えば, 状態とエラー処理を備えたモナドが欲しいなら, <cite>StateT</cite> と <cite>ErrorT</cite> 二つのモナドトランスフォーマーを選んできて組み合わせれば良い. このチュートリアルの目的は, シンプルな関数から始め, それをステップバイステップで機能を拡張すべく色々とモナドを操って広げていく様を優しく紹介することである. このチュートリアルはモナドトランスフォーマーの概念の裏に潜んだ理論についてものではないし, 実装についてのものでもない.</p>
+<p>ここでは, Haskellのモナドクラスとかdo記法などといった, モナドを使ったプログラミングの機能や基礎については知っていることを想定している. 他のことは途中で追々説明していく.</p>
+<p>ここにある, Haskellのプログラムは現在のHaskell98標準のものではない機能を使っている. <cite>Control.Monad.Error</cite> などは標準ライブラリのモジュールではない. こうしたモジュールにある階層的なモジュール名も細かい実装も, Haskell98の範疇ではない. しかしながら, こうした拡張は現在のGHCではちゃんとサポートされている. プログラムはGHCのバージョン7.4.1で確認している.</p>
+<p>モナドトランスフォーマーのモジュールは, Mark P.Jonesの論文にインスパイアされている. その中には, とても読みやすいMonadプログラミングのイントロダクションはあるが, このチュートリアルほどは実践的ではない.</p>
+<p>コンピュータを前にしてこのチュートリアルを読むのがベストだろう. Haskellの標準ライブラリやモナドトランスフォーマのライブラリにある, いろいろな関数の説明を調べたり, 型を調べたりできるようにである. このチュートリアルを印刷して, ウェブブラウザでオンラインのライブラリのドキュメントを開いて, Transformerモジュールをロードしてghciで対話的に, <cite>:type</cite> で型を確認しながら実行してみるのが一番いいだろう.</p>
+<div class="section" id="example-program">
+<h3>1.1 プログラム例 (Example Program)<a class="headerlink" href="#example-program" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>実行する例として, シンプルなプログラミング言語のインタープリタをこのチュートリアルを通して使う. すべてのコードはTransformersというモジュールに収められ, 次のようなコードが頭にある.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">module</span> <span class="nn">Transformers</span> <span class="kr">where</span>
+
+<span class="kr">import</span> <span class="nn">Control.Monad.Identity</span>
+<span class="kr">import</span> <span class="nn">Control.Monad.Error</span>
+<span class="kr">import</span> <span class="nn">Control.Monad.Reader</span>
+<span class="kr">import</span> <span class="nn">Control.Monad.State</span>
+<span class="kr">import</span> <span class="nn">Control.Monad.Writer</span>
+<span class="kr">import</span> <span class="nn">Data.Maybe</span>
+<span class="kr">import</span> <span class="k">qualified</span> <span class="nn">Data.Map</span> <span class="k">as</span> <span class="n">Map</span>
+</pre></div>
+</div>
+<p>Control.Monadで始まるインポートされたモジュールは, その中で定義されたモナドトランスフォーマーを使うときだけ必要となる. <cite>Data.Maybe</cite> モジュールは <cite>Maybe a</cite> 型の任意の値をも扱うのに便利な関数を定義していて, <cite>Data.Map</cite> モジュールは有限のマップを定義する. これらは, 環境(変数-値のマッピング)を小さなインタープリタの中で定義するのに使う.</p>
+<p>次のデータ型がその言語の中でプログラムをモデリングするのに使われる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">type</span> <span class="kt">Name</span> <span class="ow">=</span> <span class="kt">String</span>     <span class="c1">--  variable names (変数名)</span>
+<span class="kr">data</span> <span class="kt">Exp</span> <span class="ow">=</span> <span class="kt">Lit</span> <span class="kt">Integer</span> <span class="c1">--  expression (式)</span>
+         <span class="o">|</span> <span class="kt">Var</span> <span class="kt">Name</span>
+         <span class="o">|</span> <span class="kt">Plus</span> <span class="kt">Exp</span> <span class="kt">Exp</span>
+         <span class="o">|</span> <span class="kt">Abs</span> <span class="kt">Name</span> <span class="kt">Exp</span>
+         <span class="o">|</span> <span class="kt">App</span> <span class="kt">Exp</span> <span class="kt">Exp</span>
+        <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Show</span><span class="p">)</span>
+<span class="kr">data</span> <span class="kt">Value</span> <span class="ow">=</span> <span class="kt">IntVal</span> <span class="kt">Integer</span> <span class="c1">-- values (値)</span>
+           <span class="o">|</span> <span class="kt">FunVal</span> <span class="kt">Env</span> <span class="kt">Name</span> <span class="kt">Exp</span>
+           <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Show</span><span class="p">)</span>
+<span class="kr">type</span> <span class="kt">Env</span> <span class="ow">=</span> <span class="kt">Map</span><span class="o">.</span><span class="kt">Map</span> <span class="kt">Name</span> <span class="kt">Value</span> <span class="c1">-- mapping from names to value</span>
+</pre></div>
+</div>
+<p><cite>Name</cite> 型は標準のString型のただの別名. 普遍的な文字列でなく, 変数名についての話であることを明確にするときに使われる. <cite>Exp</cite> データ型は, 整数リテラル・変数・加算・λ式(抽象)・関数適用へのヴァリアントを持っている. 評価されるプログラムは <cite>Exp</cite> データ型からできていて, 結果は <cite>Value</cite> 型である. <cite>Value</cite> は整数か関数(クロージャ)である. <cite>FunVal</cite> の構成要素である <cite>Env</cite> は, λ抽象が評価される環境である.</p>
+<p>モナドトランスフォーマを用いる具体例は, 上に示した小さな言語のインタープリタなので, まずは評価関数をつくることから始める. この関数はモナドを使っておらず, ある種の「参照実装」となっている. インタープリタ関数 <cite>eval0</cite> は単純である.</p>
+<p>さて, 評価関数を示す前に少しだけ前提の確認をしておく. 上述しているが, 評価されるのは <cite>Exp</cite> 型であり, 評価結果は <cite>Value</cite> 型として表される. <cite>Exp</cite> 型は, 整数リテラル (<cite>Lit Integer</cite>), 変数 (<cite>Var Name</cite>), 加算 (<cite>Plus Exp Exp</cite>), λ式(抽象) (<cite>Abs Name Exp</cite>: variable -&gt; expression), 関数適用 (<cite>App Exp Exp</cite>) を表現しており, 評価関数 <cite>eval0</cite> はこれらそれぞれを評価する関数である. 始めはモナドなしということで, パターンマッチを駆使して各表現を評価する関数を記述することになる. 評価後, 最終的な値は <cite>Value</cite> 型で表現される値になる. すなわち, 数値(<cite>IntVal</cite>)もしくは関数(<cite>FunVal</cite>)である.
+また, <cite>Env</cite> 関数はいまいちよくわからないが, 変数名から値へのマッピングを行う際の環境(λ抽象が評価される環境)なので, 変数名から値を取り出す際には使いそうだなという雰囲気だけ分かればいいだろう.</p>
+<p>さて, 順に評価関数の内容を順に考えてみる. 整数リテラル (<cite>Lit Integer</cite>) は単純な整数なのでそのまま <cite>Value</cite> の <cite>IntVal</cite> に値をくるんであげればいい. 次に 変数だが, これは評価時に値との関連付けがひつようなので, 環境 <cite>Env</cite> が必要になる. つまり, <cite>Env</cite> から関連付けられている式を引き出して評価するという形になる. 加算 <cite>Plus</cite> は単純に2つの式を評価しその和を返す. ラムダ式は最終的に式 <cite>FunVal</cite> になるが, 評価される環境を捉える必要がある. 関数適用も適用した後に式 <cite>FunVal</cite> になるが, 最初に関数と引数を評価し, 加算と同じように処理される.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">eval0</span> <span class="ow">::</span> <span class="kt">Env</span> <span class="ow">-&gt;</span> <span class="kt">Exp</span> <span class="ow">-&gt;</span> <span class="kt">Value</span>
+<span class="nf">eval0</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Lit</span> <span class="n">i</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">IntVal</span> <span class="n">i</span>
+<span class="nf">eval0</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Var</span> <span class="n">n</span><span class="p">)</span> <span class="ow">=</span> <span class="n">fromJust</span> <span class="p">(</span><span class="kt">Map</span><span class="o">.</span><span class="n">lookup</span> <span class="n">n</span> <span class="n">env</span><span class="p">)</span>
+<span class="nf">eval0</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Plus</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">let</span> <span class="kt">IntVal</span> <span class="n">i1</span> <span class="ow">=</span> <span class="n">eval0</span> <span class="n">env</span> <span class="n">e1</span>
+                             <span class="kt">IntVal</span> <span class="n">i2</span> <span class="ow">=</span> <span class="n">eval0</span> <span class="n">env</span> <span class="n">e2</span>
+                         <span class="kr">in</span> <span class="kt">IntVal</span> <span class="p">(</span><span class="n">i1</span> <span class="o">+</span> <span class="n">i2</span><span class="p">)</span>
+<span class="nf">eval0</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Abs</span> <span class="n">n</span> <span class="n">e</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">FunVal</span> <span class="n">env</span> <span class="n">n</span> <span class="n">e</span>
+<span class="nf">eval0</span> <span class="n">env</span> <span class="p">(</span><span class="kt">App</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">let</span> <span class="n">val1</span> <span class="ow">=</span> <span class="n">eval0</span> <span class="n">env</span> <span class="n">e1</span>
+                            <span class="n">val2</span> <span class="ow">=</span> <span class="n">eval0</span> <span class="n">env</span> <span class="n">e2</span>
+                        <span class="kr">in</span> <span class="kr">case</span> <span class="n">val1</span> <span class="kr">of</span>
+                          <span class="kt">FunVal</span> <span class="n">env&#39;</span> <span class="n">n</span> <span class="n">body</span> <span class="ow">-&gt;</span> <span class="n">eval</span> <span class="p">(</span><span class="kt">Map</span><span class="o">.</span><span class="n">insert</span> <span class="n">n</span> <span class="n">val2</span> <span class="n">env&#39;</span><span class="p">)</span> <span class="n">body</span>
+</pre></div>
+</div>
+<p>もちろん上記の評価関数には粗がある. 例えば, 変数の評価では, どこにもラムダ式で束縛されていない変数が使われるとエラーとともにプログラムが停止する(fromJust を Nothing で評価することになるため). また, 加算の評価では, どちらの式も最終評価値が <cite>IntVal</cite> でないとパターンマッチに失敗する. また, 関数適用の評価におけるcase式は, また別のエラーを吐く可能性もあるだろう.</p>
+<p>この説明だけでは頭の悪い私にはよくわからないので, 少し追加で説明を加えよう. <cite>Env</cite> 型は, <cite>Map.Map Name Value</cite> のシノニムになっているが, <cite>Map.Map</cite> 型はそもそもなんだろう. 調べてみるとこれは, <cite>containers</cite> というパッケージに以下のように定義されていた.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">data</span> <span class="kt">Map</span> <span class="n">k</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>説明には「キー&#8221;k&#8221;と, 値&#8221;a&#8221;を持つMap型」と書いてある. なるほどこれはPythonにおける辞書であると考えればいいのだろう. そうなると, <cite>Map.insert</cite>, <cite>Map.lookup</cite> 関数もなんとなく関数名で動作を理解できる. 一応ちゃんと調べてみると, それぞれ以下のようであった.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="c1">-- 挿入関数</span>
+<span class="c1">-- すでにkeyが存在していると, a (value) の値を書き換える.</span>
+<span class="c1">-- keyが存在していないなら, (k, a) のペアを追加する.</span>
+<span class="nf">insert</span> <span class="ow">::</span> <span class="kt">Ord</span> <span class="n">k</span> <span class="ow">=&gt;</span> <span class="n">k</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Map</span> <span class="n">k</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Map</span> <span class="n">k</span> <span class="n">a</span>
+
+<span class="c1">-- 検索関数</span>
+<span class="c1">-- 検索に使うkeyと検索対象のデータを渡し,</span>
+<span class="c1">-- マッチしたら, Justに包んでvalueを返す.</span>
+<span class="c1">-- マッチしなかったら, Nothingを返す.</span>
+<span class="nf">lookup</span> <span class="ow">::</span> <span class="kt">Ord</span> <span class="n">k</span> <span class="ow">=&gt;</span> <span class="n">k</span> <span class="ow">-&gt;</span> <span class="kt">Map</span> <span class="n">k</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>つまり, <cite>App</cite> の時はenvに対して挿入し, <cite>Var</cite> ではenvに対して検索をかける. この評価関数の第一引数であるenvは, 下の例でも示すが, <cite>Map.empty</cite> を利用する.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="c1">-- 空Map</span>
+<span class="nf">empty</span> <span class="ow">::</span> <span class="kt">Map</span> <span class="n">k</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>つまり, 初めに空マップを作っておき, インタープリタが処理されていくに連れ, ここに挿入されたり検索されたりするわけである.</p>
+<p>さて, このインタープリタを試してみよう.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">exampleExp</span> <span class="ow">=</span> <span class="kt">Lit</span> <span class="mi">12</span> <span class="p">`</span><span class="kt">Plus</span><span class="p">`</span> <span class="p">(</span><span class="kt">App</span> <span class="p">(</span><span class="kt">Abs</span> <span class="s">&quot;x&quot;</span> <span class="p">(</span><span class="kt">Var</span> <span class="s">&quot;x&quot;</span><span class="p">))</span> <span class="p">(</span><span class="kt">Lit</span> <span class="mi">4</span> <span class="p">`</span><span class="kt">Plus</span><span class="p">`</span> <span class="kt">Lit</span> <span class="mi">2</span><span class="p">))</span>
+<span class="nf">eval0</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span> <span class="n">exampleExp</span>
+<span class="o">&gt;</span> <span class="kt">IntVal</span> <span class="mi">18</span>
+</pre></div>
+</div>
+<p>これに関しては, 丁寧に処理過程を見ていこう.</p>
+<p>まずは, <cite>Plus</cite> が処理されるので, <cite>Lit12</cite> と <cite>App (Abs &#8220;x&#8221; (Var &#8220;x&#8221;)) (Lit 4 ...)</cite> が処理される.</p>
+<p>前者は, <cite>IntVal 12</cite> である.</p>
+<p>後者は更に展開される. <cite>App (Abs ..) (Lit ..)</cite> の評価時に両方を評価しそれぞれ変数に束縛する. <cite>(Abs &#8220;x&#8221; (Var &#8220;x&#8221;))</cite> は <cite>FunVal Map.empty &#8220;x&#8221; (Var &#8220;x&#8221;)</cite> となり, <cite>(Lit 4 ...)</cite> は <cite>IntVal 6</cite> になる. case文を無事クリアするため, <cite>App (Abs ..) (Lit ..)</cite> は <cite>eval0 (Map.insert &#8220;x&#8221; (IntVal 6) Map.empty) (Var &#8220;x&#8221;)</cite> となる.</p>
+<p><cite>Map.insert</cite> 関数により, <cite>(&#8220;x&#8221;, IntVal 6)</cite> というペアが保存され, 保存されたあとの <cite>Map.Map k a</cite> 型つまり, <cite>Env</cite> 型の値(<cite>env&#8217;</cite>)が返される. そのため結果的に, <cite>App (Abs ..) (Lits ..)</cite> は <cite>eval env&#8217; (Var &#8220;x&#8221;)</cite> と評価される.</p>
+<p>さて, これを評価するとはすなわち, <cite>Map.lookup</cite> で <cite>env&#8217;</cite> を <cite>&#8220;x&#8221;</cite> でマッチングする. これは必ず成功し(入れたものをそのまま取り出すため), <cite>IntVal 6</cite> が帰ってくる.</p>
+<p>最後に, はじめの式の評価に戻り, <cite>IntVal 12</cite> と <cite>IntVal 6</cite> の加算になるため, 結果として <cite>IntVal 18</cite> ということになる.</p>
+</div>
+</div>
+<div class="section" id="monad-transformers">
+<h2>2. モナドトランスフォーマー(Monad Transformers)<a class="headerlink" href="#monad-transformers" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>モナドトランスフォーマーを使う目的は, 状態・エラー・環境といった計算の側面をコントロールすることである. すでにあるプログラムにモナドを使って書き直すのは少々めんどくさいが, 一度やってしまうとモナドが絡む部分を加えたり, 削ったり, 変更したりするのは比較的簡単である.</p>
+<p>この節では, 1.1節のプログラムをモナドを使って書き直し, データ型や関数定義を様々なモナドトランスフォーマーの型や関数を使って除々に拡張していく.</p>
+<div class="section" id="converting-to-monadic-style">
+<h3>2.1 モナドスタイルに (Converting to Monadic Style)<a class="headerlink" href="#converting-to-monadic-style" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>モナドトランスフォーマーを使うには, 関数をモナドスタイルで表現しなければならない. それはつまり, 逐次処理をdo記法を使ったモナド操作で書き, 関数の結果を示すために, return関数を使う必要があるということである.</p>
+<p>まず, 評価装置が定義されるモナドを定義する. 下の <cite>Eval1 a</cite> を <cite>Identity a</cite> 型の別名として定義する. <cite>Identity</cite> は, <cite>Control.Monad.Identity</cite> からインポートされたモナドで, 想像しうる限り一番単純なモナドだろう. <cite>Identity</cite> は, 標準的な <cite>return</cite> や <cite>(&gt;&gt;=)</cite> をモナド操作の構築のために定義していて, <cite>runIdentity</cite> 関数をそのような操作を実行するために追加で定義している. それ以外には <cite>Identity</cite> モナドは何もしない. ある意味で, このモナドを「基礎」として使い, 周りを別のモナドで包むこともできる. 可読性のため, ただ <cite>runIdentity</cite> を呼ぶための <cite>runEval1</cite> も定義している. <cite>runEval1</cite> は <cite>runIdentity</cite> を呼び出すだけである.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">type</span> <span class="kt">Eval1</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Identity</span> <span class="n">a</span>
+
+<span class="nf">runEval1</span> <span class="ow">::</span> <span class="kt">Eval1</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<span class="nf">runEval1</span> <span class="n">ev</span> <span class="ow">=</span> <span class="n">runIdentity</span> <span class="n">ev</span>
+</pre></div>
+</div>
+<p>Eval1モナドをもとに <cite>eval0</cite> 関数を, <cite>eval1</cite> として書き直す.
+基本的には型にあるように, 結果が <cite>Eval1</cite> モナドに包まれているようにする.
+単純に言えば <cite>return</cite> を使って上げれば良いが, 一部少しひねっている.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">eval1</span> <span class="ow">::</span> <span class="kt">Env</span> <span class="ow">-&gt;</span> <span class="kt">Exp</span> <span class="ow">-&gt;</span> <span class="kt">Eval1</span> <span class="kt">Value</span>
+<span class="nf">eval1</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Lit</span> <span class="n">i</span><span class="p">)</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="n">i</span>
+<span class="nf">eval1</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Var</span> <span class="n">n</span><span class="p">)</span> <span class="ow">=</span> <span class="n">maybe</span> <span class="p">(</span><span class="n">fail</span> <span class="p">(</span><span class="s">&quot;undefined variable: &quot;</span> <span class="o">++</span> <span class="n">n</span><span class="p">))</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">Map</span><span class="o">.</span><span class="n">lookup</span> <span class="n">n</span> <span class="n">env</span>
+<span class="nf">eval1</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Plus</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="kt">IntVal</span> <span class="n">i1</span> <span class="ow">&lt;-</span> <span class="n">eval1</span> <span class="n">env</span> <span class="n">e1</span>
+                            <span class="kt">IntVal</span> <span class="n">i2</span> <span class="ow">&lt;-</span> <span class="n">eval1</span> <span class="n">env</span> <span class="n">e2</span>
+                            <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="p">(</span><span class="n">i1</span> <span class="o">+</span> <span class="n">i2</span><span class="p">)</span>
+<span class="nf">eval1</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Abs</span> <span class="n">n</span> <span class="n">e</span><span class="p">)</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">FunVal</span> <span class="n">env</span> <span class="n">n</span> <span class="n">e</span>
+<span class="nf">eval1</span> <span class="n">env</span> <span class="p">(</span><span class="kt">App</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">val1</span> <span class="ow">&lt;-</span> <span class="n">eval1</span> <span class="n">env</span> <span class="n">e1</span>
+                           <span class="n">val2</span> <span class="ow">&lt;-</span> <span class="n">eval1</span> <span class="n">env</span> <span class="n">e2</span>
+                           <span class="kr">case</span> <span class="n">val1</span> <span class="kr">of</span>
+                             <span class="kt">FunVal</span> <span class="n">env&#39;</span> <span class="n">n</span> <span class="n">body</span> <span class="ow">-&gt;</span>
+                               <span class="n">eval1</span> <span class="p">(</span><span class="kt">Map</span><span class="o">.</span><span class="n">insert</span> <span class="n">n</span> <span class="n">val2</span> <span class="n">env&#39;</span><span class="p">)</span> <span class="n">body</span>
+</pre></div>
+</div>
+<p>上記の実装を見てみると, <cite>Lit</cite> と <cite>Abs</cite> に関しては単純に, <cite>return</cite> 関数を使うだけでいい. <cite>App</cite> に関しては, 中で <cite>eval1</cite> 関数を呼び出すだけで完結する(つまり, <cite>App</cite> の場合は直接値を返さないため, <cite>return</cite> 関数を使わない). <cite>Plus</cite> に関しては注意が必要である. まずモナドの逐次処理なのでdo記法になっていること. そして, <cite>Plus</cite> の引数を評価関数に渡した結果を使って加算するが, その結果は <cite>Eval Value</cite> となっているため <cite>&lt;-</cite> を使うことである. 最終的に返す値に関しても, <cite>return</cite> 関数をつけることを忘れないこと. 最後に, <cite>Var</cite> に関してであるがこれに付いては少し関数を紹介する. <cite>maybe</cite> と <cite>fail</cite> 関数である.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="c1">-- 基本的に第二引数の関数を, 第三引数に適用させる.</span>
+<span class="c1">-- 第三引数がMaybeなので, Just値なら適用後の値が結果になる.</span>
+<span class="c1">-- 第三引数がNothingならば, 第一引数(デフォルト値)を返す.</span>
+<span class="nf">maybe</span> <span class="ow">::</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span>
+
+<span class="c1">-- メッセージ付きで失敗する関数</span>
+<span class="c1">-- モナドの定義関数ではないが, do記法内のパターンマッチの失敗</span>
+<span class="c1">-- などで発動する.</span>
+<span class="nf">fail</span> <span class="ow">::</span> <span class="kt">Monad</span> <span class="n">m</span> <span class="ow">=&gt;</span> <span class="kt">String</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>さて, 冷静に実装を見てみると, 第一引数は関数適用した <cite>fail</cite> 関数である. 第二引数は <cite>return</cite> であり, 第三引数は <cite>Map.lookup</cite> で取得した <cite>Maybe</cite> 値である. つまり, <cite>Map.lookup</cite> が成功したら <cite>return</cite> によって <cite>Eval Value</cite> として値が返るが, <cite>Map.lookup</cite> が <cite>Nothing</cite> なら <cite>fail string</cite>, つまりメッセージを出力し失敗する.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval1</span> <span class="p">(</span><span class="n">eval1</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span> <span class="n">exampleExp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>とすれば,</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kt">IntVal</span> <span class="mi">18</span>
+</pre></div>
+</div>
+<p>となる.
+また, 失敗の例を見るために, 以下のような関数を実装し</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">failureExampleExp</span> <span class="ow">::</span> <span class="kt">Exp</span>
+<span class="nf">failureExampleExp</span> <span class="ow">=</span> <span class="kt">Lit</span> <span class="mi">12</span> <span class="p">`</span><span class="kt">Plus</span><span class="p">`</span> <span class="p">(</span><span class="kt">App</span> <span class="p">(</span><span class="kt">Abs</span> <span class="s">&quot;x&quot;</span> <span class="p">(</span><span class="kt">Var</span> <span class="s">&quot;y&quot;</span><span class="p">))</span> <span class="p">(</span><span class="kt">Lit</span> <span class="mi">4</span> <span class="p">`</span><span class="kt">Plus</span><span class="p">`</span> <span class="kt">Lit</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>以下のように実行すると, 失敗時の挙動を確認できる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval1</span> <span class="p">(</span><span class="n">eval1</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span> <span class="n">failureExampleExp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>要約すれば, <cite>return</cite> 関数を使って関数の結果を返すことと, do記法や (&gt;&gt;=) や (&gt;&gt;) 関数を使ってモナドアクションを逐次実行することの2つからモナドへの変換は成り立っている.</p>
+<div class="admonition note">
+<p class="first admonition-title">注釈</p>
+<p>eval1 の型は, 以下のように一般化できる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">eval1</span> <span class="ow">::</span> <span class="kt">Monad</span> <span class="n">m</span> <span class="ow">=&gt;</span> <span class="kt">Env</span> <span class="ow">-&gt;</span> <span class="kt">Exp</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="kt">Value</span>
+</pre></div>
+</div>
+<p>これは, <cite>return</cite> と <cite>do</cite> 記法に隠された (&gt;&gt;=) 以外には, どんなモナド操作を行っていないためである. こうすれば, どんなモナドの文脈でも eval1 を使うことができ,</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval1</span> <span class="p">(</span><span class="n">eval1</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span> <span class="n">exampleExp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>とする代わりに, ghciで,</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">eval1</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span> <span class="n">exampleExp</span>
+</pre></div>
+</div>
+<p class="last">と書ける. これは, IOモナドの内部で式を実行する. インタープリタは内部的に <cite>print</cite> 関数を使っているが, この関数はIOモナド内部でしか利用できないためである. これは嬉しいこともあるが, 特定のモナドに固有の操作を行うことが多いだろうし, 特定のモナドに操作は縛られる.</p>
+</div>
+</div>
+<div class="section" id="adding-error-handling">
+<h3>2.2 エラー処理を加える (Adding Error Handling)<a class="headerlink" href="#adding-error-handling" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>これまで見てきたように, 現状の評価関数は粗が多い. 例えば束縛されていない変数や型エラーがある式など, 入力によってはエラーメッセージと共に泊まってしまう.</p>
+<p>ローカルのモナドトランスフォーマーライブラリにある <cite>ErrorT</cite> モナドトランスフォーマーを使えば, <cite>Eval1</cite> モナドを基にして <cite>Eval2</cite> へ拡張できる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">type</span> <span class="kt">Eval2</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">ErrorT</span> <span class="kt">String</span> <span class="kt">Identity</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p><cite>ErrorT</cite> のString型引数は例外の型で, エラーの状態を示すために使われる値である. ここでは簡単のためにStringを使うが, 実際の実装ではコンパイラだとソースコードの一だとか, ウェブアプリケーションだとタイムスタンプだとかがあるといいかもしれない.</p>
+<p><cite>Eval2</cite> モナド内での計算を実行する関数は2つ異なる点がある. ひとつ目は評価の結果が <cite>Either String a</cite> 型で, <cite>Left s</cite> だとエラーが置きたことをエラーメッセージ <cite>s</cite> で示し, <cite>Right r</cite> だと評価が成功したことを結果 <cite>r</cite> で表す. ふたつ目は, <cite>runErrorT</cite> 関数を与えられた計算に対して呼び出し, <cite>Identity</cite> の計算が返され, 今度はそれが <cite>runIdentity</cite> を使って評価されるという点である.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval2</span> <span class="ow">::</span> <span class="kt">Eval2</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Either</span> <span class="kt">String</span> <span class="n">a</span>
+<span class="nf">runEval2</span> <span class="n">ev</span> <span class="ow">=</span> <span class="n">runIdentity</span> <span class="p">(</span><span class="n">runErrorT</span> <span class="n">ev</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>さて, もう <cite>eval1</cite> 関数の型を単純に書き換えるができて, 次のバージョン(eval2a) を実装できる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">eval2a</span> <span class="ow">::</span> <span class="kt">Env</span> <span class="ow">-&gt;</span> <span class="kt">Exp</span> <span class="ow">-&gt;</span> <span class="kt">Eval2</span> <span class="kt">Value</span>
+<span class="nf">eval2a</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Lit</span> <span class="n">i</span><span class="p">)</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="n">i</span>
+<span class="nf">eval2a</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Var</span> <span class="n">n</span><span class="p">)</span> <span class="ow">=</span> <span class="n">maybe</span> <span class="p">(</span><span class="n">fail</span> <span class="p">(</span><span class="s">&quot;[CatchError] undefined variable: &quot;</span> <span class="o">++</span> <span class="n">n</span><span class="p">))</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">Map</span><span class="o">.</span><span class="n">lookup</span> <span class="n">n</span> <span class="n">env</span>
+<span class="nf">eval2a</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Plus</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="kt">IntVal</span> <span class="n">i1</span> <span class="ow">&lt;-</span> <span class="n">eval2a</span> <span class="n">env</span> <span class="n">e1</span>
+                             <span class="kt">IntVal</span> <span class="n">i2</span> <span class="ow">&lt;-</span> <span class="n">eval2a</span> <span class="n">env</span> <span class="n">e2</span>
+                             <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="p">(</span><span class="n">i1</span> <span class="o">+</span> <span class="n">i2</span><span class="p">)</span>
+<span class="nf">eval2a</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Abs</span> <span class="n">n</span> <span class="n">e</span><span class="p">)</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">FunVal</span> <span class="n">env</span> <span class="n">n</span> <span class="n">e</span>
+<span class="nf">eval2a</span> <span class="n">env</span> <span class="p">(</span><span class="kt">App</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">val1</span> <span class="ow">&lt;-</span> <span class="n">eval2a</span> <span class="n">env</span> <span class="n">e1</span>
+                            <span class="n">val2</span> <span class="ow">&lt;-</span> <span class="n">eval2a</span> <span class="n">env</span> <span class="n">e2</span>
+                            <span class="kr">case</span> <span class="n">val1</span> <span class="kr">of</span>
+                              <span class="kt">FunVal</span> <span class="n">env&#39;</span> <span class="n">n</span> <span class="n">body</span>
+                                <span class="ow">-&gt;</span> <span class="n">eval2a</span> <span class="p">(</span><span class="kt">Map</span><span class="o">.</span><span class="n">insert</span> <span class="n">n</span> <span class="n">val2</span> <span class="n">env&#39;</span><span class="p">)</span> <span class="n">body</span>
+</pre></div>
+</div>
+<p>このバージョンは上で定義された <cite>runEval2</cite> 関数を使って実行できる. この関数をサンプルの式に適用すると, 結果は <cite>Right</cite> コンストラクタに包まれている点のみが変わっている.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval2</span> <span class="p">(</span><span class="n">eval2a</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span> <span class="n">exampleExp</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="kt">Right</span> <span class="p">(</span><span class="kt">IntVal</span> <span class="mi">18</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>しかし, これではだめで, 正しくない式が与えられると <cite>ErrorT</cite> トランスフォーマーのエラー報告は使われない. もっと有用なエラーメッセージを吐くためには改良が必要である.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">eval2b</span> <span class="ow">::</span> <span class="kt">Env</span> <span class="ow">-&gt;</span> <span class="kt">Exp</span> <span class="ow">-&gt;</span> <span class="kt">Eval2</span> <span class="kt">Value</span>
+<span class="nf">eval2b</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Lit</span> <span class="n">i</span><span class="p">)</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="n">i</span>
+<span class="nf">eval2b</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Var</span> <span class="n">n</span><span class="p">)</span> <span class="ow">=</span> <span class="n">maybe</span> <span class="p">(</span><span class="n">fail</span> <span class="p">(</span><span class="s">&quot;undefined variable: &quot;</span> <span class="o">++</span> <span class="n">n</span><span class="p">))</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">Map</span><span class="o">.</span><span class="n">lookup</span> <span class="n">n</span> <span class="n">env</span>
+<span class="nf">eval2b</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Plus</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">e1&#39;</span> <span class="ow">&lt;-</span> <span class="n">eval2b</span> <span class="n">env</span> <span class="n">e1</span>
+                             <span class="n">e2&#39;</span> <span class="ow">&lt;-</span> <span class="n">eval2b</span> <span class="n">env</span> <span class="n">e2</span>
+                             <span class="kr">case</span> <span class="p">(</span><span class="n">e1&#39;</span><span class="p">,</span> <span class="n">e2&#39;</span><span class="p">)</span> <span class="kr">of</span>
+                               <span class="p">(</span><span class="kt">IntVal</span> <span class="n">i1</span><span class="p">,</span> <span class="kt">IntVal</span> <span class="n">i2</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="p">(</span><span class="n">i1</span> <span class="o">+</span> <span class="n">i2</span><span class="p">)</span>
+                               <span class="kr">_</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="s">&quot;type error&quot;</span>
+<span class="nf">eval2b</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Abs</span> <span class="n">n</span> <span class="n">e</span><span class="p">)</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">FunVal</span> <span class="n">env</span> <span class="n">n</span> <span class="n">e</span>
+<span class="nf">eval2b</span> <span class="n">env</span> <span class="p">(</span><span class="kt">App</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">val1</span> <span class="ow">&lt;-</span> <span class="n">eval2b</span> <span class="n">env</span> <span class="n">e1</span>
+                            <span class="n">val2</span> <span class="ow">&lt;-</span> <span class="n">eval2b</span> <span class="n">env</span> <span class="n">e2</span>
+                            <span class="kr">case</span> <span class="n">val1</span> <span class="kr">of</span>
+                              <span class="kt">FunVal</span> <span class="n">env&#39;</span> <span class="n">n</span> <span class="n">body</span> <span class="ow">-&gt;</span> <span class="n">eval2b</span> <span class="p">(</span><span class="kt">Map</span><span class="o">.</span><span class="n">insert</span> <span class="n">n</span> <span class="n">val2</span> <span class="n">env&#39;</span><span class="p">)</span> <span class="n">body</span>
+                              <span class="kr">_</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="s">&quot;type error&quot;</span>
+</pre></div>
+</div>
+<p>これで, 正しくない式を評価しようとすると, Leftコンストラクタに包まれたエラーメッセージが出る. そして, 評価関数に対してパターンマッチングすることで, 通常の結果とエラーの結果を区別することができる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval2</span> <span class="p">(</span><span class="n">eval2b</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span> <span class="p">(</span><span class="kt">Plus</span> <span class="p">(</span><span class="kt">Lit</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="kt">Abs</span> <span class="s">&quot;x&quot;</span> <span class="p">(</span><span class="kt">Var</span> <span class="s">&quot;x&quot;</span><span class="p">))))</span>
+<span class="o">&gt;</span> <span class="kt">Left</span> <span class="s">&quot;type error&quot;</span>
+</pre></div>
+</div>
+<p>エラーをキャッチすることができた!</p>
+<p><cite>eval2b</cite> 関数をもうちょっと良く調べ得てみれば, do式の内部のモナド結合ではパターンマッチングが失敗したときに <cite>fail</cite> 関数を呼び出すということをうまく使うと, もっと短く(良く?)できることがわかる. そして, 今まで見てきたように, <cite>fail</cite> 関数は思ったとおりに動いてくれる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">eval2c</span> <span class="ow">::</span> <span class="kt">Env</span> <span class="ow">-&gt;</span> <span class="kt">Exp</span> <span class="ow">-&gt;</span> <span class="kt">Eval2</span> <span class="kt">Value</span>
+<span class="nf">eval2c</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Lit</span> <span class="n">i</span><span class="p">)</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="n">i</span>
+<span class="nf">eval2c</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Var</span> <span class="n">n</span><span class="p">)</span> <span class="ow">=</span> <span class="n">maybe</span> <span class="p">(</span><span class="n">fail</span><span class="p">(</span><span class="s">&quot;undefined variable: &quot;</span> <span class="o">++</span> <span class="n">n</span><span class="p">))</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">Map</span><span class="o">.</span><span class="n">lookup</span> <span class="n">n</span> <span class="n">env</span>
+<span class="nf">eval2c</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Plus</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="kt">IntVal</span> <span class="n">i1</span> <span class="ow">&lt;-</span> <span class="n">eval2c</span> <span class="n">env</span> <span class="n">e1</span>
+                             <span class="kt">IntVal</span> <span class="n">i2</span> <span class="ow">&lt;-</span> <span class="n">eval2c</span> <span class="n">env</span> <span class="n">e2</span>
+                             <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="p">(</span><span class="n">i1</span> <span class="o">+</span> <span class="n">i2</span><span class="p">)</span>
+<span class="nf">eval2c</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Abs</span> <span class="n">n</span> <span class="n">e</span><span class="p">)</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">FunVal</span> <span class="n">env</span> <span class="n">n</span> <span class="n">e</span>
+<span class="nf">eval2c</span> <span class="n">env</span> <span class="p">(</span><span class="kt">App</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="kt">FunVal</span> <span class="n">env&#39;</span> <span class="n">n</span> <span class="n">body</span> <span class="ow">&lt;-</span> <span class="n">eval2c</span> <span class="n">env</span> <span class="n">e1</span>
+                            <span class="n">val2</span> <span class="ow">&lt;-</span> <span class="n">eval2c</span> <span class="n">env</span> <span class="n">e2</span>
+                            <span class="n">eval2c</span> <span class="p">(</span><span class="kt">Map</span><span class="o">.</span><span class="n">insert</span> <span class="n">n</span> <span class="n">val2</span> <span class="n">env&#39;</span><span class="p">)</span> <span class="n">body</span>
+</pre></div>
+</div>
+<p>すこし丁寧に説明しよう. <cite>eval2b</cite> において, <cite>Plus</cite> 型の処理部分では, 評価結果がどちらも <cite>IntVal</cite> であれば加算処理を行い, そうでなければ <cite>throwError</cite> を投げるというコードだった. しかし, パターンマッチに失敗した場合は <cite>fail</cite> 関数が呼ばれるため, 結果の確認処理を省いても, エラーを補足してくれるため動作自体はする. ただし, その場合はエラーが起きた際に投げられるエラーメッセージは &#8220;pattern match failure ... &#8221; というあまり良いエラーメッセージではないことに気をつける. これが, 上記の例を敢えて「短く」書けると称し, 「良く」書けると称さなかった理由である. もっと良いエラーメッセージがほしいなら, 自分で <cite>throwError</cite> をするほうがいいだろう.</p>
+<p>さて長くなったが, 以下がエラー処理評価をする最終バージョンである.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">eval2</span> <span class="ow">::</span> <span class="kt">Env</span> <span class="ow">-&gt;</span> <span class="kt">Exp</span> <span class="ow">-&gt;</span> <span class="kt">Eval2</span> <span class="kt">Value</span>
+<span class="nf">eval2</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Lit</span> <span class="n">i</span><span class="p">)</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="n">i</span>
+<span class="nf">eval2</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Var</span> <span class="n">n</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">case</span> <span class="kt">Map</span><span class="o">.</span><span class="n">lookup</span> <span class="n">n</span> <span class="n">env</span> <span class="kr">of</span>
+                      <span class="kt">Nothing</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="p">(</span><span class="s">&quot;unbound variable: &quot;</span> <span class="o">++</span> <span class="n">n</span><span class="p">)</span>
+                      <span class="kt">Just</span> <span class="n">val</span> <span class="ow">-&gt;</span> <span class="n">return</span> <span class="n">val</span>
+<span class="nf">eval2</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Plus</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">e1&#39;</span> <span class="ow">&lt;-</span> <span class="n">eval2</span> <span class="n">env</span> <span class="n">e1</span>
+                            <span class="n">e2&#39;</span> <span class="ow">&lt;-</span> <span class="n">eval2</span> <span class="n">env</span> <span class="n">e2</span>
+                            <span class="kr">case</span> <span class="p">(</span><span class="n">e1&#39;</span><span class="p">,</span> <span class="n">e1&#39;</span><span class="p">)</span> <span class="kr">of</span>
+                              <span class="p">(</span><span class="kt">IntVal</span> <span class="n">i1</span><span class="p">,</span> <span class="kt">IntVal</span> <span class="n">i2</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="p">(</span><span class="n">i1</span> <span class="o">+</span> <span class="n">i2</span><span class="p">)</span>
+                              <span class="kr">_</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="s">&quot;type error in addtion&quot;</span>
+<span class="nf">eval2</span> <span class="n">env</span> <span class="p">(</span><span class="kt">Abs</span> <span class="n">n</span> <span class="n">e</span><span class="p">)</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">FunVal</span> <span class="n">env</span> <span class="n">n</span> <span class="n">e</span>
+<span class="nf">eval2</span> <span class="n">env</span> <span class="p">(</span><span class="kt">App</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">val1</span> <span class="ow">&lt;-</span> <span class="n">eval2</span> <span class="n">env</span> <span class="n">e1</span>
+                           <span class="n">val2</span> <span class="ow">&lt;-</span> <span class="n">eval2</span> <span class="n">env</span> <span class="n">e2</span>
+                           <span class="kr">case</span> <span class="n">val1</span> <span class="kr">of</span>
+                             <span class="kt">FunVal</span> <span class="n">env&#39;</span> <span class="n">n</span> <span class="n">body</span> <span class="ow">-&gt;</span> <span class="n">eval2</span> <span class="p">(</span><span class="kt">Map</span><span class="o">.</span><span class="n">insert</span> <span class="n">n</span> <span class="n">val2</span> <span class="n">env&#39;</span><span class="p">)</span> <span class="n">body</span>
+                             <span class="kr">_</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="s">&quot;type error in application&quot;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">注釈</p>
+<p class="last"><cite>Control.Monad.Error</cite> モジュールは <cite>throwError</cite> で生じたエラーを捕まえるように, 別の関数も提供している. それが, <cite>catchError :: m a -&gt; (e -&gt; m a) -&gt; m a</cite> で, 任意のエラーモナドに使える. 局所的なエラー処理にもエラーを上位に渡すことにも使える.</p>
+</div>
+</div>
+<div class="section" id="hiding-the-environment">
+<h3>2.3 環境を隠す (Hiding the Environment)<a class="headerlink" href="#hiding-the-environment" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>評価関数の定義をもっといいものにする方法の一つは, すべての関数定義と呼び出しから環境を隠すことである. 環境が展開されている場所は一箇所(関数適用)だけ, 実際に使われる場所は二箇所 (変数とラムダ式) だけなので, 他の場所では環境を隠せばコードの量を減らすことができる. これはリーダーモナドを実装するために <cite>ReaderT</cite> モナドトランスフォーマーを加えれば表現できる. <cite>Reader</cite> モナドは, 値をその下のすべての計算に渡す. この値は内側の計算から読むことができ, 入れ子になった計算の中では改変することもできる. 状態(<cite>State</cite>)モナドと異なり, カプセル化された計算は上位の計算で使われた値を改変することができない.</p>
+<p>以前のモナドを単に <cite>ReaderT</cite> コンストラクタで包むことから始める.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">type</span> <span class="kt">Eval3</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">ReaderT</span> <span class="kt">Env</span> <span class="p">(</span><span class="kt">ErrorT</span> <span class="kt">String</span> <span class="kt">Identity</span><span class="p">)</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>実行関数 <cite>runEval3</cite> は初期環境を与える必要があるので少し変更する必要がある. 評価関数から環境引数を削ることが目的である.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval3</span> <span class="ow">::</span> <span class="kt">Env</span> <span class="ow">-&gt;</span> <span class="kt">Eval3</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Either</span> <span class="kt">String</span> <span class="n">a</span>
+<span class="nf">runEval3</span> <span class="n">env</span> <span class="n">ev</span> <span class="ow">=</span> <span class="n">runIdentity</span> <span class="p">(</span><span class="n">runErrorT</span> <span class="p">(</span><span class="n">runReaderT</span> <span class="n">ev</span> <span class="n">env</span><span class="p">))</span>
+
+<span class="nf">eval3</span> <span class="ow">::</span> <span class="kt">Exp</span> <span class="ow">-&gt;</span> <span class="kt">Eval3</span> <span class="kt">Value</span>
+<span class="nf">eval3</span> <span class="p">(</span><span class="kt">Lit</span> <span class="n">i</span><span class="p">)</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="n">i</span>
+<span class="nf">eval3</span> <span class="p">(</span><span class="kt">Var</span> <span class="n">n</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">env</span> <span class="ow">&lt;-</span> <span class="n">ask</span>
+                  <span class="kr">case</span> <span class="kt">Map</span><span class="o">.</span><span class="n">lookup</span> <span class="n">n</span> <span class="n">env</span> <span class="kr">of</span>
+                    <span class="kt">Nothing</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="p">(</span><span class="s">&quot;unbound variable: &quot;</span> <span class="o">++</span> <span class="n">n</span><span class="p">)</span>
+                    <span class="kt">Just</span> <span class="n">val</span> <span class="ow">-&gt;</span> <span class="n">return</span> <span class="n">val</span>
+<span class="nf">eval3</span> <span class="p">(</span><span class="kt">Plus</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">e1&#39;</span> <span class="ow">&lt;-</span> <span class="n">eval3</span> <span class="n">e1</span>
+                        <span class="n">e2&#39;</span> <span class="ow">&lt;-</span> <span class="n">eval3</span> <span class="n">e2</span>
+                        <span class="kr">case</span> <span class="p">(</span><span class="n">e1&#39;</span><span class="p">,</span> <span class="n">e2&#39;</span><span class="p">)</span> <span class="kr">of</span>
+                          <span class="p">(</span><span class="kt">IntVal</span> <span class="n">i1</span><span class="p">,</span> <span class="kt">IntVal</span> <span class="n">i2</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="p">(</span><span class="n">i1</span> <span class="o">+</span> <span class="n">i2</span><span class="p">)</span>
+                          <span class="kr">_</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="s">&quot;type error in addition&quot;</span>
+<span class="nf">eval3</span> <span class="p">(</span><span class="kt">Abs</span> <span class="n">n</span> <span class="n">e</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">env</span> <span class="ow">&lt;-</span> <span class="n">ask</span>
+                     <span class="n">return</span> <span class="o">$</span> <span class="kt">FunVal</span> <span class="n">env</span> <span class="n">n</span> <span class="n">e</span>
+<span class="nf">eval3</span> <span class="p">(</span><span class="kt">App</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">val1</span> <span class="ow">&lt;-</span> <span class="n">eval3</span> <span class="n">e1</span>
+                       <span class="n">val2</span> <span class="ow">&lt;-</span> <span class="n">eval3</span> <span class="n">e2</span>
+                       <span class="kr">case</span> <span class="n">val1</span> <span class="kr">of</span>
+                         <span class="kt">FunVal</span> <span class="n">env&#39;</span> <span class="n">n</span> <span class="n">body</span> <span class="ow">-&gt;</span> <span class="n">local</span> <span class="p">(</span><span class="n">const</span> <span class="p">(</span><span class="kt">Map</span><span class="o">.</span><span class="n">insert</span> <span class="n">n</span> <span class="n">val2</span> <span class="n">env&#39;</span><span class="p">))</span> <span class="p">(</span><span class="n">eval3</span> <span class="n">body</span><span class="p">)</span>
+                         <span class="kr">_</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="s">&quot;type error in application&quot;</span>
+</pre></div>
+</div>
+<p><cite>Reader</cite> モナドで利用する補助関数 <cite>ask</cite>, <cite>local</cite> の説明をしておく.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="c1">-- 環境を回収する</span>
+<span class="nf">ask</span> <span class="ow">::</span> <span class="n">m</span> <span class="n">r</span>
+
+<span class="c1">-- 環境を変更する計算(関数)を実行する</span>
+<span class="nf">local</span> <span class="ow">::</span> <span class="p">(</span><span class="n">r</span> <span class="ow">-&gt;</span> <span class="n">r</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p><cite>ask</cite> 関数に関してはいいだろう. 問題は <cite>local</cite> 関数が使われている部分である. <cite>local</cite> の型定義から <cite>(r -&gt; r)</cite> の部分が <cite>const (Map.insert n val2 env&#8217;)</cite> であり, <cite>m a</cite> の部分が <cite>eval3 body</cite> である. ここで, <cite>const (Map.insert n val2 env)</cite> の意味を考えてみる. 本来 <cite>local</cite> に渡すのは「状態を更新するための関数」であるが, 今は <cite>Map.insert n val2 env&#8217;</cite> によって更新された状態が取得できているような状況であり, いわばこの状態と以前の状態を入れ替えたいのである. ここで, <cite>const</cite> 関数を利用する. これは, <cite>const :: a -&gt; b -&gt; a</cite> という型の関数で, 「第一引数と第二引数を受け取り, 結果として第一引数を返す」という関数である. すなわち, この関数に新しい状態を適用させた関数 <cite>const (Map.insert n val2 env)</cite> を <cite>local</cite> 関数で利用してあげると, 「現在の状況を <cite>const</cite> の第二引数にとる」ような形にすることができ, 結果として第一引数として適用した状態が返されるため, 状態を入れ替えることができるのである. Readerモナドを利用することで, これまでのような引数の流れではなく, <cite>Env</cite> が外に出ていることに注意する.</p>
+<p>サンプルを実行するなら, 以下のように評価する.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval3</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span> <span class="p">(</span><span class="n">eval3</span> <span class="n">exampleExp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>モナドが複雑になってきたので, ここで一度この関数の動作の流れを順にとらえてみる. この関数は以下の関数と同値である(exampleExpを展開しただけ)</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval3</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span> <span class="p">(</span><span class="n">eval3</span> <span class="p">(</span><span class="kt">Lit</span> <span class="mi">12</span> <span class="p">`</span><span class="kt">Plus</span><span class="p">`</span> <span class="p">(</span><span class="kt">App</span> <span class="p">(</span><span class="kt">Abs</span> <span class="s">&quot;x&quot;</span> <span class="p">(</span><span class="kt">Var</span> <span class="s">&quot;x&quot;</span><span class="p">))</span> <span class="p">(</span><span class="kt">Lit</span> <span class="mi">4</span> <span class="p">`</span><span class="kt">Plus</span><span class="p">`</span> <span class="kt">Lit</span> <span class="mi">2</span><span class="p">))))</span>
+</pre></div>
+</div>
+<p><cite>runEval3 :: Env -&gt; Eval3 a -&gt; Either String a</cite> であり, <cite>eval3 :: Exp -&gt; Eval Value</cite> であり, <cite>exampleExp :: Exp</cite> であった. さて, <cite>eval3</cite> 関数の処理からはじまり, <cite>Plus</cite> の処理を行う. <cite>Lit 12</cite> は <cite>Eval3 IntVal 12</cite> となり, <cite>App (Abs &#8220;x&#8221; (Var &#8220;x&#8221;)) (Lit 4 `Plus` Lit 2)</cite> は更に評価が進むことに成る. <cite>App</cite> の処理に入るため, <cite>Abs &#8220;x&#8221; (Var &#8220;x&#8221;)</cite> と <cite>(Lit 4 `Plus` Lit 2)</cite> を評価することになり, 前者は <cite>Eval3 FunVal Map.empty &#8220;x&#8221; (Var &#8220;x&#8221;)</cite> となるため, <cite>val1 = FunVal Map.empty &#8220;x&#8221; (Var &#8220;x&#8221;)</cite> であり, 後者は <cite>Eval3 IntVal 12</cite> となるため, <cite>val2 = IntVal 12</cite> である. これは, case文で制御され, <cite>Map.insert &#8220;x&#8221; (IntVal 12) Map.empty</cite> で得られる新しい環境 <cite>(env&#8217;&#8216;)</cite> を第一引数として適用した <cite>const</cite> 関数 <cite>const (Map.insert n val2 env&#8217;)</cite> と, <cite>(Var &#8220;x&#8221;)</cite> を評価する <cite>eval3 body</cite> を第二引数として, <cite>local</cite> 関数が呼ばれる. この <cite>local</cite> 関数では, 第二引数における環境として, 第一引数の環境が利用されるため, <cite>Map.empty</cite> から一度更新された環境 <cite>env&#8217;</cite> を利用する. そのため, <cite>Var</cite> の処理における <cite>Map.lookup</cite> で値が発見され, 期待した動作結果をえる.</p>
+<div class="admonition note">
+<p class="first admonition-title">注釈</p>
+<p><cite>ask</cite> に加え, <cite>asks</cite> 関数が予め定義されていて環境から値へとマッピングする関数を取る. これはレコードセレクター関数(record selector function)に <cite>ask</cite> を適用して環境のそれぞれの構成要素を取り出すのに使うこともできる.</p>
+<p class="last">レコードセレクター関数とは, データ型を record syntax で定義した際に, コンパイラが自動的につくるフィールドの値を取得する関数のことである.</p>
+</div>
+</div>
+<div class="section" id="adding-state">
+<h3>2.4 状態を加える (Adding State)<a class="headerlink" href="#adding-state" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>重要なモナドの応用例として, 純粋関数型のプログラムに変更可能 (mutable) な状態を可能にすることが挙げられる. これは, Stateモナドを用いれば良く, 初期状態の設定・現在の状態の問い合わせ・変更といった操作を提供してくれる.</p>
+<p>例として, このインタープリタにプロファイリング機能を付け足したいとする. 最も内側のモナド (<cite>Identity</cite>) を <cite>StateT</cite> コンストラクタで包んで新しいモナドを定義する. (<cite>State</cite> モナドと <cite>Error</cite> モナドに関しては, 後でみるようにコンストラクタの順番が問題になる). 例では, 単純な整数値を状態として保持するが, どんなデータ型の値でも可能である. 通常は, 目下の仕事に必要十分な状態を記録として保持することになる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">type</span> <span class="kt">Eval4</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">ReaderT</span> <span class="kt">Env</span> <span class="p">(</span><span class="kt">ErrorT</span> <span class="kt">String</span> <span class="p">(</span><span class="kt">StateT</span> <span class="kt">Integer</span> <span class="kt">Identity</span><span class="p">))</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p><cite>runEval4</cite> 関数の返り値の型は変わる. 最終的な状態が評価結果(エラーか計算値)と一緒に返されるからである. さらに, 初期状態を追加の引数(<cite>Integer</cite>)で渡し(これが <cite>State</cite>), 例えば別の計算の最後の状態から再度計算を始めることができるように, 柔軟性をもたせている.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval4</span> <span class="ow">::</span> <span class="kt">Env</span> <span class="ow">-&gt;</span> <span class="kt">Integer</span> <span class="ow">-&gt;</span> <span class="kt">Eval4</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Either</span> <span class="kt">String</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Integer</span><span class="p">)</span>
+<span class="nf">runEval4</span> <span class="n">env</span> <span class="n">st</span> <span class="n">ev</span> <span class="ow">=</span> <span class="n">runIdentity</span> <span class="p">(</span><span class="n">runStateT</span> <span class="p">(</span><span class="n">runErrorT</span> <span class="p">(</span><span class="n">runReaderT</span> <span class="n">ev</span> <span class="n">env</span><span class="p">))</span> <span class="n">st</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>単純な例として, 評価のステップ数を数えるだけにしよう. つまり <cite>eval4</cite> 関数を呼んだ回数である. 状態の変更は, すべて小さな補助関数 <cite>tick</cite> の中で起き, 隠された状態を計算から取りだし, カウンタを増やして, 状態を戻す. この先の節で再利用するつもりなので, もちろん <cite>tick</cite> の型は <cite>Eval4 ()</cite> ではない. そのため, 中で <cite>tick</cite> が使われるモナドは状態モナド(この場合, <cite>MonadState</cite> 型クラスのこと)で, そのモナドの中で操作される状態は(+)演算子を使えるように数値にするというに留める.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">tick</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Num</span> <span class="n">s</span><span class="p">,</span> <span class="kt">MonadState</span> <span class="n">s</span> <span class="n">m</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="n">m</span> <span class="nb">()</span>
+<span class="nf">tick</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">st</span> <span class="ow">&lt;-</span> <span class="n">get</span>
+          <span class="n">put</span> <span class="p">(</span><span class="n">st</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>それぞれの場合で, <cite>tick</cite> 関数の呼び出しを加えれば, 適用の回数を数えることができる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">eval4</span> <span class="ow">::</span> <span class="kt">Exp</span> <span class="ow">-&gt;</span> <span class="kt">Eval4</span> <span class="kt">Value</span>
+<span class="nf">eval4</span> <span class="p">(</span><span class="kt">Lit</span> <span class="n">i</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                   <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="n">i</span>
+<span class="nf">eval4</span> <span class="p">(</span><span class="kt">Var</span> <span class="n">n</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                   <span class="n">env</span> <span class="ow">&lt;-</span> <span class="n">ask</span>
+                   <span class="kr">case</span> <span class="kt">Map</span><span class="o">.</span><span class="n">lookup</span> <span class="n">n</span> <span class="n">env</span> <span class="kr">of</span>
+                     <span class="kt">Nothing</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="p">(</span><span class="s">&quot;unbound variable: &quot;</span> <span class="o">++</span> <span class="n">n</span><span class="p">)</span>
+                     <span class="kt">Just</span> <span class="n">val</span> <span class="ow">-&gt;</span> <span class="n">return</span> <span class="n">val</span>
+<span class="nf">eval4</span> <span class="p">(</span><span class="kt">Plus</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                        <span class="n">e1&#39;</span> <span class="ow">&lt;-</span> <span class="n">eval4</span> <span class="n">e1</span>
+                        <span class="n">e2&#39;</span> <span class="ow">&lt;-</span> <span class="n">eval4</span> <span class="n">e2</span>
+                        <span class="kr">case</span> <span class="p">(</span><span class="n">e1&#39;</span><span class="p">,</span> <span class="n">e2&#39;</span><span class="p">)</span> <span class="kr">of</span>
+                          <span class="p">(</span><span class="kt">IntVal</span> <span class="n">i1</span><span class="p">,</span> <span class="kt">IntVal</span> <span class="n">i2</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="p">(</span><span class="n">i1</span> <span class="o">+</span> <span class="n">i2</span><span class="p">)</span>
+                          <span class="kr">_</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="s">&quot;type error in additional&quot;</span>
+<span class="nf">eval4</span> <span class="p">(</span><span class="kt">Abs</span> <span class="n">n</span> <span class="n">e</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                     <span class="n">env</span> <span class="ow">&lt;-</span> <span class="n">ask</span>
+                     <span class="n">return</span> <span class="o">$</span> <span class="kt">FunVal</span> <span class="n">env</span> <span class="n">n</span> <span class="n">e</span>
+<span class="nf">eval4</span> <span class="p">(</span><span class="kt">App</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                       <span class="n">val1</span> <span class="ow">&lt;-</span> <span class="n">eval4</span> <span class="n">e1</span>
+                       <span class="n">val2</span> <span class="ow">&lt;-</span> <span class="n">eval4</span> <span class="n">e2</span>
+                       <span class="kr">case</span> <span class="n">val1</span> <span class="kr">of</span>
+                         <span class="kt">FunVal</span> <span class="n">env&#39;</span> <span class="n">n</span> <span class="n">body</span> <span class="ow">-&gt;</span> <span class="n">local</span> <span class="p">(</span><span class="n">const</span> <span class="p">(</span><span class="kt">Map</span><span class="o">.</span><span class="n">insert</span> <span class="n">n</span> <span class="n">val2</span> <span class="n">env&#39;</span><span class="p">))</span> <span class="p">(</span><span class="n">eval4</span> <span class="n">body</span><span class="p">)</span>
+                         <span class="kr">_</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="s">&quot;type error in application&quot;</span>
+</pre></div>
+</div>
+<p>以下のようにサンプルを評価できる</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval4</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span> <span class="mi">0</span> <span class="p">(</span><span class="n">eval4</span> <span class="n">exampleExp</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="p">(</span><span class="kt">Right</span> <span class="p">(</span><span class="kt">IntVal</span> <span class="mi">18</span><span class="p">),</span> <span class="mi">8</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>これは評価が成功して, 整数18を返し, 簡約が8ステップだったことを表している.</p>
+<div class="admonition note">
+<p class="first admonition-title">注釈</p>
+<p><cite>Eval4</cite> モナドの型を次のように変える. (<cite>StateT</cite> と <cite>ErrorT</cite> を入れ替えた)と, モナドの解釈がく変わる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">type</span> <span class="kt">Eval4&#39;</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">ReaderT</span> <span class="kt">Env</span> <span class="p">(</span><span class="kt">StateT</span> <span class="kt">Integer</span> <span class="p">(</span><span class="kt">ErrorT</span> <span class="kt">String</span> <span class="kt">Identity</span><span class="p">))</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>結果 (エラーか否か) と状態を返す代わりに, エラーか結果と最終的な状態かを返す. これは対応する実行関数の型からもわかるだろう.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval4&#39;</span> <span class="ow">::</span> <span class="kt">Env</span> <span class="ow">-&gt;</span> <span class="kt">Integer</span> <span class="ow">-&gt;</span> <span class="kt">Eval4&#39;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Either</span> <span class="kt">String</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="kt">Integer</span><span class="p">))</span>
+<span class="nf">runEval4&#39;</span> <span class="n">env</span> <span class="n">st</span> <span class="n">ev</span> <span class="ow">=</span> <span class="n">runIdentity</span> <span class="p">(</span><span class="n">runErrorT</span> <span class="p">(</span><span class="n">runStateT</span> <span class="p">(</span><span class="n">runReaderT</span> <span class="n">ev</span> <span class="n">env</span><span class="p">)</span> <span class="n">st</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="last">最終的な状態には関与しないので, <cite>Reader</cite> モナド変換子の位置は問題にはならない.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">注釈</p>
+<p class="last"><cite>State</cite> モナドは <cite>gets</cite> 関数も提供しており, 結果を返す前に状態に対して関数を適用する. 内部状態に関数を適用することによって状態を変更する <cite>modify</cite> 関数もある.</p>
+</div>
+</div>
+<div class="section" id="adding-logging">
+<h3>2.5 ログを加える (Adding Logging)<a class="headerlink" href="#adding-logging" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ここで述べる最後のモナドトランスフォーマーは <cite>WriterT</cite> である. ある意味 <cite>ReaderT</cite> の対になるものである. <cite>WriterT</cite> が提供する関数は, 渡された値を用いるものではなく, 計算結果に値を追加するものだからである.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">type</span> <span class="kt">Eval5</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">ReaderT</span> <span class="kt">Env</span> <span class="p">(</span><span class="kt">ErrorT</span> <span class="kt">String</span> <span class="p">(</span><span class="kt">WriterT</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="p">(</span><span class="kt">StateT</span> <span class="kt">Integer</span> <span class="kt">Identity</span><span class="p">)))</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p><cite>StateT</cite> の場合と同様に, 結果を出力するものなので <cite>WriterT</cite> は <cite>ErrorT</cite> と干渉する. <cite>ErrorT</cite> と <cite>WriterT</cite> の順番によって, エラーが起きたときに, <cite>Writer</cite> モナドの結果が値を返すかどうかが変わる. 書き出される値, は文字列のリストである. <cite>WriterT</cite> モナドトランスフォーマーのドキュメントを見ると, 書き出された値の型はモノイド (Monoid) 型クラスのメンバーに制限されることがわかるだろう. このことは, このクラスのメソッドは内部的に初期値を構成したり, 書き出される値を合成したりするのに使われるため必要なことである.</p>
+<p>実行関数は先程と同様に拡張される.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval5</span> <span class="ow">::</span> <span class="kt">Env</span> <span class="ow">-&gt;</span> <span class="kt">Integer</span> <span class="ow">-&gt;</span> <span class="kt">Eval5</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">((</span><span class="kt">Either</span> <span class="kt">String</span> <span class="n">a</span><span class="p">,</span> <span class="p">[</span><span class="kt">String</span><span class="p">]),</span> <span class="kt">Integer</span><span class="p">)</span>
+<span class="nf">runEval5</span> <span class="n">env</span> <span class="n">st</span> <span class="n">ev</span> <span class="ow">=</span> <span class="n">runIdentity</span> <span class="p">(</span><span class="n">runStateT</span> <span class="p">(</span><span class="n">runWriterT</span> <span class="p">(</span><span class="n">runErrorT</span> <span class="p">(</span><span class="n">runReaderT</span> <span class="n">ev</span> <span class="n">env</span><span class="p">)))</span> <span class="n">st</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>評価関数では, 評価中に遭遇した変数名を書き出すことによって, Writerモナドの使い方を説明する.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">eval5</span> <span class="ow">::</span> <span class="kt">Exp</span> <span class="ow">-&gt;</span> <span class="kt">Eval5</span> <span class="kt">Value</span>
+<span class="nf">eval5</span> <span class="p">(</span><span class="kt">Lit</span> <span class="n">i</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                   <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="n">i</span>
+<span class="nf">eval5</span> <span class="p">(</span><span class="kt">Var</span> <span class="n">n</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                   <span class="n">tell</span> <span class="p">[</span><span class="n">n</span><span class="p">]</span>
+                   <span class="n">env</span> <span class="ow">&lt;-</span> <span class="n">ask</span>
+                   <span class="kr">case</span> <span class="kt">Map</span><span class="o">.</span><span class="n">lookup</span> <span class="n">n</span> <span class="n">env</span> <span class="kr">of</span>
+                     <span class="kt">Nothing</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="p">(</span><span class="s">&quot;unbound variable: &quot;</span> <span class="o">++</span> <span class="n">n</span><span class="p">)</span>
+                     <span class="kt">Just</span> <span class="n">val</span> <span class="ow">-&gt;</span> <span class="n">return</span> <span class="n">val</span>
+<span class="nf">eval5</span> <span class="p">(</span><span class="kt">Plus</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                        <span class="n">e1&#39;</span> <span class="ow">&lt;-</span> <span class="n">eval5</span> <span class="n">e1</span>
+                        <span class="n">e2&#39;</span> <span class="ow">&lt;-</span> <span class="n">eval5</span> <span class="n">e2</span>
+                        <span class="kr">case</span> <span class="p">(</span><span class="n">e1&#39;</span><span class="p">,</span> <span class="n">e2&#39;</span><span class="p">)</span> <span class="kr">of</span>
+                          <span class="p">(</span><span class="kt">IntVal</span> <span class="n">i1</span><span class="p">,</span> <span class="kt">IntVal</span> <span class="n">i2</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="p">(</span><span class="n">i1</span> <span class="o">+</span> <span class="n">i2</span><span class="p">)</span>
+                          <span class="kr">_</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="s">&quot;type error in additin&quot;</span>
+<span class="nf">eval5</span> <span class="p">(</span><span class="kt">Abs</span> <span class="n">n</span> <span class="n">e</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                     <span class="n">env</span> <span class="ow">&lt;-</span> <span class="n">ask</span>
+                     <span class="n">return</span> <span class="o">$</span> <span class="kt">FunVal</span> <span class="n">env</span> <span class="n">n</span> <span class="n">e</span>
+<span class="nf">eval5</span> <span class="p">(</span><span class="kt">App</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                       <span class="n">val1</span> <span class="ow">&lt;-</span> <span class="n">eval5</span> <span class="n">e1</span>
+                       <span class="n">val2</span> <span class="ow">&lt;-</span> <span class="n">eval5</span> <span class="n">e2</span>
+                       <span class="kr">case</span> <span class="n">val1</span> <span class="kr">of</span>
+                         <span class="kt">FunVal</span> <span class="n">env&#39;</span> <span class="n">n</span> <span class="n">body</span> <span class="ow">-&gt;</span> <span class="n">local</span> <span class="p">(</span><span class="n">const</span> <span class="p">(</span><span class="kt">Map</span><span class="o">.</span><span class="n">insert</span> <span class="n">n</span> <span class="n">val2</span> <span class="n">env&#39;</span><span class="p">))</span> <span class="p">(</span><span class="n">eval5</span> <span class="n">body</span><span class="p">)</span>
+                         <span class="kr">_</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="s">&quot;type error in application&quot;</span>
+</pre></div>
+</div>
+<p>以下のようにサンプルを評価できる</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval5</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span> <span class="mi">0</span> <span class="p">(</span><span class="n">eval5</span> <span class="n">exampleExp</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="p">((</span><span class="kt">Right</span> <span class="p">(</span><span class="kt">IntVal</span> <span class="mi">18</span><span class="p">),</span> <span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">]),</span> <span class="mi">8</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>これは評価が成功して, 整数18を返し, 簡約が8ステップだったことに加え, 遭遇した変数名について取得できていることがわかる.</p>
+</div>
+<div class="section" id="io-what-about-i-o">
+<h3>2.6 IOはどうすんのさ? (What about I/O?)<a class="headerlink" href="#io-what-about-i-o" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>これまでのところ, ある重要な面を考慮していない. すなわち, 入力と出力である. どのようにして, これまで開発してきたモナドの定義に, 入出力を導入すればいいだろうか. IOモナドトランスフォーマーを定義することはできない. なぜなら, HaskellのIO操作の実行は, 他の関数やモナドに勝手に入れ子にしてはならず, IOモナドでのみ可能になっているからである. 幸運なことに, モナドトランスフォーマーのライブラリは, 我々が組み上げてきたものに簡単にIO操作を導入する下地を提供してくれている. 単にIdentityの代わりにIOを使えばいい! これは, Identityが基になるモナドで, 今まで見てきたように, このモナドのアクションを評価する <cite>runIdentity</cite> 関数は, いつでも一番最後に適用されていたからである.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">type</span> <span class="kt">Eval6</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">ReaderT</span> <span class="kt">Env</span> <span class="p">(</span><span class="kt">ErrorT</span> <span class="kt">String</span> <span class="p">(</span><span class="kt">WriterT</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="p">(</span><span class="kt">StateT</span> <span class="kt">Integer</span> <span class="kt">IO</span><span class="p">)))</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p><cite>runEval6</cite> が返す型は, IO構築子によって包まれている. <cite>Eval6</cite> の計算を実行することは直接的に結果を出すのではなく, 結果を得るには実行しなければならないIO計算を返す.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval6</span> <span class="ow">::</span> <span class="kt">Env</span> <span class="ow">-&gt;</span> <span class="kt">Integer</span> <span class="ow">-&gt;</span> <span class="kt">Eval6</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="p">((</span><span class="kt">Either</span> <span class="kt">String</span> <span class="n">a</span><span class="p">,</span> <span class="p">[</span><span class="kt">String</span><span class="p">]),</span> <span class="kt">Integer</span><span class="p">)</span>
+<span class="nf">runEval6</span> <span class="n">env</span> <span class="n">st</span> <span class="n">ev</span> <span class="ow">=</span> <span class="n">runStateT</span> <span class="p">(</span><span class="n">runWriterT</span> <span class="p">(</span><span class="n">runErrorT</span> <span class="p">(</span><span class="n">runReaderT</span> <span class="n">ev</span> <span class="n">env</span><span class="p">)))</span> <span class="n">st</span>
+</pre></div>
+</div>
+<p><cite>eval6</cite> 関数では, ちょっとした一手間でIO操作を行うことができる. それには <cite>liftIO</cite> 関数を使って操作を呼び出す必要があり, これでIO計算を現在実行中のモナドに持ち上げることができる. 例として, 整数定数が評価される度にプリントすることにする. (こればいい方法だとは思わないが, 要点を説明でき, 良いデバッグのテクニックになることもある)</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">eval6</span> <span class="ow">::</span> <span class="kt">Exp</span> <span class="ow">-&gt;</span> <span class="kt">Eval6</span> <span class="kt">Value</span>
+<span class="nf">eval6</span> <span class="p">(</span><span class="kt">Lit</span> <span class="n">i</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                   <span class="n">liftIO</span> <span class="o">$</span> <span class="n">print</span> <span class="n">i</span>
+                   <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="n">i</span>
+<span class="nf">eval6</span> <span class="p">(</span><span class="kt">Var</span> <span class="n">n</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                   <span class="n">tell</span> <span class="p">[</span><span class="n">n</span><span class="p">]</span>
+                   <span class="n">env</span> <span class="ow">&lt;-</span> <span class="n">ask</span>
+                   <span class="kr">case</span> <span class="kt">Map</span><span class="o">.</span><span class="n">lookup</span> <span class="n">n</span> <span class="n">env</span> <span class="kr">of</span>
+                     <span class="kt">Nothing</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="p">(</span><span class="s">&quot;unbound variable: &quot;</span> <span class="o">++</span> <span class="n">n</span><span class="p">)</span>
+                     <span class="kt">Just</span> <span class="n">val</span> <span class="ow">-&gt;</span> <span class="n">return</span> <span class="n">val</span>
+<span class="nf">eval6</span> <span class="p">(</span><span class="kt">Plus</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                        <span class="n">e1&#39;</span> <span class="ow">&lt;-</span> <span class="n">eval6</span> <span class="n">e1</span>
+                        <span class="n">e2&#39;</span> <span class="ow">&lt;-</span> <span class="n">eval6</span> <span class="n">e2</span>
+                        <span class="kr">case</span> <span class="p">(</span><span class="n">e1&#39;</span><span class="p">,</span> <span class="n">e2&#39;</span><span class="p">)</span> <span class="kr">of</span>
+                          <span class="p">(</span><span class="kt">IntVal</span> <span class="n">i1</span><span class="p">,</span> <span class="kt">IntVal</span> <span class="n">i2</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">return</span> <span class="o">$</span> <span class="kt">IntVal</span> <span class="p">(</span><span class="n">i1</span> <span class="o">+</span> <span class="n">i2</span><span class="p">)</span>
+                          <span class="kr">_</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="s">&quot;type error in addition&quot;</span>
+<span class="nf">eval6</span> <span class="p">(</span><span class="kt">Abs</span> <span class="n">n</span> <span class="n">e</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                     <span class="n">env</span> <span class="ow">&lt;-</span> <span class="n">ask</span>
+                     <span class="n">return</span> <span class="o">$</span> <span class="kt">FunVal</span> <span class="n">env</span> <span class="n">n</span> <span class="n">e</span>
+<span class="nf">eval6</span> <span class="p">(</span><span class="kt">App</span> <span class="n">e1</span> <span class="n">e2</span><span class="p">)</span> <span class="ow">=</span> <span class="kr">do</span> <span class="n">tick</span>
+                       <span class="n">val1</span> <span class="ow">&lt;-</span> <span class="n">eval6</span> <span class="n">e1</span>
+                       <span class="n">val2</span> <span class="ow">&lt;-</span> <span class="n">eval6</span> <span class="n">e2</span>
+                       <span class="kr">case</span> <span class="n">val1</span> <span class="kr">of</span>
+                         <span class="kt">FunVal</span> <span class="n">env&#39;</span> <span class="n">n</span> <span class="n">body</span> <span class="ow">-&gt;</span> <span class="n">local</span> <span class="p">(</span><span class="n">const</span> <span class="p">(</span><span class="kt">Map</span><span class="o">.</span><span class="n">insert</span> <span class="n">n</span> <span class="n">val2</span> <span class="n">env&#39;</span><span class="p">))</span> <span class="p">(</span><span class="n">eval6</span> <span class="n">body</span><span class="p">)</span>
+                         <span class="kr">_</span> <span class="ow">-&gt;</span> <span class="n">throwError</span> <span class="s">&quot;type error in application&quot;</span>
+</pre></div>
+</div>
+<p>以下のようにサンプルを評価できる</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runEval6</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span> <span class="mi">0</span> <span class="p">(</span><span class="n">eval6</span> <span class="n">exampleExp</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="mi">12</span>
+<span class="o">&gt;</span> <span class="mi">4</span>
+<span class="o">&gt;</span> <span class="mi">2</span>
+<span class="o">&gt;</span> <span class="p">((</span><span class="kt">Right</span> <span class="p">(</span><span class="kt">IntVal</span> <span class="mi">18</span><span class="p">),</span> <span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">]),</span> <span class="mi">8</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>これで先程の例に加え, 整数定数が評価される度に値がプリントされていることがわかる.</p>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>3. 結論 (Conclusion)<a class="headerlink" href="#conclusion" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>モナドトランスフォーマーは関数型プログラマーの持てる強力なツールである. このチュートリアルでは, 現在のHaskellの実装で利用できるモナドトランスフォーマーと, 簡単なインタープリタを作るのにそれらをどうやって組み合わせるかを紹介した.</p>
+<p>ここでは, 現在実装されているモナドトランスフォーマーを全てカバーしていない. (例えば, 継続やリストのモナドトランスフォーマー). もっと情報を得るために, Haskellのウェブサイトにあるライブラリのドキュメントを読むことをおすすめする.</p>
+<p>モナドトランスフォーマーを使うことで, 今のアプリケーションでやりたいことを, 一枚岩でお手製のモナドにまとめ上げ, 様々なアプリケーションに特化したモナドをいとも簡単に作り出すことができるのである.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../MyProjects/index.html" class="btn btn-neutral float-right" title="Haskell MyProject" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Monad Transformers" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

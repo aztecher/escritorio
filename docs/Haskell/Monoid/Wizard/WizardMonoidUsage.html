@@ -1,0 +1,334 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Wizardモノイドとその仕組み &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="Wizard" href="index.html"/>
+        <link rel="next" title="Golang Documents" href="../../../Golang/index.html"/>
+        <link rel="prev" title="Wizard" href="index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Haskell Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Monad/index.html">Monad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../MyProjects/index.html">Haskell MyProject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../LanguageExtension/index.html">LanguageExtension</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Monoid</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Wizard</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Wizardモノイドとその仕組み</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../C/index.html">C Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Haskell Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">Monoid</a> &raquo;</li>
+      
+          <li><a href="index.html">Wizard</a> &raquo;</li>
+      
+    <li>Wizardモノイドとその仕組み</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/Haskell/Monoid/Wizard/WizardMonoidUsage.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="wizard">
+<h1>Wizardモノイドとその仕組み<a class="headerlink" href="#wizard" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>GHC8.0からIO型がMonoidのインスタンスになった. これを利用した便利なテクニックを紹介する.</p>
+<p>Wizardは「魔法使い」の意味だが, ソフトウェアをインストールするときとかに出てくる, インストール「ウィザード」のような対話形式での作業を誘導してくれるソフトウェアのことでもある. WizardモノイドのWizardは後者の意味で利用されている.</p>
+<div class="section" id="id1">
+<h2>Wizardモノイド<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>まずWizardモノイドを紹介をする. 以下のような例を考えてみる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">main</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="c1">-- 最初に全ての情報を入力してもらう.</span>
+  <span class="n">putStrLn</span> <span class="s">&quot;名前は?&quot;</span>
+  <span class="n">name</span> <span class="ow">&lt;-</span> <span class="n">getLine</span>
+
+  <span class="n">putStrLn</span> <span class="s">&quot;年齢は?&quot;</span>
+  <span class="n">age</span> <span class="ow">&lt;-</span> <span class="n">getLine</span>
+
+  <span class="c1">-- 最後に全てのアクションを実行する.</span>
+  <span class="n">putStrLn</span> <span class="p">(</span><span class="s">&quot;名前: &quot;</span> <span class="o">++</span> <span class="n">name</span><span class="p">)</span>
+  <span class="n">putStrLn</span> <span class="p">(</span><span class="s">&quot;年齢: &quot;</span> <span class="o">++</span> <span class="n">age</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>この短いプログラムには,</p>
+<ul class="simple">
+<li>名前を聞いて最後に名前を表示する.</li>
+<li>年齢を聞いて最後に年齢を表示する.</li>
+</ul>
+<p>という明らかなパターンがあるが, それぞれの「聞く」と「表示する」が入れ子になっているせいでうまく分割ができない. そこで登場するのが, Wizardモノイドｍである. Wizardモノイドを使うと以下のように書ける.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nn">Data.Monoid</span> <span class="p">((</span><span class="o">&lt;&gt;</span><span class="p">))</span>
+
+<span class="nf">name</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="p">(</span><span class="kt">IO</span> <span class="nb">()</span><span class="p">)</span>
+<span class="nf">name</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">putStrLn</span> <span class="s">&quot;名前は?&quot;</span>
+  <span class="n">x</span> <span class="ow">&lt;-</span> <span class="n">getLine</span>
+  <span class="n">return</span> <span class="p">(</span><span class="n">putStrLn</span> <span class="p">(</span><span class="s">&quot;名前: &quot;</span> <span class="o">++</span> <span class="n">x</span><span class="p">))</span>
+
+<span class="nf">age</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="p">(</span><span class="kt">IO</span> <span class="nb">()</span><span class="p">)</span>
+<span class="nf">age</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">putStrLn</span> <span class="s">&quot;年齢は?&quot;</span>
+  <span class="n">x</span> <span class="ow">&lt;-</span> <span class="n">getLine</span>
+  <span class="n">return</span> <span class="p">(</span><span class="n">putStrLn</span> <span class="p">(</span><span class="s">&quot;年齢 : &quot;</span> <span class="o">++</span> <span class="n">x</span><span class="p">))</span>
+
+<span class="nf">runWizard</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="p">(</span><span class="kt">IO</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">a</span>
+<span class="nf">runWizard</span> <span class="n">request</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">respond</span> <span class="ow">&lt;-</span> <span class="n">request</span>
+  <span class="n">respond</span>
+
+<span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">main</span> <span class="ow">=</span> <span class="n">runWizard</span> <span class="p">(</span><span class="n">name</span> <span class="o">&lt;&gt;</span> <span class="n">age</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>名前と年齢それぞれの処理をうまく分離することが出来ている. どの部分がWizardモノイドになっているのか敢えて型で定義すると, 以下のように成るだろう.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">type</span> <span class="kt">Wizard</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">IO</span> <span class="p">(</span><span class="kt">IO</span> <span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Wizardモノイドによってコードを分割したことで処理をまとめることができるようになった.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nn">Data.Monoid</span> <span class="p">((</span><span class="o">&lt;&gt;</span><span class="p">))</span>
+
+<span class="nf">prompt</span> <span class="ow">::</span> <span class="kt">String</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="p">(</span><span class="kt">IO</span> <span class="nb">()</span><span class="p">)</span>
+<span class="nf">prompt</span> <span class="n">attribute</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">putStrLn</span> <span class="p">(</span><span class="n">attribute</span> <span class="o">++</span> <span class="s">&quot;は?&quot;</span><span class="p">)</span>
+  <span class="n">x</span> <span class="ow">&lt;-</span> <span class="n">getLine</span>
+  <span class="n">return</span> <span class="p">(</span><span class="n">putStrLn</span> <span class="p">(</span><span class="n">attribute</span> <span class="o">++</span> <span class="s">&quot;: &quot;</span> <span class="o">++</span> <span class="n">x</span><span class="p">))</span>
+
+<span class="nf">runWizard</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="p">(</span><span class="kt">IO</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">a</span>
+<span class="nf">runWizard</span> <span class="n">request</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">respond</span> <span class="ow">&lt;-</span> <span class="n">request</span>
+  <span class="n">respond</span>
+
+<span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">main</span> <span class="ow">=</span> <span class="n">runWizard</span> <span class="p">(</span><span class="n">prompt</span> <span class="s">&quot;名前&quot;</span> <span class="o">&lt;&gt;</span> <span class="n">prompt</span> <span class="s">&quot;年齢&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>もし追加で好きな色を訪ねたくなったら, 以下のように修正すればよろしい</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">main</span> <span class="ow">=</span> <span class="n">runWizard</span> <span class="p">(</span><span class="n">prompt</span> <span class="s">&quot;名前&quot;</span> <span class="o">&lt;&gt;</span> <span class="n">prompt</span> <span class="s">&quot;年齢&quot;</span> <span class="o">&lt;&gt;</span> <span class="n">prompt</span> <span class="s">&quot;好きな色&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>入力 -&gt; 出力のパターンだけでなく, アクション -&gt; アクションのパターンなら何でも入れ子に合成できるため, Wizardモノイドは意外と使いみちが広く重宝しそう.</p>
+</div>
+<div class="section" id="id2">
+<h2>Wizardモノイドの仕組み<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>なぜ， WizardモノイドがIOの入れ子の合成を実現できているかを見ていく. 秘密はIOのMonoidのインスタンスにある. IOのMonoidのインスタンスは以下のように定義されている.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">instance</span> <span class="kt">Monoid</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="kt">Monoid</span> <span class="p">(</span><span class="kt">IO</span> <span class="n">a</span><span class="p">)</span> <span class="kr">where</span>
+  <span class="n">mempty</span> <span class="ow">=</span> <span class="n">pure</span>
+  <span class="n">mappend</span> <span class="ow">=</span> <span class="n">liftA2</span> <span class="n">mappend</span>
+</pre></div>
+</div>
+<p><cite>liftA2</cite> は</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">liftA2</span> <span class="ow">::</span> <span class="kt">Applicative</span> <span class="n">f</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">c</span>
+</pre></div>
+</div>
+<p>と定義されている. <cite>mappend</cite> の定義を分かりやすく書き下すと以下のようになる</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">mappend</span> <span class="n">action1</span> <span class="n">action2</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">result1</span> <span class="ow">&lt;-</span> <span class="n">action1</span>
+  <span class="n">result2</span> <span class="ow">&lt;-</span> <span class="n">action2</span>
+  <span class="n">pure</span> <span class="p">(</span><span class="n">result1</span> <span class="o">&lt;&gt;</span> <span class="n">result</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>要するにアクションを一つづつ実行して得られた結果の型のMonoidインスタンスの <cite>mappend</cite> で合成する. これを踏まえると, 先の例の <cite>name &lt;&gt; age</cite> は以下のような処理になっている.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">do</span>
+  <span class="n">response1</span> <span class="ow">&lt;-</span> <span class="n">name</span>
+  <span class="n">response2</span> <span class="ow">&lt;-</span> <span class="n">age</span>
+  <span class="n">pure</span> <span class="p">(</span><span class="n">response1</span> <span class="o">&lt;&gt;</span> <span class="n">response2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><cite>name</cite> と <cite>age</cite> の実装を思い出すと, <cite>response1</cite> と <cite>response2</cite> はそれぞれ名前と年齢を表示する処理になっているはずである.</p>
+<p><cite>runWizard</cite> は <cite>name &lt;&gt; age</cite> を実行した後に更に最後の <cite>response1 &lt;&gt; response2</cite> を取りだして実行するという処理を行っている. これで, 「聞く」と「表示する」の処理を入れ子にすることができる.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../../Golang/index.html" class="btn btn-neutral float-right" title="Golang Documents" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Wizard" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

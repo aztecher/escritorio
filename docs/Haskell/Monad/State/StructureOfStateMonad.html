@@ -1,0 +1,467 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Stateモナドを構造からわかりやすく &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="State" href="index.html"/>
+        <link rel="next" title="Usage" href="Usage.html"/>
+        <link rel="prev" title="State" href="index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Haskell Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Monad</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">State</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Stateモナドを構造からわかりやすく</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Usage.html">Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../Writer/index.html">Writer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Continuation/index.html">Continuation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MonadTransformers/index.html">Monad Transformers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../MyProjects/index.html">Haskell MyProject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../LanguageExtension/index.html">LanguageExtension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Monoid/index.html">Monoid</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../C/index.html">C Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Haskell Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">Monad</a> &raquo;</li>
+      
+          <li><a href="index.html">State</a> &raquo;</li>
+      
+    <li>Stateモナドを構造からわかりやすく</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/Haskell/Monad/State/StructureOfStateMonad.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="state">
+<h1>Stateモナドを構造からわかりやすく<a class="headerlink" href="#state" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="id1">
+<h2>対象<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li>HaskellとかPureScriptみたいな関数指向言語をさわってみたことがある</li>
+<li>Haskellっぽい記法がちょっとわかる</li>
+<li>モナドを理解しようと頑張ったことがある</li>
+<li>カリー化の意味はわかる</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>用語<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul class="simple">
+<li><cite>a</cite>, <cite>b</cite>, <cite>c</cite>, <cite>d</cite> : 任意の型を指す(型変数). よく <cite>Int</cite> や <cite>String</cite> になる.</li>
+<li><cite>a -&gt; b</cite> : 関数. 型 <cite>a</cite> の値を入れると型 <cite>b</cite> の値を返す関数</li>
+<li><cite>(a, b)</cite> : タプル. 型 <cite>a</cite> と型 <cite>b</cite> をセットにして一つの型にしたもの.</li>
+<li><cite>(a -&gt; b) &gt;&gt;&gt; (b -&gt; c)</cite> : 関数合成. <cite>a -&gt; c</cite> になる.</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>Stateをつくる<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id4">
+<h3>状態(State)とはなにか<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>まぁ大体こんなもん</p>
+<ul class="simple">
+<li>処理の「外」に持っていられる, 書き換え可能なデータセット</li>
+<li>処理の連鎖の中で常に変化しながら伝搬していくデータ</li>
+</ul>
+<p>状態と呼ばれるものは「常に参照可能」で「更新可能」である必要があるだろう.</p>
+</div>
+<div class="section" id="id5">
+<h3>状態を持つ関数<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>さて, ここに関数がある</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">a</span> <span class="ow">-&gt;</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>この関数は, <cite>a</cite> 以外の外部データを持つことはない.
+「関数が状態を持つ」というのは, 言い換えると「関数内で状態の値を参照したい」「状態を任意に書き換えたい」ということになる.</p>
+<p>まぁつまりこんなかんじ.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><cite>s</cite> は状態(state)だ.
+丁寧に読むと, 「型 <cite>a</cite> と <cite>s</cite> のペアを受け取って, 型 <cite>b</cite> と <cite>s</cite> のペアを返す」関数である.
+つまりこの関数内では, 受け取った <cite>s</cite> の値を参照できて, 好きに変更した <cite>s</cite> の値を <cite>b</cite> と一緒に返せるということになる.</p>
+<p>ここで, こんな関数も拾ってきた</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">b</span> <span class="ow">-&gt;</span> <span class="n">c</span>
+</pre></div>
+</div>
+<p>これも同じように <cite>s</cite> を扱えるようにする</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">c</span> <span class="ow">-&gt;</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>この関数は明らかに先程の関数と合成できるね!</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>こんなふうに, 「 <cite>s</cite> をおまけでとり, <cite>s</cite> をおまけで返す」を繰り返すことで, 擬似的に状態を扱える関数を定義できた気分になるよね!</p>
+</div>
+<div class="section" id="id6">
+<h3>状態を持つ関数, だったもの<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>まず先程の関数. おもむろにカリー化してみましょう</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="ow">=</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">s</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>さて, ここで関数の戻り値側に, ただの別名を付けてみる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">a</span> <span class="ow">-&gt;</span> <span class="kt">State</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>おや?</p>
+</div>
+<div class="section" id="id7">
+<h3>おやおや???<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kt">State</span> <span class="n">b</span> <span class="o">==</span> <span class="p">(</span><span class="n">s</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>この形, 見覚えありませんか?</p>
+<p>まぁ, とりあえず置いときましょう.</p>
+<p>同じ様に, もう一つの関数も書き換えて, 合成してみましょう.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="ow">=</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="kt">State</span> <span class="n">c</span>
+
+<span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">State</span> <span class="n">b</span><span class="p">)</span> <span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="kt">State</span> <span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>あれ?</p>
+</div>
+<div class="section" id="id8">
+<h3>合成できんやんけ!<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><cite>&gt;&gt;&gt;</cite> は左の関数の戻り値を, 右の関数の引数に渡すだけのものなので,
+<cite>State b</cite> と <cite>b</cite> の型が合わないので合成できない!! どうしよう???</p>
+<p>じゃあ, 合成する演算子を定義してやればいいだろう.</p>
+</div>
+<div class="section" id="id9">
+<h3>再, 合成<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><cite>&gt;=&gt;</cite> とかいう演算子を決めて, こんな感じで合成できるとする.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">State</span> <span class="n">b</span><span class="p">)</span> <span class="o">&gt;=&gt;</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="kt">State</span> <span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">State</span> <span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>うひょ〜合成できたわ.
+こんな演算子もってくるのずるい? 知らんがな. できるからええねん.
+まぁ, 真面目な話, 実際にやってることは最初にやっていた状態を付加したタプルの連結とかそんなのと同じ事だよね.
+ただ, Stateとかいう名前つけたせいで合成できなくなって <cite>&gt;=&gt;</cite> とか考えたわけだったんだけど.</p>
+<p>まぁ, という話が実は, 「 <cite>モナドの全て</cite> 」なのよ</p>
+</div>
+</div>
+<div class="section" id="id10">
+<h2>モナド<a class="headerlink" href="#id10" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>モナドは世の中でいろんな説明のされ方をされてるし, それらは往々にして正しいんだけど, 今回は以下のように説明するとしましょう. つまり,</p>
+<p>「モナドは, 特定の型をした関数がキレイに合成できる「性質」だよ」</p>
+<div class="section" id="id11">
+<h3>突然のかけ算! そして「モノイド」<a class="headerlink" href="#id11" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>(*) という二項演算子がある</li>
+<li>(*) は <cite>Int</cite> と <cite>Int</cite> を取って, <cite>Int</cite> を返す</li>
+</ul>
+<p>つまり, かけ算 <cite>(*)</cite> とは, 「２つの <cite>Int</cite> を合成して一つにするもの」といえる!</p>
+<p>そしてかけ算には</p>
+<ul class="simple">
+<li>単位元が存在する</li>
+<li>右から演算しても, 左から演算しても同じ!</li>
+</ul>
+<p>という素晴らしい性質がある.</p>
+<p>これらの性質をもう少しちゃんと見ていこう.</p>
+<p>さて, これらの性質つまり</p>
+<ol class="arabic simple">
+<li>二項演算</li>
+<li>単位元が存在する.</li>
+<li>どこから計算しても同じ. (右結合と左結合の結果が同じ)</li>
+</ol>
+<p>これをすべて持った演算は「モノイド」と呼ばれている.
+うっ...と思うかもだが, 単純に「性質を指す用語」程度に覚えておくといい.</p>
+</div>
+<div class="section" id="id12">
+<h3>再, 再, 関数合成<a class="headerlink" href="#id12" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>関数合成ってよく考えると, ２つの <cite>(? -&gt; ?)</cite> と <cite>(? -&gt; ?)</cite> をくっつけて, 一つの <cite>(? -&gt; ?)</cite> になるように見えない?</p>
+<p>見えるよね?</p>
+<p>みえろ</p>
+<p>「二つの関数を合成して一つにする」</p>
+<p>さて, 関数３つの合成だけど, これって合成順番入れ替えても同じだよね.</p>
+<p><cite>(a -&gt; b) &gt;&gt;&gt; { (b -&gt; c) &gt;&gt;&gt; (c -&gt; d) }</cite>
+<cite>{ (a -&gt; b) &gt;&gt;&gt; (b -&gt; c) } &gt;&gt;&gt; (c -&gt; d)</cite></p>
+<p>「どこから先に計算しても同じ結果になる」</p>
+<p>最後, <cite>a -&gt; b</cite> ばかり見てきたけど, <cite>a -&gt; a</cite> とか <cite>b -&gt; b</cite> とかいう関数もあるよね?</p>
+<p><cite>(a -&gt; a) &gt;&gt;&gt; (a -&gt; b) == (a -&gt; b)</cite>
+<cite>(a -&gt; b) &gt;&gt;&gt; (b -&gt; b) == (a -&gt; b)</cite></p>
+<p>「右に掛けても左に掛けても結果が変わらない特別な関数, <cite>id :: a -&gt; a</cite> 」</p>
+<p>...おや?
+......おやおや?
+これって, 「モノイド」では?
+「関数合成はモノイド」では??</p>
+</div>
+<div class="section" id="id13">
+<h3>さあ, Stateの出番だ<a class="headerlink" href="#id13" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>「二つの謎関数を合成して一つにする」</p>
+<p><cite>(a -&gt; State b) &gt;=&gt; (b -&gt; State c) == (a -&gt; State c)</cite></p>
+<p>「どこから先に合成しても同じ結果になる」</p>
+<p><cite>(a -&gt; State b) &gt;=&gt; { (b -&gt; State c) &gt;=&gt; (c -&gt; State d) }</cite>
+<cite>{ (a -&gt; State b) &gt;=&gt; (b -&gt; State c) } &gt;=&gt; (c -&gt; State d)</cite></p>
+<p>「右に掛けても, 左に掛けても結果が変わらない特別な謎関数, <cite>return :: a -&gt; m a</cite> 」</p>
+<p><cite>(return :: a -&gt; State a) &gt;=&gt; (a -&gt; State b) == (a -&gt; State b)</cite>
+<cite>(a -&gt; State b) &gt;=&gt; (return :: b -&gt; State b) == (a -&gt; State b)</cite></p>
+<p><strong>おわかりいただけただろうか</strong></p>
+</div>
+</div>
+<div class="section" id="id14">
+<h2>結局モナドとはなんぞや?<a class="headerlink" href="#id14" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>「 <cite>* -&gt; m *</cite> みたいな変な形の関数同士を合成して一つにできて, どこから先に合成しても結果が変わらなくて, 右から合成しても左から合成しても式が変化しない特別な関数が存在する」ものが, モナドである.</p>
+<p>この説明が <cite>State</cite> でも <cite>Maybe</cite> でも <cite>List</cite> でも <cite>Either</cite> でも成り立つ.
+ほんとだよ.</p>
+</div>
+<div class="section" id="io">
+<h2>モナド入門の鬼門 <cite>IO</cite> を爆破せよ<a class="headerlink" href="#io" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>そのまえに, <cite>State</cite> くんのことを思い出してあげよう.
+<cite>State</cite> くんは, 「状態 <cite>s</cite> を受け取り内部で参照でき, かつ更新したものを返せる関数」に <strong>別名をつけたもの</strong> だったよね.</p>
+<p>この <cite>s</cite> ってなんだろう.</p>
+<p><cite>s</cite> が <cite>Int</cite> ならカウンタみたいなものが作れるよね. いかにもな感じ.</p>
+<p>今度は, <cite>s</cite> に <cite>Console</cite> を入れてみよう.
+そうそれ, お前がいま叩いてるやつね.</p>
+<p>「 <cite>Console</cite> を内部で参照でき, かつ更新して返せる関数」ということは, コンソールを参照して <cite>read</cite> や, コンソールを更新して <cite>write</cite> ができるということになりそうじゃね? ...なるんだけどさ!</p>
+<p>じゃあ, <cite>s</cite> に <cite>この世界の全て</cite> を入れたら...?</p>
+<p>それが <cite>IO</cite> である.
+<cite>IO</cite> は <cite>s</cite> の内容が派手な, ただの <cite>State</cite> だったのである.
+逆に, <cite>IO</cite> は <cite>State</cite> なのだから, <strong>IOはただの関数である</strong></p>
+<p>ただの関数が副作用を起こせるのは, <strong>キミがそのプログラムを起動するときに, 無意識にこの世界の全てを引数に渡しているから</strong> だったのだ!!</p>
+</div>
+<div class="section" id="id15">
+<h2>落ち穂拾い<a class="headerlink" href="#id15" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id16">
+<h3>&gt;&gt;= とかあったよね?<a class="headerlink" href="#id16" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>今回見てきた演算子は,</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="p">(</span><span class="o">&gt;=&gt;</span><span class="p">)</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>であったが, 色んな所で見かける演算子はいわゆるバインド</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="p">(</span><span class="o">&gt;&gt;=</span><span class="p">)</span> <span class="ow">::</span> <span class="n">m</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>である. 実はこれはほとんど同じで,</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">b</span><span class="p">)</span> <span class="o">&gt;=&gt;</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">c</span><span class="p">)</span>
+<span class="nf">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">m</span> <span class="n">b</span> <span class="o">&gt;&gt;=</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">c</span><span class="p">))</span> <span class="o">==</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">m</span> <span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>演算子でつなぐ位置が違うだけなわけですわ
+んでもって, 下のほうがよく使われるんですね.</p>
+<p>なんでかというと, 二つを見比べるとわかるが, 「 <cite>b -&gt; m c</cite> の関数のスコープ内に <cite>a</cite> が含まれている」んだな.
+つまり, クロージャで左辺の引数まで参照できてしまうわけだ.
+これが便利なときがとても多いから, バインドが主流になっているのである.</p>
+</div>
+<div class="section" id="id17">
+<h3>関数が合成できるだけでなんでそんなに騒いだの?<a class="headerlink" href="#id17" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>え? だって関数が合成できるからプログラム組めるんじゃん</p>
+</div>
+<div class="section" id="id18">
+<h3>結局のところモナドのメリット<a class="headerlink" href="#id18" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>色々言えるだろう.</p>
+<ol class="arabic simple">
+<li>関数合成に任意の追加計算を含ませることができる.</li>
+<li>プログラミング言語的観点で, <cite>do</cite> 記法が利用できる.</li>
+</ol>
+<p>とかとか
+実際, <cite>do</cite> 記法は「純粋関数の世界で手続き型の作法をエミュレートできる」という素晴らしいものである.</p>
+</div>
+<div class="section" id="id19">
+<h3>なにか問題でも?<a class="headerlink" href="#id19" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>知ってる人は知っている以下の句</p>
+<p>「モナドは単なる自己関手の圏におけるモノイド対象だよ. なにか問題でも?」</p>
+<p>これも今ならだいぶわかるのではないだろうか.
+すなわち, モナドの関数 <cite>a -&gt; m b</cite> って, 「 <cite>*</cite> を受け取って, <cite>m *</cite> を返す関数 <cite>m</cite> 」みたいに表現することもできるわけなので.
+ここで, <cite>*</cite> がどんな型であっても成り立つので, 「 <cite>m</cite> は関手である」というのが正しい. そして, Haskellでは対象は型しかないため, 関手は必然的に「型と関数の圏」の自己関手になる.</p>
+<p>そんでもって, <cite>m</cite> を対象にするということは, 「関手の圏」の上の話になり, その <cite>m</cite> は先程モノイドであることを示した.</p>
+<p>つまり全部まとめると,</p>
+<p>「モナドは自己関手の圏上のモノイド対象」ということだ</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="State" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

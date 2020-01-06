@@ -1,0 +1,516 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>継続モナドによるリソース管理 &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="Continuation" href="index.html"/>
+        <link rel="next" title="Monad Transformers" href="../MonadTransformers/index.html"/>
+        <link rel="prev" title="Contモナドとcall/cc" href="ContCallCc.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Haskell Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Monad</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../State/index.html">State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Writer/index.html">Writer</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Continuation</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="ContStyleWithoutMonad.html">モナドから初めない継続入門</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ImplementContMonad.html">Contモナドを実装する</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ContCallCc.html">Contモナドとcall/cc</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">継続モナドによるリソース管理</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../MonadTransformers/index.html">Monad Transformers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../MyProjects/index.html">Haskell MyProject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../LanguageExtension/index.html">LanguageExtension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Monoid/index.html">Monoid</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../C/index.html">C Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Haskell Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">Monad</a> &raquo;</li>
+      
+          <li><a href="index.html">Continuation</a> &raquo;</li>
+      
+    <li>継続モナドによるリソース管理</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/Haskell/Monad/Continuation/ResourceManagementByCont.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>継続モナドによるリソース管理<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>継続モナド...これ何に使うの? という問題に対する一つの回答.</p>
+<div class="section" id="id2">
+<h2>リソース管理の問題<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>リソース(ファイルのハンドル/ソケット/排他制御ロック/グラフィックのハンドル)管理の問題は, プログラミングを行っていると必ずまとわりつく問題である.</p>
+<p>言わずもがな, リソース確保後は然るべきタイミングで確実に解放するひつようがあるが, 実際は往々にしてリソースの解放漏れが発生する. 単に解放するコードを書き忘れるというのが一番単純だろう.</p>
+<p>次のようなコードを考えてみる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">copyFile</span> <span class="ow">::</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">copyFile</span> <span class="n">from</span> <span class="n">to</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">h1</span> <span class="ow">&lt;-</span> <span class="n">openFile</span> <span class="n">from</span> <span class="kt">ReadMode</span>
+  <span class="n">h2</span> <span class="ow">&lt;-</span> <span class="n">openFile</span> <span class="n">from</span> <span class="kt">WriteMode</span>
+  <span class="n">contents</span> <span class="ow">&lt;-</span> <span class="n">hGetContent</span> <span class="n">h1</span>
+  <span class="n">hPutStr</span> <span class="n">h2</span> <span class="n">content</span>
+  <span class="n">hClose</span> <span class="n">h1</span>
+  <span class="n">hClose</span> <span class="n">h2</span>
+</pre></div>
+</div>
+<p>これはファイルをコピーする単純な関数であるが, 思いつく限り以下のようなリソース周りのバグが考えられる.</p>
+<ul class="simple">
+<li>コピー先のファイルのopenに失敗したら (パーミションがない, ファイルを作ろうとする場所のフォルダが存在しないなど), コピー元のファイルのハンドルが開放されない.</li>
+<li>コピー元のファイルの読み込みに失敗したら (ファイルが破損している, 無効なUTF8文字列を呼んだ際の例外) 二つのハンドルが解放されない.</li>
+<li>コピー先のファイルへの書き込みに失敗したら (ディスクの容量が足りない場合など) 二つ目のハンドルが解放されない</li>
+<li>(あまりないはずだが) １つ目のファイルのハンドル解放に失敗したら, 二つ目のファイルのハンドルが解放されない.</li>
+</ul>
+<p>このような類のバグはとても典型的で, 長い年月人々が戦ってきた問題のため, 様々な種類の解決策が考えられてきた.</p>
+<p>多くの言語が備える, <cite>try-catch-finally</cite> や, C#の <cite>using</cite>, Goの <cite>defer</cite> ....まだまだ沢山のよく知られていない方法がある.</p>
+</div>
+<div class="section" id="bracket">
+<h2>bracket 関数<a class="headerlink" href="#bracket" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Haskellでは, <cite>bracket</cite> というプリミティブがこの用途で用いられる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">bracket</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">c</span>
+</pre></div>
+</div>
+<p>bracketは３つの引数を取る.
+第一引数はリソース <cite>a</cite> を確保する関数, 第二引数がそのリソース <cite>a</cite> を解放する関数で, 第三引数が確保したリソース <cite>a</cite> を用いて行いたい処理の関数になる.</p>
+<p>例えば, ファイルへのアクセスを行う処理を <cite>bracket</cite> を用いて書いてみると,
+以下のようになる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">fileLength</span> <span class="ow">::</span> <span class="kt">FilePath</span> <span class="ow">=&gt;</span> <span class="kt">IO</span> <span class="kt">Int</span>
+<span class="nf">fileLength</span> <span class="n">path</span> <span class="ow">=</span>
+  <span class="n">bracket</span> <span class="p">(</span><span class="n">openFile</span> <span class="n">path</span> <span class="kt">ReadMode</span><span class="p">)</span> <span class="n">hClose</span> <span class="o">$</span> <span class="nf">\</span><span class="n">h</span> <span class="ow">-&gt;</span> <span class="kr">do</span>
+    <span class="n">content</span> <span class="ow">&lt;-</span> <span class="n">hGetContents</span> <span class="n">h</span>
+    <span class="n">return</span> <span class="o">$!</span> <span class="n">length</span> <span class="n">content</span>
+</pre></div>
+</div>
+<p>ここではファイルを扱うので,
+リソース確保関数 : <cite>openFile path ReadMode</cite> を
+リソース解放関数 : <cite>hClose</cite>
+を渡している.
+また, もう少し細かく指摘すると, <cite>hGetContents</cite> は遅延IOを行ってしまうので, <cite>length</cite> を取った値を返す際に <cite>$!</cite> を使っている.</p>
+<p>意図的に例外を発生させてみると, <cite>bracket</cite> が正しく動作することがわかる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">invalidAccess</span> <span class="ow">::</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">invalidAccess</span> <span class="n">path</span> <span class="ow">=</span>
+  <span class="n">bracket</span> <span class="p">(</span><span class="n">openFile</span> <span class="n">path</span> <span class="kt">ReadMode</span><span class="p">)</span> <span class="p">(</span><span class="nf">\</span><span class="n">h</span> <span class="ow">-&gt;</span> <span class="n">putStrLn</span> <span class="s">&quot;close&quot;</span> <span class="o">&gt;&gt;</span> <span class="n">hClose</span> <span class="n">h</span><span class="p">)</span> <span class="o">$</span> <span class="nf">\</span><span class="n">h</span> <span class="ow">-&gt;</span> <span class="n">hPutStrLn</span> <span class="n">h</span> <span class="s">&quot;(&#39;._.`)&quot;</span>
+</pre></div>
+</div>
+<p><cite>ReadMode</cite> で開いたファイルに, <cite>hPutStrLn</cite> で書き込みを行おうとしているので, ここで例外が発生するはずである. また, ファイルが閉じられることをカクニンするために, ファイルを閉じる前にメッセージを表示する.</p>
+</div>
+<div class="section" id="with">
+<h2>with系関数<a class="headerlink" href="#with" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>リソースの確保と解放は, 通常は対になっているものである.
+故に, リソース確保関数を呼ぶと, 対応する解放関数を呼び出す必要がある.
+例えば, ファイルを開いたらファイルを閉じる関数, メモリを確保したらメモリを解放する関数, ソケットを開いたら, ソケットを解放する関数, である.</p>
+<p><cite>bracket</cite> と合わせて使うことを考えると, あるリソース確保関数が普通決まっているとうことである.
+そこで, Haskellは予め対となるリソース確保関数と解放関数を, <cite>bracket</cite> に部分適用したユーティリティ関数が用意されている.</p>
+<p>例えば, ファイルを扱うものに <cite>withFile</cite> 関数がある.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">withFile</span> <span class="ow">::</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="kt">Mode</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Handle</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span>
+</pre></div>
+</div>
+<p>第一引数と, 第二引数はもともと, <cite>openFile</cite> に渡していた引数である. 第三引数は <cite>bracket</cite> に渡していた, リソースを利用する関数の型と同じ.</p>
+<p>つまり, 第三引数以降を考えると, bracketに <cite>openFile</cite> と <cite>hClose</cite> を予め部分適用した型になっている.</p>
+<p>そして, 実際に <cite>withFile</cite> はそのように定義されている.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">withFile</span> <span class="ow">::</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">IOMode</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Handle</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span><span class="p">)</span> <span class="kt">IO</span> <span class="n">r</span>
+<span class="nf">withFile</span> <span class="n">name</span> <span class="n">mode</span> <span class="ow">=</span> <span class="n">bracket</span> <span class="p">(</span><span class="n">openFile</span> <span class="n">name</span> <span class="n">mode</span><span class="p">)</span> <span class="n">hClose</span>
+</pre></div>
+</div>
+<p>同様に, baseパッケージだけでも次のような関数がある.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">withArray</span> <span class="ow">::</span> <span class="kt">Storable</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Ptr</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span>
+<span class="nf">withBuffer</span> <span class="ow">::</span> <span class="kt">Buffer</span> <span class="n">e</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Ptr</span> <span class="n">e</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span>
+<span class="nf">withCAString</span> <span class="ow">::</span> <span class="kt">String</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">CString</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span>
+<span class="nf">withForeignPtr</span> <span class="ow">::</span> <span class="kt">ForeignPtr</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Ptr</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span>
+<span class="nf">withMVar</span> <span class="ow">::</span> <span class="kt">MVar</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span><span class="p">)</span> <span class="kt">IO</span> <span class="n">r</span>
+<span class="nf">withPooll</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Pool</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span>
+</pre></div>
+</div>
+<p>また, リソース確保関数と解放関数を別々に提供する代わりに, with系関数のみを提供するケースも有る. これはライブラリのユーザがリソースの解放を怠ることを絶対に許さない意図であろう.</p>
+<p>さて, withFileを用いて最初の例を書き直してみる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">copyFile</span> <span class="ow">::</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">copyFile</span> <span class="n">from</span> <span class="n">to</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">withFile</span> <span class="n">from</span> <span class="kt">ReadMode</span> <span class="o">$</span> <span class="nf">\</span><span class="n">h1</span> <span class="ow">-&gt;</span>
+    <span class="n">withFile</span> <span class="n">to</span> <span class="kt">WriteMode</span> <span class="o">$</span> <span class="nf">\</span><span class="n">h2</span> <span class="ow">-&gt;</span>
+      <span class="n">content</span> <span class="ow">&lt;-</span> <span class="n">hGetContents</span> <span class="n">h1</span>
+      <span class="n">hPutStr</span> <span class="n">h2</span> <span class="n">content</span>
+</pre></div>
+</div>
+<p>書き直しは機械的にできる. openFile部分をwithFileに書き換え, ファイルハンドルをクロージャで受け取るようにするだけである. その他に考えることは何もない. これで最初に挙げた色々なバグは全てなくなった.</p>
+</div>
+<div class="section" id="id3">
+<h2>withの問題点<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>しかし, これでめでたしとなるほど世の中甘くはない.</p>
+<p>with系のAPIは極めて厄介な点もあり, 身も蓋もなく言えばこれを使ったコードは書きにくい. (JavaScriptのコールバックで苦労した経験のある人はイメージ社水かもしれない. コールバックは必要に応じてどんどんネストが深くなる)</p>
+<p>さて, さきほどの例を少し拡張して, 二つのファイルを連結して別のファイルに書き出すような関数を書いてみる. 普通に書けば次のようになる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">catFiles</span> <span class="ow">::</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">catFiles</span> <span class="n">from1</span> <span class="n">from2</span> <span class="n">to</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">withFile</span> <span class="n">from1</span> <span class="kt">ReadMode</span> <span class="o">$</span> <span class="nf">\</span><span class="n">h1</span> <span class="ow">-&gt;</span>
+    <span class="n">withFile</span> <span class="n">from2</span> <span class="kt">ReadMode</span> <span class="o">$</span> <span class="nf">\</span><span class="n">h2</span> <span class="ow">-&gt;</span>
+      <span class="n">withFile</span> <span class="n">to</span> <span class="kt">WriteMode</span> <span class="o">$</span> <span class="nf">\</span><span class="n">h3</span> <span class="ow">-&gt;</span> <span class="kr">do</span>
+        <span class="n">hPutStr</span> <span class="n">h3</span> <span class="o">=&lt;&lt;</span> <span class="n">hGetContents</span> <span class="n">h1</span>
+        <span class="n">hPutStr</span> <span class="n">h3</span> <span class="o">=&lt;&lt;</span> <span class="n">hGetContents</span> <span class="n">h2</span>
+</pre></div>
+</div>
+<p>単純にwithFileが一つ増え, それに伴いネストが深くなる.
+見栄え的にも, コード的にも, ネストの変動は歓迎さず, リファクタリング場面での抽象化のしずらさなどの問題を引き起こす要因になる.</p>
+<p>とはいえこれらの審美的な問題であればまぁ割り切ってもいいっちゃいいが, この「組み合わせのしずらさ, 抽象化のしずらさ」は本質的な問題をはらんでいる.</p>
+<p>例えば, 二つのファイルを連結する代わりに, 任意個のファイル名のリストを受け取り, それらの中身を連結して書き出すような関数を書こうとする場合, どうすればいいだろうか. 頭の体操と思って考えて欲しい.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">catFiles</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">FilePath</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">catFiles</span> <span class="n">from</span> <span class="n">to</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="o">???</span>
+</pre></div>
+</div>
+<p>二個, 三個といった定数個と, 任意個の間にはかなり大きな差がある. というのも今回の場合, <cite>withFile</cite> がリソース受け取りのためにネストしたクロージャを要求するため, これを任意個に対応させるには, 普通に考えれば再帰が必要になる.</p>
+<p>なので問題を切り分けて, <cite>withFiles</cite> というwithFileの複数ファイルのバージョンがあることにすれば, <cite>catFiles</cite> は次のように書けるはずである.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">catFiles</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">FilePath</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">catFiles</span> <span class="n">froms</span> <span class="n">to</span> <span class="ow">=</span>
+  <span class="n">withFile</span> <span class="n">froms</span> <span class="kt">ReadMode</span> <span class="o">$</span> <span class="nf">\</span><span class="n">fromhs</span> <span class="ow">-&gt;</span>
+    <span class="n">withFile</span> <span class="n">to</span> <span class="kt">WriteMode</span> <span class="o">$</span> <span class="nf">\</span><span class="n">toh</span> <span class="ow">-&gt;</span>
+      <span class="n">forM_</span> <span class="n">fromhs</span> <span class="o">$</span> <span class="nf">\</span><span class="n">fromh</span> <span class="ow">-&gt;</span> <span class="kr">do</span>
+        <span class="n">content</span> <span class="ow">&lt;-</span> <span class="n">hGetContents</span> <span class="n">fromh</span>
+        <span class="n">hPutStr</span> <span class="n">toh</span> <span class="n">content</span>
+</pre></div>
+</div>
+<p>然る後に, <cite>withFiles</cite> を何とかして定義する.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">withFiles</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">FilePath</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">IOMode</span> <span class="ow">-&gt;</span> <span class="p">([</span><span class="kt">Handle</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">a</span>
+<span class="nf">withFiles</span> <span class="kt">[]</span> <span class="n">_mode</span> <span class="n">k</span> <span class="ow">=</span> <span class="n">k</span> <span class="kt">[]</span>
+<span class="nf">withFiles</span> <span class="p">(</span><span class="n">x</span><span class="kt">:</span><span class="n">xs</span><span class="p">)</span> <span class="n">mode</span> <span class="n">k</span> <span class="ow">=</span>
+  <span class="n">withFile</span> <span class="n">x</span> <span class="n">mode</span> <span class="o">$</span> <span class="nf">\</span><span class="n">h</span> <span class="ow">-&gt;</span>
+    <span class="n">withFiles</span> <span class="n">xs</span> <span class="n">mode</span> <span class="p">(</span><span class="nf">\</span><span class="n">hs</span> <span class="ow">-&gt;</span> <span class="n">k</span> <span class="o">$</span> <span class="n">h</span><span class="kt">:</span><span class="n">hs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><cite>withFiles</cite> 自体もwith系のAPIのように定義するのがキモで, そこが少しトリッキーだが, そこを決めればあとは自然と埋まるだろう.</p>
+<p>しかしここで重要なのは, 実装のややこしさではなく, with系関数の組み合わせが上手く抽象化できないということである. 今回の場合, リストに対する <cite>withFile</cite> のコードが必要になった. では, この二つのwith系関数を組み合わせて, リソースのタプルに対するwith関数を作るにはどうすればいいだろうか. タプルのためにそれ用の組み合わせ関数を用意スべきだろうか? では, <cite>Maybe</cite> の場合は? <cite>Either</cite> の場合は?</p>
+<p><cite>Foreign.Marshal.Utils</cite> に <cite>WithMany</cite> という関数がある. この関数はwith系関数と, それに適用する値のリスト, それから確保したリソースのリストを受け取る関数を受け取る.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">withMany</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">res</span> <span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">res</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="p">([</span><span class="n">b</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="n">res</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">res</span>
+</pre></div>
+</div>
+<p>これを使うと, <cite>withFiles</cite> は次のように成る.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">withFiles</span> <span class="n">fs</span> <span class="n">mode</span> <span class="ow">=</span>
+  <span class="n">withMany</span> <span class="p">(`</span><span class="n">withFile</span><span class="p">`</span> <span class="n">mode</span><span class="p">)</span> <span class="n">fs</span>
+</pre></div>
+</div>
+<p>その他に, <cite>Maybe</cite> 関係のいくつかのユーティティ関数が用意されて入るものの, これだけで快適にコードが書けるとは言い難いだろう.</p>
+</div>
+<div class="section" id="cps">
+<h2>継続渡しスタイル(CPS)<a class="headerlink" href="#cps" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>さて, with系の関数は, いわゆる継続渡しスタイルと見ることができる.</p>
+<p>継続渡しスタイル(Continuation Passing Style, CPS)と呼ばれるものは, 関数が値を返す代わりに, 返り値を受け取る別の関数を渡すというものである.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">foo</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">Int</span>
+<span class="nf">foo</span> <span class="n">n</span> <span class="ow">=</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>このような単純な関数があったとして, CPSは以下のようになる</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">fooCont</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<span class="nf">fooCont</span> <span class="n">n</span> <span class="n">k</span> <span class="ow">=</span> <span class="n">k</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="nf">ghci</span><span class="o">&gt;</span> <span class="n">fooCont</span> <span class="mi">123</span> <span class="o">$</span> <span class="nf">\</span><span class="n">i</span> <span class="ow">-&gt;</span> <span class="n">print</span> <span class="n">i</span>
+<span class="mi">246</span>
+</pre></div>
+</div>
+<p>こんなことして何が嬉しいかというと, 実際の所この例で嬉しいことはなにもないが, コンパイラの最適化などで嬉しいケースも有る. 例えば, CPSにおいては, 関数呼び出しは必ず末尾呼び出し, つまりただのジャンプとして扱うことができる.</p>
+<p>よくある例だが, 階乗を求める例をCPSで書いてみる. 通常のコードは以下のようになるだろう.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">fact</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">Int</span>
+<span class="nf">fact</span> <span class="mi">0</span> <span class="ow">=</span> <span class="mi">1</span>
+<span class="nf">fact</span> <span class="n">n</span> <span class="ow">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">fact</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>これをCPSにするには, 帰り値を受け取る関数を追加してやる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">factCont</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span>
+<span class="nf">factCont</span> <span class="mi">0</span> <span class="n">k</span> <span class="ow">=</span> <span class="n">k</span> <span class="mi">1</span>
+<span class="nf">factCont</span> <span class="n">n</span> <span class="n">k</span> <span class="ow">=</span> <span class="n">factCont</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">$</span> <span class="nf">\</span><span class="n">t</span> <span class="ow">-&gt;</span> <span class="n">k</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><cite>factCont</cite> を再帰呼び出しするときに, そこの継続に何を渡すかというのが少し考えるところではあるが, <cite>t -&gt; k (n * t)</cite> のように, 新たにクロージャを作って渡してやれば良い. <cite>t</cite> には <cite>n-1</cite> の階乗が計算されたものが入ってくるはずなので, それに <cite>n</cite> を掛けたものを自分の引数の継続 <cite>k</cite> に渡して完成.</p>
+<p>毎回クロージャを作る時点で, このほうが効率悪いように思うかもしれないが, コンパイラが十分に賢ければ, このクロージャを作るのは回避されることが期待されていて, なおかつ再帰呼出しがジャンプに書き換えられ, このコードは理想的には極めて効率よく実行される「可能性がある」といえる. 「可能性がある」とは, Haskellのコンパイラはこれをたまにうまくやってくれないことがあり, でも気分が良ければ調子よくやってくれる. コンパイラの気持ちは複雑で, 人間は常にもてあそばれてしまう.</p>
+<p>また, このCPSへの変換は通常, 機械的に行うことができる. 機械的にCPSに変換した後に, アグレッシブな最適化をかけることで, 正しい末尾再帰の実装を特別な枠組みなしに実現したり, 関数呼び出しの最適化がやりやすくなったりしてコンパイラ自体の単純化にも寄与する.</p>
+</div>
+<div class="section" id="id4">
+<h2>継続モナド<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>長くなったが, いよいよ継続モナドの出番である.</p>
+<p>継続モナドというものが, mtlの <cite>Control.Monad.Cont</cite> に定義されている.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">class</span> <span class="kt">Monad</span> <span class="n">m</span> <span class="ow">=&gt;</span> <span class="kt">MonadCont</span> <span class="n">m</span> <span class="kr">where</span>
+  <span class="n">callCC</span> <span class="ow">::</span> <span class="p">((</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p><cite>MonadCont</cite> が継続モナドのクラスで, <cite>callCC</cite> というメソッドを一つだけ持つ. <cite>callCC</cite> が何かと言うと, 詳細は省く(<cite>call-with-current-continuation</cite>)が, 呼ばれた時点の継続を引数の関数に渡してくれるというもの.</p>
+<p><cite>callCC</cite> は, CPSではない, 普通のスタイルのコンテキストにおける継続を取りだして, プログラマに見せるという機能を提供する. 逆に, 継続モナドは内部的にはそのようなことが可能な実装になっていなければならないということである. 実装はイロイロ考えられるし, 普通のスタイルで実行をして, 命令ポインタとスタックフレームにコピーをして云々というものももちろんありえるだろう. しかし, 最も直接的な実装は, CPSの関数をモナドのインスタンスにしてしまうことである.</p>
+<p><cite>MonadCont</cite> のデフォルトの定義, <cite>ContT</cite> の定義を見てみる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">newtype</span> <span class="kt">ContT</span> <span class="n">r</span> <span class="n">m</span> <span class="n">a</span> <span class="ow">=</span>
+  <span class="kt">ContT</span> <span class="p">{</span> <span class="n">runContT</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">r</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">r</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>モナド変換子版を提供するために, <cite>ContT</cite> はベースのモナドの型 <cite>m</cite> を引数にとる. 簡単のために, <cite>m</cite> に <cite>Identity</cite> を代入した非変換子版の <cite>Cont</cite> を考えてみる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">newtype</span> <span class="kt">Cont</span> <span class="n">r</span> <span class="n">a</span> <span class="ow">=</span>
+  <span class="kt">Cont</span> <span class="p">{</span> <span class="n">runCont</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">r</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">r</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p><cite>Cont</cite> は <cite>(a -&gt; r) -&gt; r</cite> のnewtypeである. これは直前の計算の結果 <cite>a</cite> を受け取って, 残りの計算を行った結果 <cite>r</cite> を返す関数を受け取る.
+まさに, CPSスタイルの関数である.</p>
+<p>同様に, <cite>ContT</cite> は, その結果をモナド <cite>m r</cite> に限定したものと考えることができる. 型に従って考えると, 単にそういうことになる.</p>
+<p>ここで, 最初にでてきたファイルを開く関数を振り返り, <cite>ContT</cite> と並べている</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">withFile</span> <span class="ow">::</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">IOMode</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Handle</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span>
+
+<span class="kt">ContT</span> <span class="ow">::</span> <span class="p">{</span> <span class="n">runContT</span> <span class="ow">::</span>  <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">r</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">r</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>型パラメータ <cite>a</cite> に <cite>Handle</cite> を, <cite>m</cite> に <cite>IO</cite> を代入して, ついでに列を揃えてみる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">withFile</span> <span class="ow">::</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">IOMode</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="kt">Handle</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span>
+<span class="kt">ContT</span> <span class="p">{</span> <span class="n">runContT</span> <span class="ow">::</span>               <span class="p">(</span><span class="kt">Handle</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">r</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>このように, <cite>withFile</cite> の前二つの引数を覗いた型が見事一致した. <cite>withFile</cite> はモナド変換子版の継続モナドそのものだったということになる.</p>
+<p>あとは簡単で, <cite>ContT</cite> を作るだけでモナドのインスタンスになる. 具体的に確認してみよう. 最初のファイルコピーのコードを例に取りあげる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">copyFile</span> <span class="ow">::</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">copyFile</span> <span class="n">from</span> <span class="n">to</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">withFile</span> <span class="n">from</span> <span class="kt">ReadMode</span> <span class="o">$</span> <span class="nf">\</span><span class="n">h1</span> <span class="ow">-&gt;</span>
+    <span class="n">withFile</span> <span class="n">to</span> <span class="kt">WriteMode</span> <span class="o">$</span> <span class="nf">\</span><span class="n">h2</span> <span class="ow">-&gt;</span>
+      <span class="n">content</span> <span class="ow">&lt;-</span> <span class="n">hGetContents</span> <span class="n">h1</span>
+      <span class="n">hPutStrLn</span> <span class="n">h2</span> <span class="n">content</span>
+</pre></div>
+</div>
+<p>これを継続モナドを使って書き直す.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">copyFile</span> <span class="ow">::</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">copyFile</span> <span class="n">from</span> <span class="n">to</span> <span class="ow">=</span> <span class="p">(`</span><span class="n">runContT</span><span class="p">`</span> <span class="n">return</span><span class="p">)</span> <span class="o">$</span> <span class="kr">do</span>
+  <span class="n">h1</span> <span class="ow">&lt;-</span> <span class="kt">ContT</span> <span class="o">$</span> <span class="n">withFile</span> <span class="n">from</span> <span class="kt">ReadMode</span>
+  <span class="n">h2</span> <span class="ow">&lt;-</span> <span class="kt">ContT</span> <span class="o">$</span> <span class="n">withFile</span> <span class="n">to</span> <span class="kt">WriteMode</span>
+  <span class="n">content</span> <span class="ow">&lt;-</span> <span class="n">liftIO</span> <span class="o">$</span> <span class="n">hGetContents</span> <span class="n">h1</span>
+  <span class="n">liftIO</span> <span class="o">$</span> <span class="n">hPutStr</span> <span class="n">h2</span> <span class="n">content</span>
+</pre></div>
+</div>
+<p><cite>withFile</cite> に <cite>ContT</cite> をつけることによって, 継続渡しの関数があたかも <cite>openFile</cite> のような通常の値を返す関数であるかのように使えている. しかもエラー時を含めて, ブロックを抜けたときに, きちんとリソースの解放まで行われている.</p>
+<p><cite>ContT</cite> モナドのままだと実行できないため, これを実行できるように <cite>ContT</cite> を外してやる必要がある. これは newtype コンストラクタである, <cite>ContT</cite> を外して中の値を取りだしてやるだけである. <cite>(&#8216;runContT&#8217; return)</cite> の部分がそれに相当する. <cite>runContT</cite> の型を書き出してみると, 次のようになっている</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runContT</span> <span class="ow">::</span> <span class="kt">ContT</span> <span class="n">r</span> <span class="n">m</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">r</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">r</span>
+</pre></div>
+</div>
+<p><cite>runContT</cite> はnewtypeのフィールド名だが, これを普通の関数と考えると, 継続モナドを受け取って, CPSの関数を返す関数と見ることができる. 要するに, <cite>ContT</cite> をつけるとCPSから普通のスタイルに変わって, <cite>runContT</cite> で普通のスタイルからCPSに戻るというイメージである. とはいえ, 理屈では分かっていても, 実際に起こっていることはかなり不思議である. ただ, 型があっているんだからしょうがない.</p>
+<p>次は, <cite>catFiles</cite> 関数を継続モナドで書き直してみる. 複数のリソースの確保が悩ましい問題だった. 以下に再掲する.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">catFiles</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">FilePath</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">catFiles</span> <span class="n">froms</span> <span class="n">to</span> <span class="ow">=</span>
+  <span class="n">withFile</span> <span class="n">froms</span> <span class="kt">ReadMode</span> <span class="o">$</span> <span class="nf">\</span><span class="n">fromhs</span> <span class="ow">-&gt;</span>
+    <span class="n">withFile</span> <span class="n">to</span> <span class="kt">WriteMode</span> <span class="o">$</span> <span class="nf">\</span><span class="n">toh</span> <span class="ow">-&gt;</span>
+      <span class="n">forM_</span> <span class="n">fromhs</span> <span class="o">$</span> <span class="nf">\</span><span class="n">fromh</span> <span class="ow">-&gt;</span> <span class="kr">do</span>
+        <span class="n">content</span> <span class="ow">&lt;-</span> <span class="n">hGetContents</span> <span class="n">fromh</span>
+        <span class="n">hPutStr</span> <span class="n">toh</span> <span class="n">content</span>
+</pre></div>
+</div>
+<p><cite>ContT</cite> によって通常のスタイルにしてしまえばなんのことはない.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">catFiles</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">FilePath</span><span class="p">]</span> <span class="ow">-&gt;</span> <span class="kt">FilePath</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">catFiles</span> <span class="n">froms</span> <span class="n">to</span> <span class="ow">=</span> <span class="p">(`</span><span class="n">runContT</span><span class="p">`</span> <span class="n">return</span><span class="p">)</span> <span class="o">$</span> <span class="kr">do</span>
+  <span class="n">fromhs</span> <span class="ow">&lt;-</span> <span class="n">forM</span> <span class="n">froms</span> <span class="o">$</span> <span class="n">from</span> <span class="ow">-&gt;</span> <span class="kt">ContT</span> <span class="o">$</span> <span class="n">withFile</span> <span class="n">from</span> <span class="kt">ReadMode</span>
+  <span class="n">toh</span> <span class="ow">&lt;-</span> <span class="kt">ContT</span> <span class="o">$</span> <span class="n">withFile</span> <span class="n">to</span> <span class="kt">WriteMode</span>
+  <span class="n">forM_</span> <span class="n">fromhs</span> <span class="o">$</span> <span class="nf">\</span><span class="n">fromh</span> <span class="ow">-&gt;</span> <span class="kr">do</span>
+    <span class="n">content</span> <span class="ow">&lt;-</span> <span class="n">liftIO</span> <span class="o">$</span> <span class="n">hGetContents</span> <span class="n">fromh</span>
+    <span class="n">liftIO</span> <span class="o">$</span> <span class="n">hPutStr</span> <span class="n">toh</span> <span class="n">content</span>
+</pre></div>
+</div>
+<p><cite>forM</cite> で繰り返してやるだけである. 目的のために, 今や普通のモナドを扱う関数を利用することができる. リスト向けに <cite>withMany</cite> などというものを使ったり, あれこれ痒いところに手が届かない合成関数を揃えていく必要もない. なにせモナドだから, 何も考えずにモナドに身を委ねればよい.</p>
+<p>速度が気になる方もいるかも知れないが, これもCPS変換での最適化と同様に(同じではないが), コンパイラが理想的な振る舞いをしてくれれば, 最適化され, 完全に元のコードと同じ性能が出ることが期待される. そして, GHCの新バージョンならおそらくそのような振る舞いをしてくれることだろう.</p>
+</div>
+<div class="section" id="id5">
+<h2>他のリソース管理に特化したモナド<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>継続モナドをリソース管理に使えるという話をしたが, Hackageにはいくつかリソース管理を目的としたモナドを実装しているパッケージがある.</p>
+<div class="section" id="managed">
+<h3>Managed モナド<a class="headerlink" href="#managed" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><cite>managed</cite> パッケージで定義されている, <cite>Managed</cite> モナドは, <cite>ContT</cite> と全く同じ型で, 振る舞いも同じだが, リソース管理という目的における, ユーザーフレンドリーな名前が付いているという点と, リソース管理に用いるために便利な関数やインスタンスが追加されているというのがモチベーションのようだ.</p>
+<p>例えば, <cite>Managed</cite> 型に対して, <cite>Monoid</cite> のインスタンスが定義されていたり, <cite>Num</cite> を始めとする直接数値として扱うためのインスタンスが定義されている.</p>
+</div>
+<div class="section" id="resourcet">
+<h3>ResourceT モナド<a class="headerlink" href="#resourcet" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>当然ながら, リソース管理のための抽象化が一通りということはありえないし 一通りである必要もないため, 別のアプローチも考えられる.</p>
+<p><cite>resourcet</cite> パッケージで定義されている, <cite>ResourceT</cite> モナドはずいぶんと趣向が変わって, リソース解放のための関数を集めた配列を持ち回りながら, 最後にその配列の関数を実行するモナドである. リソース確保の際に, リリースするためのキーを返すような機能があり, 必要があれば計算の途中でもリソースを開放できるような仕組みになっている.</p>
+<p>プログラマが望めば, 必要なくなったソケットをすぐさま解放するなどのような処理を簡単に記述できるが, もちろんそういう仕組を使うときはプログラマ自身が解放済みリソースに触れないように気をつけなければいけない.</p>
+<p>また, そのようなリソースの解放を明示的に行える機能を提供する以上, 分離されたリソース確保関数と解放関数が必要になるため, with系の関数とは同時に使用することができない.</p>
+<p>この辺りはアプリケーションによってトレードオフになるだろう. <cite>ResourceT</cite> モナドは <cite>Yesod</cite> で使うために作られた. <cite>Yesod</cite> はWebフレームワークなので, できるだけ早いタイミングでソケットなどを解放することが重要なようで, 逆にそういうことが必ずしも必要で無いなら, 安全性と利便性で継続モナドを使うことがまさるケースも考えられている.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../MonadTransformers/index.html" class="btn btn-neutral float-right" title="Monad Transformers" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ContCallCc.html" class="btn btn-neutral" title="Contモナドとcall/cc" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

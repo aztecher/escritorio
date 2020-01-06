@@ -1,0 +1,327 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>KickStart &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../index.html"/>
+        <link rel="up" title="Packer Documents" href="index.html"/>
+        <link rel="next" title="Preseed" href="Preseed.html"/>
+        <link rel="prev" title="Examples" href="Examples.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../C/index.html">C Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Infrastructure Documents</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Packer Documents</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="What_is_Packer.html">What is Packer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Boxcutter.html">BoxCutter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Examples.html">Examples</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">KickStart</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">kickstartが担う領域</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Preseed.html">Preseed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Ansible/index.html">Ansible Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Vagrant/index.html">Vagrant Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Docker/index.html">Docker Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Kubernetes/index.html">Kubernetes Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../OpenStack/index.html">OpenStack Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Network/index.html">Network Documents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Infrastructure Documents</a> &raquo;</li>
+      
+          <li><a href="index.html">Packer Documents</a> &raquo;</li>
+      
+    <li>KickStart</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/Infrastructure/Packer/KickStart.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kickstart">
+<h1>KickStart<a class="headerlink" href="#kickstart" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">注釈</p>
+<p class="last">本来, KickStartとPackerは独立したツールであるが, KickStartに関しては現状Packerでの利用以外を考えていないため, このディレクトリに説明書きを載せておく.</p>
+</div>
+<p>kickstartはOSのインストールを自動化する仕組みである.
+anaconda社が提供するインストールの仕組みで, Redhat系のOSが採用しているらしい.</p>
+<p>Ubuntuの場合は, Preseedという別の仕組みが提供されているそうだ. <span class="xref doc">./Preseed.rst</span></p>
+<p>kickstartを利用することで, 上述した通りOSインストールの自動化ができる.
+つまり, OSインストールの際に我々が設定する, 「言語設定」「ホスト名」...などの入力すべき情報を自動で設定してあげることができるものということ.</p>
+<div class="section" id="id1">
+<h2>kickstartが担う領域<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>kickstartにはprovisioning機能も付いているらしい. そうなるとAnsible等のプロビジョニングツールとの棲み分けの話になる. もちろん明確なすみ分けがあるわけではないが, kickstartが担う領域を「Bootstrapping」の領域, Ansibleが担う領域を「Configuration」「Orchestration」の領域という棲み分けにするのが一番キレイだろう.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>実際にKickStartを利用する流れを説明する.
+今回は, Virtualboxを利用して試すことにする.</p>
+<div class="section" id="environment">
+<h3>Environment<a class="headerlink" href="#environment" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<ul class="simple">
+<li>Virtualbox</li>
+<li>OSのisoファイル</li>
+<li>kickstartファイル</li>
+</ul>
+<p>isoファイルはダウンロードしておき, kickstartファイルはhttpでアクセスできるようにネットワーク上に置いておく.</p>
+<p>以下に, 今回利用するkickstartファイルを記述しておく</p>
+<div class="highlight-cfg"><div class="highlight"><pre><span></span># アップグレードするかインストールするか
+install
+
+# インストールタイプの設定
+# CD-ROM経由化かネットワーク経由かなど
+cdrom
+
+# 言語設定
+lang ja_JP.UTF-8
+
+# キーボード設定
+keyboard us101
+
+# ネットワーク設定
+# /etc/sysconfig/network-scripts/ifcfg-xxxx の部分
+network --onboot yes --device eth0 --bootproto dhcp --noipv6
+
+# rootのパスワード
+# xxxxxxの部分はopensshコマンドで作成するといい
+# $openssl passwd -l
+rootpw --iscrypted xxxxxx
+
+# iptablesの設定
+# プロビジョニングで設定するのでここでは無効にしておく
+firewall --disabled
+
+# 認証オプション
+authconfig --enableshadow --passalgo=sha512
+
+# SELinuxの設定
+# こちらも詳細はプロビジョニングで設定するので無効にする
+selinux --disabled
+
+# タイムゾーン
+timezone --utc Asia/Tokyo
+
+# bootloaderのインストール方法
+bootloader --location=mbr --driveorder=sda --append=&quot;nomodeset crashkernel=auto rhgb quiet&quot;
+
+# 設定後にリブート
+reboot
+
+# パーティション設定
+clearpart --linux --derives=sda
+autopart
+
+# インストールパッケージ選択
+%package --nobase
+@core
+
+%end
+</pre></div>
+</div>
+<p>これに関しては公式のドキュメントが充実しているため, そちらを参考にするといい.</p>
+<ul class="simple">
+<li><a class="reference external" href="https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/6/html/installation_guide/s1-kickstart2-options">KickStart_Options</a></li>
+<li><a class="reference external" href="https://access.redhat.com/documentation/ja-jp/red_hat_enterprise_linux/6/html/installation_guide/s1-kickstart2-packageselection">Select_Packkages</a></li>
+</ul>
+</div>
+<div class="section" id="how-to-use-kickstart-file">
+<h3>How to use kickstart file?<a class="headerlink" href="#how-to-use-kickstart-file" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>さて, 上記で作ったファイルをOSインストール前なのにどう使うのかという疑問がでるだろう.</p>
+<p>OSのisoファイルを起動するとInstall選択画面が出てくる.
+その画面で, [Tab] を押下するとedit optionなるものを与えることができる.
+そこに対して, kickstartファイルのパスを入力してあげる.</p>
+<p>そうするとKickStartが完了する.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Preseed.html" class="btn btn-neutral float-right" title="Preseed" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Examples.html" class="btn btn-neutral" title="Examples" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

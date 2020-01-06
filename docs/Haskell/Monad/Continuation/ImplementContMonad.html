@@ -1,0 +1,390 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Contモナドを実装する &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="Continuation" href="index.html"/>
+        <link rel="next" title="Contモナドとcall/cc" href="ContCallCc.html"/>
+        <link rel="prev" title="モナドから初めない継続入門" href="ContStyleWithoutMonad.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Haskell Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Monad</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../State/index.html">State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Writer/index.html">Writer</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Continuation</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="ContStyleWithoutMonad.html">モナドから初めない継続入門</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Contモナドを実装する</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ContCallCc.html">Contモナドとcall/cc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ResourceManagementByCont.html">継続モナドによるリソース管理</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../MonadTransformers/index.html">Monad Transformers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../MyProjects/index.html">Haskell MyProject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../LanguageExtension/index.html">LanguageExtension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Monoid/index.html">Monoid</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../C/index.html">C Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Haskell Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">Monad</a> &raquo;</li>
+      
+          <li><a href="index.html">Continuation</a> &raquo;</li>
+      
+    <li>Contモナドを実装する</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/Haskell/Monad/Continuation/ImplementContMonad.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cont">
+<h1>Contモナドを実装する<a class="headerlink" href="#cont" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p><a class="reference internal" href="ContStyleWithoutMonad.html"><span class="doc">モナドから初めない継続入門</span></a> の続き.</p>
+<p>上の記事では, モナドの登場しない継続の説明を書いた.
+今回はこの時使った継続を Contモナド というモナドに変換していく.</p>
+<p>前回定義したaverage3CPSの定義を見直す.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">addCPS</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">result</span>
+<span class="nf">addCPS</span> <span class="n">x</span> <span class="n">y</span> <span class="n">cont</span> <span class="ow">=</span> <span class="n">cont</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="nf">divCPS</span> <span class="ow">::</span> <span class="kt">Fractional</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">result</span>
+<span class="nf">divCPS</span> <span class="n">x</span> <span class="n">y</span> <span class="n">cont</span> <span class="ow">=</span> <span class="n">cont</span> <span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="nf">average3CPS</span> <span class="ow">::</span> <span class="kt">Fractional</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">result</span>
+<span class="nf">average3CPS</span> <span class="n">x</span> <span class="n">y</span> <span class="n">z</span> <span class="n">cont</span> <span class="ow">=</span>
+  <span class="n">addCPS</span> <span class="n">x</span> <span class="n">y</span> <span class="o">$</span> <span class="nf">\</span><span class="n">xPlusY</span> <span class="ow">-&gt;</span>
+  <span class="n">addCPS</span> <span class="n">xPlusY</span> <span class="n">z</span> <span class="o">$</span> <span class="nf">\</span><span class="n">xPlusYPlusZ</span> <span class="ow">-&gt;</span>
+  <span class="n">divCPS</span> <span class="n">xPlusYPlusZ</span> <span class="mi">3</span> <span class="o">$</span> <span class="nf">\</span><span class="n">average</span> <span class="ow">-&gt;</span>
+  <span class="n">cont</span> <span class="n">average</span>
+</pre></div>
+</div>
+<p>さて, average3CPSの定義を見てみると, <cite>hoge a b c $ z -&gt; ...</cite> という形のボイラープレートが繰り返されていることに気づく.
+このような構文上のボイラープレートはモナド化のチャンスなので覚えておくといい.</p>
+<p>average3CPSに現れるそれぞれの$を見てみると, その左側は以下のような型になっていることがわかる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span>($)の左側 :: (a -&gt; result) -&gt; result
+</pre></div>
+</div>
+<p>(* ここでのaは, average3CPSの型定義に出てくるものとは別物である)</p>
+<p>このうち, resultの部分はプログラムの最終的な実行結果を表すために不変で, aの部分は例えば, <cite>addCPS x y</cite> や <cite>divCPS xPlusYPlusZ 3</cite> などの結果の型になる.</p>
+<p>このことから察するに, Contモナドの構成要素は以下のような形になるはず.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">newtype</span> <span class="kt">Cont</span> <span class="n">result</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Cont</span> <span class="p">{</span>
+  <span class="n">runCont</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">result</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>事実として, これが Contモナド の具体的な型になる.</p>
+<p>次に, returnの実装を考える.
+returnは何もしない(&gt;=&gt;の単位元になる)ものなので, 今までの書き方で言えば以下のような関数にそうとうするものになるだろう.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">identityCPS</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">result</span>
+<span class="nf">identityCPS</span> <span class="n">x</span> <span class="n">cont</span> <span class="ow">=</span> <span class="n">cont</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>最後に, &gt;&gt;= の実装について考える. &gt;&gt;= は, 今までの書き方をすれば以下のような関数に相当する型を持つはず.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">bindCPS</span> <span class="ow">::</span>
+  <span class="p">((</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span>
+  <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="p">((</span><span class="n">c</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">))</span> <span class="ow">-&gt;</span>
+  <span class="p">((</span><span class="n">c</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>一番最後の括弧は外しても変わらないので, 外して考える.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">bindCPS</span> <span class="ow">::</span>
+  <span class="p">((</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span>
+  <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">((</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">))</span> <span class="ow">-&gt;</span>
+  <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span>
+  <span class="n">result</span>
+</pre></div>
+</div>
+<p>このことから, このbindCPSは</p>
+<ol class="arabic simple">
+<li>a型の結果を継続に渡す関数xCPSを受け取り,</li>
+<li>aを引数としてとり, 結果の型bの値を継続に渡す関数fCPSを受け取り,</li>
+<li>b型の値を受け取って最終的な計算結果を返す継続を受け取り,</li>
+<li>最終的な計算結果を返す</li>
+</ol>
+<p>関数であることがわかる.
+さて, ではコード化してみる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">bindCPS</span> <span class="ow">::</span>
+  <span class="p">((</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span>
+  <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">((</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">))</span> <span class="ow">-&gt;</span>
+  <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span>
+  <span class="n">result</span>
+<span class="nf">bindCPS</span> <span class="n">xCPS</span> <span class="n">fCPS</span> <span class="n">cont</span> <span class="ow">=</span>
+  <span class="n">xCPS</span> <span class="o">$</span> <span class="nf">\</span><span class="n">xVal</span> <span class="ow">-&gt;</span>
+  <span class="n">fCPS</span> <span class="n">xVal</span> <span class="o">$</span> <span class="nf">\</span><span class="n">yVal</span> <span class="ow">-&gt;</span>
+  <span class="n">cont</span> <span class="n">yVal</span>
+</pre></div>
+</div>
+<p>最後に, これらを新しい型Contに合わせて書き換え, モナドのインスタンスにしてしまう.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nn">Control.Monad</span> <span class="p">(</span><span class="nf">liftM</span><span class="p">,</span> <span class="nf">ap</span><span class="p">)</span>
+
+<span class="kr">newtype</span> <span class="kt">Cont</span> <span class="n">result</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Cont</span> <span class="p">{</span>
+  <span class="n">runCont</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">result</span>
+<span class="p">}</span>
+
+<span class="nf">returnCont</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Cont</span> <span class="n">result</span> <span class="n">a</span>
+<span class="nf">returnCont</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Cont</span> <span class="o">$</span> <span class="nf">\</span><span class="n">cont</span> <span class="ow">-&gt;</span> <span class="n">cont</span> <span class="n">a</span>
+
+<span class="nf">bindCont</span> <span class="ow">::</span> <span class="kt">Cont</span> <span class="n">result</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Cont</span> <span class="n">result</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">Cont</span> <span class="n">result</span> <span class="n">b</span>
+<span class="nf">bindCont</span> <span class="p">(</span><span class="kt">Cont</span> <span class="n">xCPS</span><span class="p">)</span> <span class="n">f</span> <span class="ow">=</span> <span class="kt">Cont</span> <span class="o">$</span> <span class="nf">\</span><span class="n">cont</span> <span class="ow">-&gt;</span>
+  <span class="n">xCPS</span> <span class="o">$</span> <span class="nf">\</span><span class="n">xVal</span> <span class="ow">-&gt;</span>
+  <span class="kr">let</span> <span class="kt">Cont</span> <span class="n">yCPS</span> <span class="ow">=</span> <span class="n">f</span> <span class="n">xVal</span>
+  <span class="kr">in</span> <span class="n">yCPS</span> <span class="o">$</span> <span class="nf">\</span><span class="n">yVal</span> <span class="ow">-&gt;</span>
+    <span class="n">cont</span> <span class="n">yVal</span>
+
+
+<span class="kr">instance</span> <span class="kt">Monad</span> <span class="p">(</span><span class="kt">Cont</span> <span class="n">result</span><span class="p">)</span> <span class="kr">where</span>
+  <span class="n">return</span> <span class="ow">=</span> <span class="n">returnCont</span>
+  <span class="p">(</span><span class="o">&gt;&gt;=</span><span class="p">)</span> <span class="ow">=</span> <span class="n">bindCont</span>
+
+<span class="kr">instance</span> <span class="kt">Applicative</span> <span class="p">(</span><span class="kt">Cont</span> <span class="n">result</span><span class="p">)</span> <span class="kr">where</span>
+  <span class="n">pure</span> <span class="ow">=</span> <span class="n">return</span>
+  <span class="p">(</span><span class="o">&lt;*&gt;</span><span class="p">)</span> <span class="ow">=</span> <span class="n">ap</span>
+
+<span class="kr">instance</span> <span class="kt">Functor</span> <span class="p">(</span><span class="kt">Cont</span> <span class="n">result</span><span class="p">)</span> <span class="kr">where</span>
+  <span class="n">fmap</span> <span class="ow">=</span> <span class="n">liftM</span>
+
+<span class="c1">-- define average3CPS by using Cont Monad</span>
+
+<span class="nf">addCont</span> <span class="ow">::</span> <span class="kt">Num</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Cont</span> <span class="n">result</span> <span class="n">a</span>
+<span class="nf">addCont</span> <span class="n">x</span> <span class="n">y</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+
+<span class="nf">divCont</span> <span class="ow">::</span> <span class="kt">Fractional</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Cont</span> <span class="n">result</span> <span class="n">a</span>
+<span class="nf">divCont</span> <span class="n">x</span> <span class="n">y</span> <span class="ow">=</span> <span class="n">return</span> <span class="o">$</span> <span class="n">x</span> <span class="o">/</span> <span class="n">y</span>
+
+<span class="nf">average3Cont</span> <span class="ow">::</span> <span class="kt">Fractional</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Cont</span> <span class="n">result</span> <span class="n">a</span>
+<span class="nf">average3Cont</span> <span class="n">x</span> <span class="n">y</span> <span class="n">z</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">xPlusY</span> <span class="ow">&lt;-</span> <span class="n">addCont</span> <span class="n">x</span> <span class="n">y</span>
+  <span class="n">xPlusYPlusZ</span> <span class="ow">&lt;-</span> <span class="n">addCont</span> <span class="n">xPlusY</span> <span class="n">z</span>
+  <span class="kr">let</span> <span class="n">average</span> <span class="ow">=</span> <span class="n">xPlusYPlusZ</span> <span class="o">/</span> <span class="mi">3</span>
+  <span class="n">return</span> <span class="n">average</span>
+</pre></div>
+</div>
+<p>実行は以下のように行う.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">ghci</span><span class="o">&gt;</span> <span class="n">runCont</span> <span class="p">(</span><span class="n">average3Cont</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">)</span> <span class="o">$</span> <span class="nf">\</span><span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">x</span>
+<span class="mf">4.0</span>
+<span class="nf">ghci</span><span class="o">&gt;</span> <span class="n">runCont</span> <span class="p">(</span><span class="n">average3Cont</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">)</span> <span class="o">$</span> <span class="nf">\</span><span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">show</span> <span class="n">x</span>
+<span class="s">&quot;4.0&quot;</span>
+</pre></div>
+</div>
+<p>継続をモナドにしたメリットは, これまで明示的にcontを受け渡していたのをうまく隠蔽することができるところにある. (某氏の言っていた, 「モナドはデザインパターンですよ」という言葉の意味がよく分かる)</p>
+<p>さて, 新旧の書き方がどう変わっているのか再確認してみる</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="c1">-- 旧 (モナドでない継続)</span>
+<span class="nf">average3CPS</span> <span class="ow">::</span> <span class="kt">Fractional</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">result</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">result</span>
+<span class="nf">agerage3CPS</span> <span class="n">x</span> <span class="n">y</span> <span class="n">z</span> <span class="n">cont</span> <span class="ow">=</span>
+  <span class="n">addCPS</span> <span class="n">x</span> <span class="n">y</span> <span class="o">$</span> <span class="nf">\</span><span class="n">xPlusyhY</span> <span class="ow">-&gt;</span>
+  <span class="n">addCPS</span> <span class="n">xPlusY</span> <span class="n">z</span> <span class="o">$</span> <span class="nf">\</span><span class="n">xPlusYPlusz</span> <span class="ow">-&gt;</span>
+  <span class="n">divCPS</span> <span class="n">xPlusYPlusZ</span> <span class="mi">3</span> <span class="o">$</span> <span class="nf">\</span><span class="n">average</span> <span class="ow">-&gt;</span>
+  <span class="n">cont</span> <span class="n">average</span>
+
+<span class="c1">-- 新 (モナドによる継続)</span>
+<span class="nf">average3Cont</span> <span class="ow">::</span> <span class="kt">Fractional</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Cont</span> <span class="n">result</span> <span class="n">a</span>
+<span class="nf">average3Cont</span> <span class="n">x</span> <span class="n">y</span> <span class="n">z</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">xPlusY</span> <span class="ow">&lt;-</span> <span class="n">addCont</span> <span class="n">x</span> <span class="n">y</span>
+  <span class="n">xPlusYPlusZ</span> <span class="ow">&lt;-</span> <span class="n">addCont</span> <span class="n">xPlusY</span> <span class="n">z</span>
+  <span class="kr">let</span> <span class="n">average</span> <span class="ow">=</span> <span class="n">xPlusYPlusZ</span> <span class="o">/</span> <span class="mi">3</span>
+  <span class="n">return</span> <span class="n">average</span>
+</pre></div>
+</div>
+<p>いままでの書き方では,</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">hogeCPS</span> <span class="o">$</span> <span class="nf">\</span><span class="n">x</span> <span class="ow">-&gt;</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>の...の部分が, 最終的な計算結果を得るまでの残りの処理, すなわち継続を表していたが, 新しい書き方では</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">x</span> <span class="ow">&lt;-</span> <span class="n">hogeCont</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>の...の部分, すなわち, アクションの実行以降の行が暗黙的に継続として扱われる.
+これによって, 現在の継続をより簡単に扱うことができるようになった.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ContCallCc.html" class="btn btn-neutral float-right" title="Contモナドとcall/cc" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ContStyleWithoutMonad.html" class="btn btn-neutral" title="モナドから初めない継続入門" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

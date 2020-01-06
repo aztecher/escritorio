@@ -1,0 +1,813 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>C Documents &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../index.html"/>
+        <link rel="next" title="BasicKnowledge" href="BasicKnowledge/index.html"/>
+        <link rel="prev" title="Viper Documentation" href="../Golang/Library/CLI/Viper.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">C Documents</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Library/index.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MyProjects/index.html">C MyProjects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>C Documents</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/C/index.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="c-documents">
+<h1>C Documents<a class="headerlink" href="#c-documents" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="line-block">
+<div class="line">Cに関するドキュメントを保存している場所です.</div>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BasicKnowledge/index.html">BasicKnowledge</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="BasicKnowledge/Build.html">Build</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="BasicKnowledge/Build.html#abstract">Abstract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BasicKnowledge/Build.html#processing">Processing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Build.html#preprocessor">PreProcessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Build.html#compiler">Compiler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Build.html#linker">Linker</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="BasicKnowledge/Build.html#library">Library</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Build.html#id1">Abstract</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Build.html#library-type">Library Type</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="BasicKnowledge/Build.html#static-link-library-windows-lib-osx-linux-lib-a">Static Link Library (Windows: <em>.lib, OSX/Linux: lib</em>.a)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="BasicKnowledge/Build.html#dynamic-link-library-windows-dll-osx-lib-dylib-linux-lib-so">Dynamic Link Library (Windows: <em>.dll, OSX: lib</em>.dylib, Linux: lib*.so)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="BasicKnowledge/Build.html#dynamic-loading">dynamic loading</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Build.html#lib-vs-dll">lib vs dll</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Build.html#how-to-make">How To Make</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="BasicKnowledge/Build.html#macos-linux">MacOS/Linux</a></li>
+<li class="toctree-l5"><a class="reference internal" href="BasicKnowledge/Build.html#windows">Windows</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="BasicKnowledge/PreProcessor.html">PreProcessor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="BasicKnowledge/PreProcessor.html#abstract">Abstract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BasicKnowledge/PreProcessor.html#what-s-preprocessor">What&#8217;s PreProcessor?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BasicKnowledge/PreProcessor.html#preprocessor-directive">PreProcessor Directive</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/PreProcessor.html#define-1">#define (1)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/PreProcessor.html#include">#include</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/PreProcessor.html#define-2">#define (2)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/PreProcessor.html#define-3">#define (3)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/PreProcessor.html#id1">関数とマクロの使い分け</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="BasicKnowledge/PreProcessor.html#other-function-of-preprocessor">Other Function of PreProcessor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/PreProcessor.html#id2">マクロ定義の抹消</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/PreProcessor.html#id3">条件付きコンパイル</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="BasicKnowledge/VisualStudio/index.html">VisualStudio</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="BasicKnowledge/VisualStudio/DetailedKnowledge.html">詳細知識</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="BasicKnowledge/MemoryAllocation.html">Dynamic Memory Allocation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="BasicKnowledge/MemoryAllocation.html#new-delete">new/delete</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/MemoryAllocation.html#id1">オブジェクトの割り当て</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/MemoryAllocation.html#id2">配列の割り当て</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="BasicKnowledge/Inline.html">inline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="BasicKnowledge/Inline.html#id1">inline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Inline.html#inline-vs">inline vs マクロ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Inline.html#disassemble">Disassemble</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="BasicKnowledge/Inline.html#id2">メンバ関数のインライン化</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="BasicKnowledge/Static.html">static</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BasicKnowledge/Extern.html">extern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BasicKnowledge/ConstPointer.html">Const and Pointer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BasicKnowledge/Virtual_Func_Class.html">Virtual (Function/Class)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="BasicKnowledge/Virtual_Func_Class.html#id1">継承とポインタ</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Virtual_Func_Class.html#id2">派生クラスのポインタ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="BasicKnowledge/Virtual_Func_Class.html#id3">仮想関数</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Virtual_Func_Class.html#id4">関数のオーバーライド</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Virtual_Func_Class.html#id5">ポリモーフィズム</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Virtual_Func_Class.html#id6">仮想関数とデストラクタ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="BasicKnowledge/Virtual_Func_Class.html#id7">仮想クラス</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Virtual_Func_Class.html#id8">クラスの継承と問題点</a></li>
+<li class="toctree-l4"><a class="reference internal" href="BasicKnowledge/Virtual_Func_Class.html#id9">基本仮想クラスのアクセス制御</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="GDB/index.html">GDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="GDB/Installation_and_Settings.html">Installation &amp; Setting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="GDB/Installation_and_Settings.html#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GDB/Installation_and_Settings.html#certification">Certification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GDB/Installation_and_Settings.html#brew-update">brew update の弊害</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="GDB/BasicUsage.html">Basic Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="GDB/BasicUsage.html#id1">Basic Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GDB/BasicUsage.html#tips">Tips</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="LLDB/index.html">LLDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="LLDB/BasicUsage.html">Basic Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="LLDB/BasicUsage.html#id1">Basic Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="LLDB/BasicUsage.html#id2">基本的なコマンドの一覧</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LLDB/BasicUsage.html#id3">プログラムのロード</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LLDB/BasicUsage.html#id4">プログラムの実行</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LLDB/BasicUsage.html#breakpoint">Breakpoint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LLDB/BasicUsage.html#watchpoint">Watchpoint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LLDB/BasicUsage.html#id5">変数出力</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LLDB/BasicUsage.html#id6">構造体出力</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LLDB/BasicUsage.html#id7">変数の一覧を出力する</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LLDB/BasicUsage.html#id8">ステップ実行</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LLDB/BasicUsage.html#id9">スタックトレースを出力する</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="LLDB/BasicUsage.html#tips">Tips</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="LLDB/BasicUsage.html#alias">Alias</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LLDB/BasicUsage.html#id10">コマンド補完</a></li>
+<li class="toctree-l4"><a class="reference internal" href="LLDB/BasicUsage.html#help">Help</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Library/index.html">Libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Library/Kernel/index.html">C Kernel Libraries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Library/Kernel/linux/index.html">linux</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/kernel.h.html">kernel.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/kernel.h.html#functions">Functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/kernel.h.html#printk">printk</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/kernel.h.html#macros">Macros</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/kernel.h.html#container-of">container_of</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/module.h.html">module.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/module.h.html#structures">Structures</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/module.h.html#module">module</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/module.h.html#functions">Functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/module.h.html#module-init">module_init</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/module.h.html#module-exit">module_exit</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/module.h.html#macros">Macros</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/module.h.html#module-license">MODULE_LICENSE</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/module.h.html#module-device-table">MODULE_DEVICE_TABLE</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/fs.h.html">fs.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/fs.h.html#structures">Structures</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/fs.h.html#file-operations">file_operations</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/fs.h.html#inode">inode</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/fs.h.html#file">file</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/fs.h.html#functions">Functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/fs.h.html#register-chrdev">register_chrdev</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/fs.h.html#unregister-chrdev">unregister_chrdev</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/fs.h.html#alloc-chrdev-region">alloc_chrdev_region</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/fs.h.html#unregister-chrdev-region">unregister_chrdev_region</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/types.h.html">types.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/types.h.html#types">types</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/types.h.html#size-t">size_t</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/types.h.html#ssize-t">ssize_t</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/types.h.html#loff-t">loff_t</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/types.h.html#dev-t">dev_t</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/compiler-types.h.html">compiler-types.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/compiler-types.h.html#macro">Macro</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/compiler-types.h.html#user">__user</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/cdev.h.html">cdev.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/cdev.h.html#structures">Structures</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/cdev.h.html#cdev">cdev</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/cdev.h.html#functions">Functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/cdev.h.html#cdev-init">cdev_init</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/cdev.h.html#cdev-add">cdev_add</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/cdev.h.html#cdev-del">cdev_del</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/device.h.html">device.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/device.h.html#structures">Structures</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/device.h.html#class">class</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/device.h.html#device-driver">device_driver</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/device.h.html#functions">Functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/device.h.html#class-create">class_create</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/device.h.html#device-create">device_create</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/device.h.html#device-destroy">device_destroy</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/device.h.html#device-create-file">device_create_file</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/device.h.html#device-remove-file">device_remove_file</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/device.h.html#devm-kzalloc">devm_kzalloc</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/device.h.html#macro">Macro</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/device.h.html#device-attr">DEVICE_ATTR</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/uaccess.h.html">uaccess.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/uaccess.h.html#functions">Functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/uaccess.h.html#copy-to-user">copy_to_user</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/uaccess.h.html#copy-from-user">copy_from_user</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/uaccess.h.html#get-user">get_user</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/uaccess.h.html#put-user">put_user</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/slab.h.html">slab.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/slab.h.html#functions">Functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/slab.h.html#kmalloc">kmalloc</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/slab.h.html#kfree">kfree</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/io.h.html">io.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/io.h.html#functions">Functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/io.h.html#ioremap">ioremap</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/io.h.html#ioremap-nocache">ioremap_nocache</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/io.h.html#iounmap">iounmap</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/proc_fs.h.html">proc_fs.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/proc_fs.h.html#structures">Structures</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/proc_fs.h.html#proc-dir-entry">proc_dir_entry</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/proc_fs.h.html#functions">Functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/proc_fs.h.html#proc-create">proc_create</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/proc_fs.h.html#remove-proc-entry">remove_proc_entry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/dcache.h.html">dcache.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/dcache.h.html#structures">Structures</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/dcache.h.html#class">class</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/debugfs.h.html">debugfs.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/debugfs.h.html#functions">Functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/debugfs.h.html#debugfs-create-dir">debugfs_create_dir</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/debugfs.h.html#debugfs-create-file">debugfs_create_file</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/debugfs.h.html#debugfs-create-u32">debugfs_create_u32</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/debugfs.h.html#debugfs-create-x32">debugfs_create_x32</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/debugfs.h.html#debugfs-remove-recursive">debugfs_remove_recursive</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/gpio.h.html">gpio.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/gpio.h.html#functions">Functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/gpio.h.html#gpio-direction-output">gpio_direction_output</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/gpio.h.html#gpio-direction-input">gpio_direction_input</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/gpio.h.html#gpio-set-value">gpio_set_value</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/gpio.h.html#gpio-to-irq">gpio_to_irq</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/interrupt.h.html">interrupt.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/interrupt.h.html#structures">Structures</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/interrupt.h.html#irqreturn-t">irqreturn_t</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/interrupt.h.html#irq-handler-t">irq_handler_t</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/interrupt.h.html#functions">Functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/interrupt.h.html#request-irq">request_irq</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/interrupt.h.html#free-irq">free_irq</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/i2c.h.html">i2c.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/i2c.h.html#structures">Structures</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/i2c.h.html#i2c-driver">i2c_driver</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/i2c.h.html#i2c-client">i2c_client</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/i2c.h.html#functions">Functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/i2c.h.html#i2c-del-driver">i2c_del_driver</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/i2c.h.html#i2c-set-clientdata">i2c_set_clientdata</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/i2c.h.html#i2c-get-clientdata">i2c_get_clientdata</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/i2c.h.html#macros">Macros</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/i2c.h.html#to-i2c-client">to_i2c_client</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/i2c.h.html#i2c-add-driver">i2c_add_driver</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/i2c.h.html#module-i2c-driver">module_i2c_driver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/i2c-core.h.html">i2c-core.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/i2c-core.h.html#functions">Functions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/i2c-core.h.html#i2c-register-driver">i2c_register_driver</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/i2c-core.h.html#i2c-del-driver">i2c_del_driver</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/i2c-core.h.html#i2c-smbus-read-byte-data">i2c_smbus_read_byte_data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="Library/Kernel/linux/mod_devicetable.h.html">mod_devicetable.h</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Kernel/linux/mod_devicetable.h.html#structures">Structures</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/mod_devicetable.h.html#i2c-device-id">i2c_device_id</a></li>
+<li class="toctree-l6"><a class="reference internal" href="Library/Kernel/linux/mod_devicetable.h.html#of-device-id">of_device_id</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Library/Kernel/asm/index.html">asm</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Library/Standard/index.html">Standard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Library/Standard/stdio.h.html">stdio.h</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Library/Standard/stdio.h.html#functions">Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Standard/stdio.h.html#perror">perror</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Library/Standard/string.h.html">string.h</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Library/Standard/string.h.html#functions">Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Standard/string.h.html#strlen">strlen</a></li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Standard/string.h.html#strlcat">strlcat</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Library/Standard/errno.h.html">errno.h</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Library/Standard/errno.h.html#variables">Variables</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Library/Standard/fcntl.h.html">fcntl.h</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Library/Standard/fcntl.h.html#functions">Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Standard/fcntl.h.html#open">open</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Library/Standard/unistd.h.html">unistd.h</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Library/Standard/unistd.h.html#functions">Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Standard/unistd.h.html#write">write</a></li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Standard/unistd.h.html#read">read</a></li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Standard/unistd.h.html#close">close</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Library/Sys/index.html">Sys</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Library/Sys/mman.h.html">mmap.h</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Library/Sys/mman.h.html#functions">Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Sys/mman.h.html#mmap">mmap</a></li>
+<li class="toctree-l5"><a class="reference internal" href="Library/Sys/mman.h.html#munmap">munmap</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Library/Sys/ioctl.h.html">ioctl.h</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Library/Sys/ioctl.h.html#functions">Functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="Library/Sys/ioctl.h.html#id1">ioctl.h</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="MyProjects/index.html">C MyProjects</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="MyProjects/DeviceDriver/index.html">Device Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="MyProjects/DeviceDriver/Introduction.html">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/Introduction.html#premise">Premise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/Introduction.html#requirement">Requirement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/Introduction.html#environment">Environment</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MyProjects/DeviceDriver/01.create_simple_kernel_module.html">01. Create Simple Kernel Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/01.create_simple_kernel_module.html#id1">01. 開発の流れ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/01.create_simple_kernel_module.html#id2">02. コードを書く</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/01.create_simple_kernel_module.html#makefile">03. Makefileを用意する.</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/01.create_simple_kernel_module.html#id3">04. ビルドして実行する</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/01.create_simple_kernel_module.html#id4">モジュール関連コマンド</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/01.create_simple_kernel_module.html#id5">用語解説</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MyProjects/DeviceDriver/02.driver_register_static.html">02. Driver Register (Static)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/02.driver_register_static.html#makefile">Makefile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/02.driver_register_static.html#id1">ソースコードの解説</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/02.driver_register_static.html#id2">システムコール用ハンドラの定義と設定</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/02.driver_register_static.html#id3">カーネルにドライバを登録する</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/02.driver_register_static.html#id4">インクルード</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/02.driver_register_static.html#id5">ビルドしてロード</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/02.driver_register_static.html#id6">デバイスファイルを作り, ユーザアクセスする</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MyProjects/DeviceDriver/03.driver_register_dynamic.html">03. Driver Register (Dynamic)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/03.driver_register_dynamic.html#id1">多少の修正</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/03.driver_register_dynamic.html#id2">動的にメジャー番号を割り当てて, カーネルに登録する</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/03.driver_register_dynamic.html#id3">ソースコードの解説</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/03.driver_register_dynamic.html#id4">もう少し細かくコードを追っていく</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/03.driver_register_dynamic.html#id5">ビルドしてロードする</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/03.driver_register_dynamic.html#id6">マイナー番号ごとに処理を変える</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/03.driver_register_dynamic.html#udev-dev-xxx">udev対応して自動的にデバイスファイル(/dev/XXX)を作る</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/03.driver_register_dynamic.html#id7">ソースコードの解説</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/03.driver_register_dynamic.html#id8">ルールファイルの追加</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/03.driver_register_dynamic.html#id9">ビルドしてロードする</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MyProjects/DeviceDriver/04.read_write_and_memory.html">04. read/write and Memory</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/04.read_write_and_memory.html#id1">前提知識</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/04.read_write_and_memory.html#id2">メモリ空間に関して</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/04.read_write_and_memory.html#id3">ソースコード解説</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/04.read_write_and_memory.html#api">カーネルAPIを利用して, ユーザ空間 - カーネル空間で安全なデータコピー</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/04.read_write_and_memory.html#id4">ユーザプログラムから呼び出す</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MyProjects/DeviceDriver/05.raspi_gpio_device_driver.html">05. Raspi GPIO Device Driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/05.raspi_gpio_device_driver.html#id1">前提知識</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/05.raspi_gpio_device_driver.html#id2">メモリ空間に関して(再)</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/05.raspi_gpio_device_driver.html#id3">ユーザ空間プログラムで試しに実装する</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/05.raspi_gpio_device_driver.html#id4">動作</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/05.raspi_gpio_device_driver.html#id5">デバイスドライバをカーネルモジュールとして実装する</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/05.raspi_gpio_device_driver.html#id6">仕様</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/05.raspi_gpio_device_driver.html#id7">実装</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/05.raspi_gpio_device_driver.html#id8">動作</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/05.raspi_gpio_device_driver.html#id9">おまけ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/05.raspi_gpio_device_driver.html#id10">用語解説</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MyProjects/DeviceDriver/06.ioctl_implementation.html">06. ioctl Implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/06.ioctl_implementation.html#ioctl">ioctl</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/06.ioctl_implementation.html#note">NOTE</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/06.ioctl_implementation.html#id1">ioctlシステムコールハンドラの定義</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/06.ioctl_implementation.html#id2">ヘッダの定義</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MyProjects/DeviceDriver/07.interface_for_procfs.html">07. interface for procfs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/07.interface_for_procfs.html#note-procfs">NOTE: procfs</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/07.interface_for_procfs.html#procfs">procfs用インターフェースの実装</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/07.interface_for_procfs.html#id2">procfs経由でパラメータを読み書きしてみる</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/07.interface_for_procfs.html#note-sysfs">NOTE: sysfs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MyProjects/DeviceDriver/08.interface_for_debugfs.html">08. interface for debugfs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/08.interface_for_debugfs.html#debugfs">debugfs用インターフェースの実装</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/08.interface_for_debugfs.html#method1-file-operations">Method1: file_operationsを使用する</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/08.interface_for_debugfs.html#method2-helper">Method2: Helper関数を使用する</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/08.interface_for_debugfs.html#id1">終了処理</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/08.interface_for_debugfs.html#id2">コード</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/08.interface_for_debugfs.html#id3">debugfs経由でパラメータを読み書きしてみる</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/08.interface_for_debugfs.html#id4">アクセス権について</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MyProjects/DeviceDriver/09.call_other_kernel_module.html">09. call other kernel module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/09.call_other_kernel_module.html#id1">他のカーネルモジュールで定義された関数を呼ぶ</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/09.call_other_kernel_module.html#a">関数を提供するカーネルモジュールAを作る</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/09.call_other_kernel_module.html#b">提供された関数を呼ぶカーネルモジュールBを作る</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/09.call_other_kernel_module.html#id2">実行</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/09.call_other_kernel_module.html#id3">依存関係</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/09.call_other_kernel_module.html#gpio">GPIO制御関数を使用するカーネルモジュール</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/09.call_other_kernel_module.html#id4">チップ依存のGPIO制御関数</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/09.call_other_kernel_module.html#id5">GPIO制御関数</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/09.call_other_kernel_module.html#id6">GPIO制御関数を使用するカーネルモジュールを作る</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/09.call_other_kernel_module.html#id7">実行してみる</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html">10.I2C Device Driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#id1">事前準備と確認(ラズパイ用)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#i2c">I2C周りの話</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#id2">整理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#id3">簡単なI2C機器のデバイスドライバ</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#note">Note : お決まりの処理を簡略化</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#id4">動かしてみる</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#note1">Note1</a></li>
+<li class="toctree-l6"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#note2">Note2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#id5">コード上でI2C機器を認識される</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#sysfs">sysfsを使ったインターフェース</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#dev">/devを使ったインターフェース</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#id6">事前知識</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#id7">コード</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#id8">動かしてみる</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/10.i2c_device_driver.html#id9">用語解説</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MyProjects/DeviceDriver/11.add_i2c_device_to_device_tree.html">11. Add I2C Device to DeviceTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/11.add_i2c_device_to_device_tree.html#id1">デバイスツリーに関連するファイル</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/11.add_i2c_device_to_device_tree.html#dtb">1. dtbファイルを直接書き換える(手抜き版)</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/11.add_i2c_device_to_device_tree.html#id2">デバイスツリーに追加する</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/11.add_i2c_device_to_device_tree.html#id3">デバドラ側の対応</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/11.add_i2c_device_to_device_tree.html#id4">動かしてみる</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/11.add_i2c_device_to_device_tree.html#id5">2. ソースコードからDTBを作る</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/11.add_i2c_device_to_device_tree.html#id6">環境準備</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/11.add_i2c_device_to_device_tree.html#dts">ラズパイ用のDTSファイルを編集してみる</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/11.add_i2c_device_to_device_tree.html#id7">DTBをビルドしてみる</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/11.add_i2c_device_to_device_tree.html#note">Note</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/11.add_i2c_device_to_device_tree.html#id8">動かしてみる</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MyProjects/DeviceDriver/12.bootloading_device_driver.html">12. bootloading device driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/12.bootloading_device_driver.html#id1">起動時に自動的にロードさせる</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/12.bootloading_device_driver.html#id2">デバイスドライバを正式(?)な場所に配置する</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/12.bootloading_device_driver.html#id3">起動時にロードするモジュールに登録する</a></li>
+<li class="toctree-l5"><a class="reference internal" href="MyProjects/DeviceDriver/12.bootloading_device_driver.html#id4">確認する</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/12.bootloading_device_driver.html#id5">デバイスツリー対応デバドラの場合</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MyProjects/DeviceDriver/12.bootloading_device_driver.html#id6">最後に</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="BasicKnowledge/index.html" class="btn btn-neutral float-right" title="BasicKnowledge" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../Golang/Library/CLI/Viper.html" class="btn btn-neutral" title="Viper Documentation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

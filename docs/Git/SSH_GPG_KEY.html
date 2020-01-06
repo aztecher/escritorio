@@ -1,0 +1,285 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SSH Key / GPG Key &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../index.html"/>
+        <link rel="up" title="Git Documents" href="index.html"/>
+        <link rel="prev" title="Usage" href="Usage.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../C/index.html">C Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Git Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Usage.html">Usage</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SSH Key / GPG Key</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ssh-key">SSH Key</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gpg-key">GPG Key</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gpg">GPGとは</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpg-install">GPG install</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">GPGで暗号化鍵を生成</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#githubgpg">GitHubにGPG公開鍵を登録する</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">署名付きでコミットをできるようにする</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#verify">署名しているはずがVerifyされていない</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Git Documents</a> &raquo;</li>
+      
+    <li>SSH Key / GPG Key</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/Git/SSH_GPG_KEY.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ssh-key-gpg-key">
+<h1>SSH Key / GPG Key<a class="headerlink" href="#ssh-key-gpg-key" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="line-block">
+<div class="line">GitにおけるSSH鍵とGPG鍵について記述する.</div>
+</div>
+<div class="section" id="ssh-key">
+<h2>SSH Key<a class="headerlink" href="#ssh-key" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="line-block">
+<div class="line">暗号化方式はECDSAを採用する.</div>
+<div class="line">今後RSAは廃止され, ECDSAがデフォルトになるだろうからである.</div>
+</div>
+<ol class="arabic simple">
+<li>opensslのバージョンを上げる (必要なければいい)</li>
+</ol>
+<ol class="arabic simple" start="2">
+<li>鍵を作成, 適宜名前修正, 公開鍵の中身をGitHubのSSH keysに登録.</li>
+</ol>
+<ol class="arabic simple" start="3">
+<li>疎通確認</li>
+</ol>
+<ol class="arabic simple" start="4">
+<li>必要に応じてconfigを修正</li>
+</ol>
+</div>
+<div class="section" id="gpg-key">
+<h2>GPG Key<a class="headerlink" href="#gpg-key" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="gpg">
+<h3>GPGとは<a class="headerlink" href="#gpg" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">GNU Privacy Guard (GnuPG, GPG)とは, GPLに基づいた暗号化ソフトのこと.</div>
+<div class="line">GPGで作成した鍵を利用し暗号化・復号化できる.</div>
+<div class="line">gitやGitHubではGPGを利用した署名に対応しており, コミットやマージ, タグ生成の際に署名ができる. これによりその内容の信頼性を上げる.</div>
+<div class="line">GitHubでは署名付きコミットにバッジが表示されるようになる.</div>
+</div>
+</div>
+<div class="section" id="gpg-install">
+<h3>GPG install<a class="headerlink" href="#gpg-install" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="line-block">
+<div class="line">以下でGUIアプリケーションとGPGバイナリがインストールされる</div>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>GPGで暗号化鍵を生成<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ECDSAを指定する(future-default)
+鍵に有効期限を設定する (2年後の3月1日)</p>
+<p>作成した鍵は以下のコマンドで確認できる.</p>
+<p>生成時の出力結果, もしくは上記コマンドでIDを確認できる.</p>
+</div>
+<div class="section" id="githubgpg">
+<h3>GitHubにGPG公開鍵を登録する<a class="headerlink" href="#githubgpg" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>SSH鍵を登録するときのようにクリップボードにコピーして登録</p>
+</div>
+<div class="section" id="id2">
+<h3>署名付きでコミットをできるようにする<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>グローバル設定を少しいじってやる.
+これは個人の裁量次第. Gitのユーザーを分けたいとか色々あるからね.</p>
+<p>ちゃんと設定できているかどうかは以下のコマンドで確認できる.</p>
+</div>
+<div class="section" id="verify">
+<h3>署名しているはずがVerifyされていない<a class="headerlink" href="#verify" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>これは直面した問題. 結果的には <cite>.gitconfig</cite> 内に記述していたemailアドレスをtypoしていたためである. 逆に言うとココらへんの情報の齟齬があると正しく認識してくれないようなので気をつける.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="Usage.html" class="btn btn-neutral" title="Usage" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

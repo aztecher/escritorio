@@ -1,0 +1,554 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Template Haskell Tutorial &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="TemplateHaskell" href="index.html"/>
+        <link rel="next" title="ExplicitForAll" href="../ExplicitForAll/index.html"/>
+        <link rel="prev" title="TemplateHaskell" href="index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Haskell Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Monad/index.html">Monad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../MyProjects/index.html">Haskell MyProject</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">LanguageExtension</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">TemplateHaskell</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Template Haskell Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ExplicitForAll/index.html">ExplicitForAll</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../Monoid/index.html">Monoid</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../C/index.html">C Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Haskell Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">LanguageExtension</a> &raquo;</li>
+      
+          <li><a href="index.html">TemplateHaskell</a> &raquo;</li>
+      
+    <li>Template Haskell Tutorial</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/Haskell/LanguageExtension/TemplateHaskell/TemplateHaskellTutorial.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="template-haskell-tutorial">
+<h1>Template Haskell Tutorial<a class="headerlink" href="#template-haskell-tutorial" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>THにおける難しさの一つは, それが手元の問題に対する最善の解決策であるかどうかを判断すること, であると思う. コードを生成するコードは一般に特定の問題に対応できず, メタプログラミングが最後の手段として使用されるようになる. 本当かどうか分からないが, THはかなり人気があり, 他では達成できない問題を解決する貴重なスキルであるといえるだろう.</p>
+<p>THの用途をいくつか挙げてみる.</p>
+<ul class="simple">
+<li>型クラスインスタンスの自動導出は最も一般的なTHの使用用途である. &#8216;generics&#8217;によって同じ問題が解決できるとしても, THベースの解決法と比べてコンパイル時間が長くなることが知られているため, aeson や lens のようなライブラリでのインスタンスの自動導出には望ましいメソッドである.</li>
+<li>Haskellで構築されたシステムに統合されたTH製DSLの作成に使える. yesodなどで利用されている.</li>
+<li>無効な入力をコンパイル障害に変える型のコンパイル時構築</li>
+<li>外部ファイルからのデータのコンパイル時読み込み/処理. コンパイル時にIOの実行を伴うが, 危険な機能を比較的気楽に使えるユースケースである.</li>
+</ul>
+<p>THの注意点をいかに挙げておく.</p>
+<ul class="simple">
+<li>THのヘルパーはしばしば「魔法」を行うブラックボックスとみなされる. Q[Deg]型が何をしているかわからないだろうし, 何かをしているのかもしれない. THコードの意味の情報は主要なソースになるだろうからドキュメントを残すこと.</li>
+<li>THは, TH関数自体を定義する場所と, TH関数が使用されているファイルについての制限を課す.</li>
+</ul>
+</div>
+<div class="section" id="the-q-monad">
+<h2>The Q Monad<a class="headerlink" href="#the-q-monad" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>コードの生成はいくつかの機能(関数)を要求する.</p>
+<ul class="simple">
+<li>補足されない新たなユニークネームを生成する能力</li>
+<li>名前に関して検索する能力. 通常, 関数と型について知りたいのだが, モジュールについて学習し, 特定の型クラスｍのインスタンスのコレクションを取得する方法もある.</li>
+<li>同一モジュール内のTHコードで共有されるカスタムステートを取得/作成する能力.</li>
+<li>コンパイル時にIOを実行する能力.</li>
+</ul>
+<p>これらの機能はHaskellに置いてはモナドを利用することで達成可能である. したがって, THによって提供される全ての機能をホストする特別なモナドであるQ(quotationの略)があることはさほど驚くべきことではないだろう.</p>
+</div>
+<div class="section" id="splicing">
+<h2>Splicing<a class="headerlink" href="#splicing" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><cite>Q a</cite> 型をもつ唯一の目的は, aをHaskellプログラムで使うことである. aは中間のモナド式では何でも構わないが, 生成されたコードをHaskellソースファイルに挿入しようとしているときには, 以下の4つのオプションしかない.</p>
+<ul class="simple">
+<li><a class="reference external" href="https://hackage.haskell.org/package/template-haskell-2.13.0.0/docs/Language-Haskell-TH.html#t:Dec">Declaration</a> (宣言) 型の <cite>Dec</cite> は関数やデータ型のようなトップレベルのものを含む. 実際, いくつかの宣言を一度に生成したいことがある. この時, [Dec]型を利用する.</li>
+<li><a class="reference external" href="https://hackage.haskell.org/package/template-haskell-2.13.0.0/docs/Language-Haskell-TH.html#t:Exp">Expression</a> (表現) 型の <cite>Exp</cite> は, x + 1 や x -&gt; x + 1 などである. 恐らく最も一般的なものであろう.</li>
+<li><a class="reference external" href="https://hackage.haskell.org/package/template-haskell-2.13.0.0/docs/Language-Haskell-TH.html#t:Type">Type</a> (型) 型の <cite>Type</cite> は, <cite>Int</cite>, <cite>Maybe Int</cite>, <cite>Maybe</cite> などである. この型は飽和(?)する必要はない. (任意の種類がある可能性がある).</li>
+<li><a class="reference external" href="https://hackage.haskell.org/package/template-haskell-2.13.0.0/docs/Language-Haskell-TH.html#t:Pat">Pattern</a> (パターン) 型の <cite>Pat</cite> は, パターンマッチングに利用する.</li>
+</ul>
+<p>上記のリンクで <cite>Dec</cite>, <cite>Exp</cite>, <cite>Type</cite>, <cite>Pat</cite> についての定義を確認しておくといい. コンストラクタのサフィックス(接尾語)にはそれぞれの型のイニシャルがついている.</p>
+<p>データ型を利用することで, <strong>ゆっくりと</strong>, <strong>痛みと苦痛を伴いながら</strong>, 表現を構築することができるようになる. (恐らくこのような書き方はしないよてきなことだろう)</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span>myFunc :: Q Exp
+myFunc = do
+  x &lt;- newName &quot;x&quot; -- generate a unique variable name, well
+  return $ LamE -- lambda expression
+    [VarP x]
+    (InfixE (Just (VarE x)) (VarE &#39;(+)) (Just (LitE (IntegerL 1))))
+    -- here we have an infix expression:
+    -- we apply (+) to &#39;x&#39; and integer literal 1
+</pre></div>
+</div>
+<p>THによって特別なシンタックス <cite>$(exp)</cite> が利用できる. ここで <cite>exp</cite> は <cite>Q[Dec]</cite>, <cite>Q Exp</cite>, <cite>Q Type</cite>, <cite>Q Pat</cite> で生成される任意の表現を示している. これは通常のHaskellコードの中に生成されたコードを書き加える.</p>
+<p>例として先程書いた, <cite>myFunc</cite> を実行してみる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="kt">:</span><span class="n">set</span> <span class="o">-</span><span class="kt">XTemplateHaskell</span>
+<span class="o">&gt;</span> <span class="o">$</span><span class="p">(</span><span class="n">myFunc</span><span class="p">)</span> <span class="mi">3</span>
+<span class="mi">4</span>
+
+<span class="c1">-- myFuncが引数を取らない場合は括弧は必要ない.</span>
+<span class="c1">-- もし引数を取る場合は, $(myFunc arg) 3 のようなものになる.</span>
+<span class="c1">-- 言い換えるならば, 括弧は式の周りにのみ必要である</span>
+<span class="o">&gt;</span> <span class="o">$</span><span class="n">myFunc</span> <span class="mi">3</span>
+<span class="mi">4</span>
+<span class="o">&gt;</span> <span class="kr">let</span> <span class="n">f</span> <span class="ow">=</span> <span class="p">(</span><span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">.</span> <span class="o">$</span><span class="n">myFunc</span>
+<span class="o">&gt;</span> <span class="n">f</span> <span class="mi">10</span>
+<span class="mi">22</span>
+</pre></div>
+</div>
+<p>これは <cite>splicing</cite> と呼ばれる. ドルマーク以降の表現を <cite>splice(より継ぎする/継ぎ合わせる)</cite> という. spliceは式, パターン, 型の代わりにトップレベルの宣言として行うことができる.
+(これ以降ドルマークとspliceに関しての言及があるがよく分からなかった)</p>
+</div>
+<div class="section" id="limitations-of-th">
+<h2>Limitations of TH<a class="headerlink" href="#limitations-of-th" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>現在, THを使用する場合以下の制約がある.</p>
+<ul class="simple">
+<li><strong>ステージング制限</strong> とは, splice内で既にコンパイルされた, つまり他のモジュールで定義された(spliceを含む同じモジュール下でない)関数が使用できることである. これは, 開発者にTHと呼ばれるTHコードをモジュールから切り離すようにさせる厄介な制限である. (つまるところ, THコード内で利用する関数は別モジュールとして切り出さないといけないという制限. 少し手間)</li>
+<li>THではしばしば, 定義の順序付けを強制する事があるらしい. (詳細は記述しないが, つまるところコードを書く位置を強制されることがあるらしい)</li>
+</ul>
+<p><cite>lens</cite> ライブラリを使用した例を以下に示す.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">data</span> <span class="kt">MyRecord</span> <span class="ow">=</span> <span class="kt">MyRecord</span> <span class="c1">-- &lt;&lt;&lt; first declaration group</span>
+  <span class="p">{</span> <span class="n">_myRecordFoo</span> <span class="ow">::</span> <span class="kt">Foo</span>
+  <span class="p">,</span> <span class="n">_myRecordBar</span> <span class="ow">::</span> <span class="kt">Bar</span>
+  <span class="p">,</span> <span class="n">_myRecordBaz</span> <span class="ow">::</span> <span class="kt">Baz</span>
+  <span class="p">}</span>
+
+<span class="nf">getRecordFoo</span> <span class="ow">::</span> <span class="kt">MyRecord</span> <span class="ow">-&gt;</span> <span class="kt">Foo</span>
+<span class="nf">gerRecordFoo</span> <span class="ow">=</span> <span class="n">view</span> <span class="n">myRecordFoo</span>
+
+<span class="nf">makeLenses</span> <span class="kt">&#39;&#39;MyRecord</span> <span class="c1">-- &lt;&lt; second declaration group</span>
+<span class="c1">-- ^ Generates lenses: &#39;myRecordFoo&#39;, &#39;myRecordBar&#39;, and &#39;myRecordBaz&#39;</span>
+</pre></div>
+</div>
+<p>悲しいことにこのコードはコンパイルできない. 第一宣言グループは <cite>MyRecord</cite> と <cite>getRecordFoo</cite> の定義を含んでいるが, <cite>myRecordFoo</cite> は <cite>getRecordFoo</cite> のスコープ外であるがゆえにlensesをジェネレートできない. これを解消するには, <cite>getRecordFoo</cite> を <cite>makeLenses &#8216;&#8217;MyRecord</cite> spliceの後に記述する.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">data</span> <span class="kt">MyRecord</span> <span class="ow">=</span> <span class="kt">MyRecord</span> <span class="c1">-- &lt;&lt;&lt; first declaration group</span>
+  <span class="p">{</span> <span class="n">_myRecordFoo</span> <span class="ow">::</span> <span class="kt">Foo</span>
+  <span class="p">,</span> <span class="n">_myRecordBar</span> <span class="ow">::</span> <span class="kt">Bar</span>
+  <span class="p">,</span> <span class="n">_myRecordBaz</span> <span class="ow">::</span> <span class="kt">Baz</span>
+  <span class="p">}</span>
+
+<span class="nf">makeLenses</span> <span class="kt">&#39;&#39;MyRecord</span> <span class="c1">-- &lt;&lt; second declaration group</span>
+
+<span class="nf">getRecordFoo</span> <span class="ow">::</span> <span class="kt">MyRecord</span> <span class="ow">-&gt;</span> <span class="kt">Foo</span> <span class="c1">-- can see &#39;MyRecord&#39; from the</span>
+<span class="nf">getRecordFoo</span> <span class="ow">=</span> <span class="n">view</span> <span class="kt">MyRecordFoo</span> <span class="c1">-- previous group</span>
+</pre></div>
+</div>
+<p>この様に第一宣言グループにデータ型, その後に <cite>makeLenses</cite> をしてから <cite>getRecordFoo</cite> を記述という流れになるらしい.</p>
+</div>
+<div class="section" id="quotation">
+<h2>Quotation(引用)<a class="headerlink" href="#quotation" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>THがビルドし操作できるHaskellのASTは, コンパクトでなく, また使うのも簡単ではない. 残念なことに, コンパイルするHaskellプログラムが表さない正しい形のASTを作成することも可能である. 言い換えるなら, ASTの手動構築は退屈でエラーを起こしやすい.</p>
+<p>幸運なことに, <cite>quotation</cite> を使って任意HaskellコードをASTで得る方法がある. TemplateHaskell言語拡張で以下の4つのquotationの方が利用できる</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="42%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Thing produced</th>
+<th class="head">Quotation syntax</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Declaration</td>
+<td>[d | ... | ]</td>
+<td>Q [Dec]</td>
+</tr>
+<tr class="row-odd"><td>Expression</td>
+<td>[e | ... | ]</td>
+<td>Q Exp</td>
+</tr>
+<tr class="row-even"><td>Type</td>
+<td>[t | ... | ]</td>
+<td>Q Type</td>
+</tr>
+<tr class="row-odd"><td>Pattern</td>
+<td>[p | ... | ]</td>
+<td>Q Pat</td>
+</tr>
+</tbody>
+</table>
+<p>実際, 同じコードでは異なるコンテキストが異なることを意味する可能性があるため, いくつかことなるクォータが必要. 例えば.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">runQ</span> <span class="p">[</span><span class="n">e</span><span class="o">|</span> <span class="kt">Just</span> <span class="n">x</span> <span class="o">|</span><span class="p">]</span> <span class="c1">-- an expression</span>
+<span class="kt">AppE</span> <span class="p">(</span><span class="kt">ConE</span> <span class="kt">GHC</span><span class="o">.</span><span class="kt">Base</span><span class="o">.</span><span class="kt">Just</span><span class="p">)</span> <span class="p">(</span><span class="kt">UnboundVarE</span> <span class="n">x</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">runQ</span> <span class="p">[</span><span class="n">p</span><span class="o">|</span> <span class="kt">Just</span> <span class="n">x</span> <span class="o">|</span><span class="p">]</span> <span class="c1">-- a pattern</span>
+<span class="kt">ConP</span> <span class="kt">GHC</span><span class="o">.</span><span class="kt">Base</span><span class="o">.</span><span class="kt">Just</span> <span class="p">[</span><span class="kt">VarP</span> <span class="n">x_0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>多くの場合, <cite>expression</cite> を一番利用するため, 軽量クォートシンタックス <cite>[|...|]</cite> が定義されている(これは, <cite>[e| ... |]</cite> と同じ)</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">runQ</span> <span class="p">[</span><span class="o">|</span> <span class="kt">Just</span> <span class="n">x</span> <span class="o">|</span><span class="p">]</span> <span class="c1">-- an expression</span>
+<span class="kt">AppE</span> <span class="p">(</span><span class="kt">ConE</span> <span class="kt">GHC</span><span class="o">.</span><span class="kt">Base</span><span class="o">.</span><span class="kt">Just</span><span class="p">)</span> <span class="p">(</span><span class="kt">UnboxedVarE</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>quotationができることは, Haskellコードをすばやく表現することだけではなく, 手動でASTを構築することもできる.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">myFunc</span> <span class="ow">::</span> <span class="kt">Q</span> <span class="kt">Exp</span>
+<span class="nf">myFunc</span> <span class="ow">=</span> <span class="p">[</span><span class="o">|</span> <span class="nf">\</span><span class="n">x</span> <span class="ow">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">|</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>この <cite>myFunc</cite> は理解しやすいだろう. クォータの最も素晴らしいことは, それらの中でspliceが利用できることである.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">add2</span> <span class="ow">::</span> <span class="kt">Q</span> <span class="kt">Exp</span>
+<span class="nf">add2</span> <span class="ow">=</span> <span class="p">[</span><span class="o">|</span> <span class="o">$</span><span class="n">myFunc</span> <span class="o">.</span> <span class="o">$</span><span class="n">myFunc</span> <span class="o">|</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>このようにして, アルゴリズム的に変更する必要があるコードを変更するためにスプライシングを利用して, ほぼいつもどおりに生成したいコードを書くことができる. ただし, GHC 8.2.2以降, 宣言クォート内の宣言のspliceはまだ機能しない</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="o">$</span><span class="n">add2</span> <span class="mi">10</span>
+<span class="kt">InfixE</span>
+  <span class="p">(</span><span class="kt">Just</span> <span class="p">(</span><span class="kt">LamE</span> <span class="p">[</span><span class="kt">VarP</span> <span class="n">x_2</span><span class="p">]</span> <span class="c1">-- lambda</span>
+    <span class="p">(</span><span class="kt">InfixE</span> <span class="p">(</span><span class="kt">Just</span> <span class="p">(</span><span class="kt">VarE</span> <span class="n">x_2</span><span class="p">))</span>
+      <span class="p">(</span><span class="kt">VarE</span> <span class="kt">GHC</span><span class="o">.</span><span class="kt">Num</span><span class="o">.+</span><span class="p">)</span>
+      <span class="p">(</span><span class="kt">Just</span> <span class="p">(</span><span class="kt">LitE</span> <span class="p">(</span><span class="kt">IntegerL</span> <span class="mi">1</span><span class="p">))))))</span>
+  <span class="p">(</span><span class="kt">VarE</span> <span class="kt">GHC</span><span class="o">.</span><span class="kt">Base</span><span class="o">..</span><span class="p">)</span> <span class="c1">-- functional composition</span>
+  <span class="p">(</span><span class="kt">Just</span> <span class="p">(</span><span class="kt">LamE</span> <span class="p">[</span><span class="kt">VarP</span> <span class="n">x_3</span><span class="p">]</span> <span class="c1">--lambda</span>
+    <span class="p">(</span><span class="kt">InfixE</span> <span class="p">(</span><span class="kt">Just</span> <span class="p">(</span><span class="kt">VarE</span> <span class="n">x_3</span><span class="p">))</span>
+      <span class="p">(</span><span class="kt">VarE</span> <span class="kt">GHC</span><span class="o">.</span><span class="kt">Num</span><span class="o">.+</span><span class="p">)</span>
+      <span class="p">(</span><span class="kt">Just</span> <span class="p">(</span><span class="kt">LitE</span> <span class="p">(</span><span class="kt">IntegerL</span> <span class="mi">1</span><span class="p">))))))</span>
+</pre></div>
+</div>
+<p>これは完全に意図したとおりに動作する</p>
+<p><cite>runQ</cite> とは何をしているのだろう? GHCiではIOモナドで動作するため, 上記の例では方が必要であると仮定するのは自然である</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runQ</span> <span class="ow">::</span> <span class="kt">Q</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="n">a</span>
+        <span class="o">^</span>      <span class="o">^</span>
+<span class="c1">--      |      |</span>
+<span class="c1">--  we have  but we want</span>
+<span class="c1">--   this      this</span>
+</pre></div>
+</div>
+<p><cite>runQ</cite> は通常, GHCiでTHを再生するために使用される. (これについては後ほど説明する).</p>
+<p>さて, 少し掘り下げてみるともうすこしこれは複雑になっている.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="nf">runQ</span> <span class="ow">::</span> <span class="kt">Quasi</span> <span class="n">m</span> <span class="ow">=&gt;</span> <span class="kt">Q</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p><cite>Quasi</cite> はモナドの型クラスであり, 初めに <cite>Q</cite> について言及したメタプログラミングの能力を提供する. 再度確認してるといい. 実際, <cite>Q a</cite> は <cite>Quasi m =&gt; m a</cite> のラッパーである.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">newtype</span> <span class="kt">Q</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Q</span> <span class="p">{</span> <span class="n">unQ</span> <span class="ow">::</span> <span class="n">forall</span> <span class="n">m</span><span class="o">.</span> <span class="kt">Quasi</span> <span class="n">m</span> <span class="ow">=&gt;</span> <span class="n">m</span> <span class="n">a</span><span class="p">}</span>
+
+<span class="nf">runQ</span> <span class="ow">::</span> <span class="kt">Quasi</span> <span class="n">m</span> <span class="ow">=&gt;</span> <span class="kt">Q</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">a</span>
+<span class="nf">runQ</span> <span class="p">(</span><span class="kt">Q</span> <span class="n">m</span><span class="p">)</span> <span class="ow">=</span> <span class="n">m</span>
+</pre></div>
+</div>
+<p><cite>Q</cite> , <cite>IO</cite> というユーザーに見えるようにするための２つの <cite>Quasi</cite> インスタンスがある. <cite>Q</cite> のためのインスタンスは些末なものであり, <cite>IO</cite> のためのインスタンスは機能が非常に限られている. Quasiには多数のメソッドがあるが, <cite>newName</cite>, <cite>runIO</cite>, <cite>reportError</cite>, <cite>reportWarning</cite> の4つのみがサポートされている. そのため, 我々はちょうど見て確かめるだけのデバッグ目的にしか, IOを利用することができない.</p>
+<p>このような <cite>Q</cite> の定義は, THの作者が具体的なモナドの中で働くことを望んでいたと同時に, すべての作業を行う <cite>Quasi</cite> インスタンスを定義することを望んでいたことを示唆している.</p>
+</div>
+<div class="section" id="names">
+<h2>Names<a class="headerlink" href="#names" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>我々は, 同一の名前が使用されるコンテキストに応じて異なるものを参照することができるということをよく知っている. コードの生成や操作を行う時, 我々は次に2つのタイプの名前を使用する.</p>
+<ul>
+<li><p class="first">現在のコンテキスト内の何かしらを意味する名前. 「現在のコンテキスト」とは我々が作成しようとしているメタプログラムのコンテキストであるかもしれないし, そのspliceの中かもしれない. どちらにせよ, 現在のスコープで何かしら動作するものとしての名前がある.</p>
+</li>
+<li><p class="first">現在のコンテキスト内では一致しない名前. 例えば, lambda式を作成するとき, その引数をバインドすることができる. そのためには「名前」が必要である. このタイプの名前は, 更に２つのサブグループに分割できる.</p>
+<blockquote>
+<div><ul class="simple">
+<li>捕捉される名前. すなわちコードの生成後に細く可能な名前が含まれているかどうか.</li>
+<li>捕捉されない名前.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>まずはじめに, 関数と型の名前を引用するための構文がある
+(TemplateHaskellで有効)</p>
+<ul>
+<li><dl class="first docutils">
+<dt>関数名を引用する場合, シングルクオート先頭につける.</dt>
+<dd><p class="first last"><cite>id</cite> -&gt; <cite>&#8216;id</cite></p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>型を引用する場合, ２つのシングルクオートを先頭につける.</dt>
+<dd><p class="first last"><cite>MyRecord</cite> -&gt; <cite>&#8216;&#8217;MyRecord</cite></p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>これらはHaskellが値と型で別のネームスペース持っていることに影響している.
+また, データコンストラクタは <cite>&#8216;MyRecord</cite> 型コンストラクタは <cite>&#8216;&#8217;MyRecord</cite> で引用する.</p>
+<p>この手法は常に現在のスコープから参照できる名前を生成してくれる.
+<cite>makeLenses :: Name -&gt; Q [Dec]</cite> がよい例である.
+これでは, レコード名である <cite>&#8216;&#8217;MyRecord</cite> を渡している.
+また, <cite>myFunc</cite> の最初の定義でも見たように, <cite>(+)</cite> 関数も引用されている.</p>
+<p>この関数を定義した時, <cite>(+)</cite> 関数は <cite>Prelude</cite> から来ており, それはこのスコープ上である. そのため, <cite>&#8216;(+)</cite> で引用する.</p>
+<p>引用を利用する場合, 完全に同様の動作をする必要がある.
+THのクオートの全ての名前はカレントスコープにある必要がある.
+言い換えるなら, 引用を1つ使用するときに使用しているスコープが, 結果としてASTで得られるものを決定している.(そのスコープに縛られる)</p>
+<blockquote>
+<div>&gt; :set -XTemplateHaskell
+&gt; :import Language.Haskell.TH
+&gt; runQ [| x <a href="#id2"><span class="problematic" id="id3">|</span></a>]
+UnboundVarE</div></blockquote>
+<p><cite>x</cite> がGHCiセッションで定義されていないと, <cite>UnboundVarE x</cite> を得る
+しかし, 初めに <cite>x</cite> を定義し, 同様のコードを実行すると結果は変換する.</p>
+<blockquote>
+<div>&gt; let x = 42
+&gt; runQ [| x <a href="#id5"><span class="problematic" id="id6">|</span></a>]
+VarE Ghci4.x</div></blockquote>
+<p>この <cite>Ghci4.x</cite> は変数と同様の名前であり, バインドされ, 捕捉できない.
+クオーとされたHaskellコードは, 同じmodule/scope/contextであるような, 同様のASTを作成する.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>&gt; let withX = it &#8211; &#8216;it&#8217; は最後に評価された結果を表している.</dt>
+<dd>&#8211; この場合, VarE Ghci4.x</dd>
+<dt>&gt; let x = 99 in $(return withX) &#8211; &#8216;x&#8217;へのバインドに影響を与えない</dt>
+<dd>&#8211; これは名前が捕捉されないからである</dd>
+</dl>
+</div></blockquote>
+<p>クオートは現在のスコープを全探索するが, 新しい名前がここで作成されるというわけではない.</p>
+<blockquote>
+<div>&gt; runQ [| x -&gt; x + 1 <a href="#id9"><span class="problematic" id="id10">|</span></a>]
+LamE [VarP x_4] (InfixE (Just (VarE x_4)) (VarE GHC.Num.+) (Just (LitE (Integer 1))))</div></blockquote>
+<p>この, <cite>x_4</cite> は自動的に生成される. これはmyFuncの最初の実装で, <cite>newName :: String -&gt; Q Name</cite> 関数で導入したものと同じ種類の名前である. これは新しく, 捕捉されない.</p>
+<p>捕捉可能な名前をつくる方法は, <cite>mkName :: String -&gt; Name</cite> 関数を使用することである.</p>
+<blockquote>
+<div>&gt; runQ [| $(varE (mkName &#8220;x&#8221;)) + 1 <a href="#id12"><span class="problematic" id="id13">|</span></a>]
+InfixE (Just (VarE x)) (VarE GHC.Num.+) (Just (LitE (IntegerL 1)))
+&gt; let xPlus1 = it
+&gt; let x = 99 in $(return xPlus1) &#8211; 影響を及ぼす
+100</div></blockquote>
+<p><cite>Language.Haskell.TH.Lib</cite> モジュールは, QモナドのAST値を受け取り返却するヘルパー関数が含まれている. これらのヘルパーは引用やスプライシングでうまく構成されているため, 短いコードを生成することがある. ここでは, <cite>varE :: Name -&gt; Q Exp</cite> を, <cite>VarE :: Name -&gt; Exp</cite> の代わりに利用している.</p>
+<p>捕捉可能な名前をつくるもう一つの方法は, アンバインドな名前を利用することである.</p>
+<blockquote>
+<div>&gt; withZ &lt;- runQ [| z + 1 <a href="#id15"><span class="problematic" id="id16">|</span></a>]
+&gt; withZ
+InfixE (Just (UnboundVarE z)) (VarE GHC.Num.+) (Just (LitE (IntegerL 1)))
+&gt; let z = 100 in $(return withZ)
+101</div></blockquote>
+<p>しかしアプローチはかなり壊れやすいようである. (後で同じモジュール内のどこかでzを定義するとどうなるだろうか...?)</p>
+<p>捕捉可能な名前は時々便利である. 例えば, hamlet template systemは, #{name} というシンタックスを使用してテンプレートの値を参照できる. そのテンプレートは, そのような名前がキャプチャ可能な名前として出てくるため, バインド刷ることができるHaskellコードを生成する. その結果, テンプレートが使用されているコンテキストでバインドされた値にテンプレートでアクセスすることができる. 超クール!!</p>
+</div>
+<div class="section" id="retrieving-information-about-things">
+<h2>Retrieving information about things<a class="headerlink" href="#retrieving-information-about-things" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>名前に関して少し見てきたので, 名前のついたものから情報を探す方法を学んでいこう.
+これを可能にする, いわゆる「reifying」関数がかなりある.</p>
+<ul class="simple">
+<li><cite>reify :: Name -&gt; Q Info</cite> : 最も一般的に利用する. <cite>Info</cite> という一般的情報を探すもの.</li>
+<li><cite>extsEnabled :: Q [Extension]</cite> : splicingされている領域で有効になっている言語拡張のリストを返す.</li>
+<li><cite>isExtEnabled :: Extension -&gt; Q Bool</cite> : 特定の言語拡張が有効になっているかどうかチェックする.</li>
+<li><cite>reifyInstances :: Name -&gt; [Type]</cite> : 型 <cite>[Type]</cite> の <cite>Name(型クラス名)</cite> の可視インスタンスのリストを返す</li>
+<li>その他に, <cite>reifyFixity</cite>, <cite>reifyRoles</cite>, <cite>reifyAnnotations</cite>, <cite>reifyConStrictness</cite> など.</li>
+</ul>
+<p>名前が使われる場合(スコープ)は2つある?
+メタプログラムを記述するときのスコープと, メタプログラムを実行するときのスコープである.
+これらのスコープは独立している. メタプログラムのスコープで名前の探索を行っても, それは実行時のスコープではない. 実行時のスコープ内で何かしらにアクセスすることを考えた時, 以下の2つのことを行う</p>
+<ul class="simple">
+<li><cite>makeLenses</cite> のときの様に, <cite>Name</cite> を引数として受け取る. この場合, <cite>Name</cite> をsplicing領域(スコープ)に構築し, 名前付けを行う.</li>
+<li>splicing領域の名前を検索するときに, <cite>loolupTypeName</cite> と <cite>lookupValueName</cite> 関数を利用することができる.</li>
+</ul>
+<p>これらの関数のシグネチャは以下</p>
+<p><cite>lookupTypeName :: String -&gt; Q (Maybe Name)</cite>
+<cite>lookupValueName :: String -&gt; Q (Maybe Name)</cite></p>
+<p><cite>Name</cite> それ自身はコンテキストに依存する形で意味を変えることはできない. もし, <cite>Name</cite> を得たら, それは常にひとつ特定のものを指す. 従って, <cite>lookupValueName</cite> と <cite>lookupTypeName</cite> はStringを取り, <cite>Name</cite> を返すのが理にかなっている</p>
+<p>以降, reifying関数をより実際的に利用してみる.</p>
+</div>
+<div class="section" id="example-1-instance-generation">
+<h2>Example 1: instance generation<a class="headerlink" href="#example-1-instance-generation" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>これまで見た全てのツールがどの様に関連しているかを示すため, この例は少し工夫されている. それゆえこのコードを読んで「コードの壁」を感じる必要はない</p>
+<p>我々は今, ある型にいくつ非ボトム値があるのかを知りたいとする.
+まず, THを使わずにこう書いていけるだろう.</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">class</span> <span class="kt">Countable</span> <span class="n">a</span> <span class="kr">where</span>
+    <span class="n">count</span> <span class="ow">::</span> <span class="kt">Proxy</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Integer</span>
+</pre></div>
+</div>
+<p>型クラスaのメソッドがある型に対する「connnection」を持つことを担保するため, <cite>Proxy</cite> は必要である(つまり, aはcountをシグネチャに持つ必要がある).
+型aの特定の値などに興味は無いが, aが <cite>Proxy a</cite> によってバイパスされることだけは明確にしておく.</p>
+<p>さて, インスタンスを書くにはどうするだろうか. 既にこの問題を解決しているEnum, Bounded型のクラスを活用できるように見えなくもないが, これらは限られたタイプセットのみで有効である. 型が, EnumとBoundedの両方のインスタンスである場合, countは次のように定義できる</p>
+<div class="highlight-hs"><div class="highlight"><pre><span></span><span class="kr">instance</span> <span class="p">(</span><span class="kt">Enum</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Bounded</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Countable</span> <span class="n">a</span> <span class="kr">where</span>
+    <span class="n">count</span> <span class="kt">Proxy</span> <span class="ow">=</span> <span class="n">fromIntegral</span> <span class="o">$</span>
+        <span class="mi">1</span> <span class="o">+</span> <span class="n">fromEnum</span> <span class="p">(</span><span class="n">maxBOund</span> <span class="ow">::</span> <span class="n">a</span><span class="p">)</span> <span class="o">-</span> <span class="n">fromEnum</span> <span class="p">(</span><span class="n">minBound</span> <span class="ow">::</span> <span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../ExplicitForAll/index.html" class="btn btn-neutral float-right" title="ExplicitForAll" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="TemplateHaskell" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

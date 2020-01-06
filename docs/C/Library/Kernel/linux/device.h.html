@@ -1,0 +1,344 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>device.h &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../../index.html"/>
+        <link rel="up" title="linux" href="index.html"/>
+        <link rel="next" title="uaccess.h" href="uaccess.h.html"/>
+        <link rel="prev" title="cdev.h" href="cdev.h.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Libraries</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">C Kernel Libraries</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="index.html">linux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../asm/index.html">asm</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../Standard/index.html">Standard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Sys/index.html">Sys</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../MyProjects/index.html">C MyProjects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Libraries</a> &raquo;</li>
+      
+          <li><a href="../index.html">C Kernel Libraries</a> &raquo;</li>
+      
+          <li><a href="index.html">linux</a> &raquo;</li>
+      
+    <li>device.h</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/C/Library/Kernel/linux/device.h.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="device-h">
+<h1>device.h<a class="headerlink" href="#device-h" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>&#8216;linux/device.h&#8217; の情報を記述する.</p>
+<div class="section" id="structures">
+<h2>Structures<a class="headerlink" href="#structures" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="class">
+<h3>class<a class="headerlink" href="#class" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>struct class {
+    ...
+    }
+</pre></div>
+</div>
+<p>詳しくは省略するが, デバイスを表すクラス.
+(なんでclassなんていう紛らわしい名前にしたのか...)</p>
+</div>
+<div class="section" id="device-driver">
+<h3>device_driver<a class="headerlink" href="#device-driver" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">device_driver</span> <span class="p">{</span>
+    <span class="o">--</span> <span class="nd">@name</span> <span class="p">:</span> <span class="n">デバドラの名前</span>
+    <span class="o">--</span> <span class="nd">@owner</span> <span class="p">:</span> <span class="n">オーナーモジュール</span>
+    <span class="o">--</span> <span class="nd">@of_match_table</span> <span class="p">:</span> <span class="nb">open</span> <span class="n">firmware</span> <span class="n">テーブル</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">module</span> <span class="o">*</span><span class="n">owner</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">of_device_id</span> <span class="o">*</span><span class="n">of_match_table</span>
+    <span class="o">....</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>基本的なデバイスドライバ構造体. 例えば, <cite>i2c_device_driver</cite> などで利用される.</p>
+</div>
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="class-create">
+<h3>class_create<a class="headerlink" href="#class-create" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>struct class *class_create(
+    struct module* owner,
+    const char* name);
+</pre></div>
+</div>
+<p><cite>struct class</cite> のオブジェクトを得るために使用する関数. 第一引数には, 基本 <cite>THIS_MODULE</cite> を与えるといいかもしれない(違ったら修正). 第二引数には作成するデバイスクラス名 (作成されるクラス <cite>/sys/class/XXX</cite> の <cite>XXX</cite> に対応する名前)</p>
+</div>
+<div class="section" id="device-create">
+<h3>device_create<a class="headerlink" href="#device-create" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>struct device *device_create(
+    struct class *class,
+    struct device *parent,
+    dev_t devt,
+    const char* fmt,
+    ...);
+</pre></div>
+</div>
+<p>deviceを作成し, それをsysfsに登録する.
+(詳しくは現状イマイチよく分からなかったため省略)
+この関数は, キャラクタデバイスクラスで使用できる. sysfsには, 指定したクラスに登録されたstructデバイスが作成される.</p>
+</div>
+<div class="section" id="device-destroy">
+<h3>device_destroy<a class="headerlink" href="#device-destroy" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>void device_destroy(
+    struct class *class,
+    dev_t devt);
+</pre></div>
+</div>
+<p>device_createで作成されたデバイスを取り除く.</p>
+</div>
+<div class="section" id="device-create-file">
+<h3>device_create_file<a class="headerlink" href="#device-create-file" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">device_create_file</span><span class="p">(</span>
+    <span class="n">struct</span> <span class="n">device</span><span class="o">*</span> <span class="n">dev</span><span class="p">,</span>
+    <span class="n">struct</span> <span class="n">device_attribute</span><span class="o">*</span> <span class="n">attr</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>デバイス用のsysfs属性ファイルを作成する.
+第一引数にデバイスを, 第二引数に登録するデバイス属性ディスクリプタを与える.
+第二引数のデバイス属性ディスクリプタは, <cite>DEVICE_ATTR</cite> の第一引数に設定した名前に, <cite>dev_attr_</cite> というプレフィックスを与えたものになる.</p>
+</div>
+<div class="section" id="device-remove-file">
+<h3>device_remove_file<a class="headerlink" href="#device-remove-file" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">device_remove_file</span><span class="p">(</span>
+    <span class="n">struct</span> <span class="n">device</span><span class="o">*</span> <span class="n">dev</span><span class="p">,</span>
+    <span class="n">struct</span> <span class="n">device_attribute</span><span class="o">*</span> <span class="n">attr</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>sysfs属性ファイルを削除する.
+第一引数にデバイスを, 第二引数に登録したデバイス属性ディスクリプタを与える.
+<cite>device_create_file</cite> 関数で作成したsysfsの削除関数であり, この関数の引数は <cite>device_create_file</cite> 関数を呼び出した際の引数と一致させる.</p>
+</div>
+<div class="section" id="devm-kzalloc">
+<h3>devm_kzalloc<a class="headerlink" href="#devm-kzalloc" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="o">*</span><span class="n">devm_kzalloc</span><span class="p">(</span>
+    <span class="n">struct</span> <span class="n">device</span><span class="o">*</span> <span class="n">dev</span><span class="p">,</span>
+    <span class="n">size_t</span> <span class="n">size</span><span class="p">,</span>
+    <span class="n">gfp_t</span> <span class="n">gfp</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>リソース管理されたkzalloc (ドライバ画でタッチされたら自動でメモリを解放する) (kzallocはメモリアロケーション+ゼロ埋め)
+第一引数に, <cite>device</cite> 構造体が格納されたメモリ, 第二引数にサイズ, 第三引数にgfpフラグを与える.</p>
+</div>
+</div>
+<div class="section" id="macro">
+<h2>Macro<a class="headerlink" href="#macro" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="device-attr">
+<h3>DEVICE_ATTR<a class="headerlink" href="#device-attr" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">#define DEVICE_ATTR(_name, _mode, _show, _store) \</span>
+    <span class="n">struct</span> <span class="n">device_attribute</span> <span class="n">dev_attr_</span><span class="c1">##_name =</span>
+        <span class="n">__ATTR</span><span class="p">(</span><span class="n">_name</span><span class="p">,</span> <span class="n">_mode</span><span class="p">,</span> <span class="n">_show</span><span class="p">,</span> <span class="n">_store</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><cite>__ATTR</cite> は <cite>sysfs.h</cite> で定義されている(ここではこれ以上追わない)
+<cite>DEVICE_ATTR</cite> を実行すると, 結果として第一引数に <cite>dev_attr</cite> という名前がついた <cite>device_attribute</cite> 型の構造体が宣言される.</p>
+<p>第一引数は名前(作成される構造体の名前のベースになる), 第二引数はsysfsのモード, 第三引数はread用ハンドラ, 第四引数はwrite用のハンドラとなる.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="uaccess.h.html" class="btn btn-neutral float-right" title="uaccess.h" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cdev.h.html" class="btn btn-neutral" title="cdev.h" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

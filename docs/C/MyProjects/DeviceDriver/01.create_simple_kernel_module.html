@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>01. Create Simple Kernel Module &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="Device Driver" href="index.html"/>
+        <link rel="next" title="02. Driver Register (Static)" href="02.driver_register_static.html"/>
+        <link rel="prev" title="Introduction" href="Introduction.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">C MyProjects</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Device Driver</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">01. Create Simple Kernel Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="02.driver_register_static.html">02. Driver Register (Static)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="03.driver_register_dynamic.html">03. Driver Register (Dynamic)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="04.read_write_and_memory.html">04. read/write and Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="05.raspi_gpio_device_driver.html">05. Raspi GPIO Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="06.ioctl_implementation.html">06. ioctl Implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="07.interface_for_procfs.html">07. interface for procfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="08.interface_for_debugfs.html">08. interface for debugfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="09.call_other_kernel_module.html">09. call other kernel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="10.i2c_device_driver.html">10.I2C Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="11.add_i2c_device_to_device_tree.html">11. Add I2C Device to DeviceTree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="12.bootloading_device_driver.html">12. bootloading device driver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">C MyProjects</a> &raquo;</li>
+      
+          <li><a href="index.html">Device Driver</a> &raquo;</li>
+      
+    <li>01. Create Simple Kernel Module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/C/MyProjects/DeviceDriver/01.create_simple_kernel_module.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="create-simple-kernel-module">
+<h1>01. Create Simple Kernel Module<a class="headerlink" href="#create-simple-kernel-module" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>まず, 簡単な <a class="reference internal" href="#id6">カーネルモジュール</a> を作成して開発の流れを見てみる.</p>
+<p>いわゆる, HelloWorldみたいなものを作る.</p>
+<p>参考URLは以下</p>
+<ul class="simple">
+<li><a class="reference external" href="https://qiita.com/take-iwiw/items/1fdd2e0faaaa868a2db2">組み込みLinuxデバイスドライバの作り方</a></li>
+</ul>
+<div class="section" id="id1">
+<h2>01. 開発の流れ<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ざっくりだが本章でお行う流れを書いていく.</p>
+<ol class="arabic">
+<li><dl class="first docutils">
+<dt>コードを記述する.</dt>
+<dd><ul class="first last simple">
+<li>カーネルモジュール がロード(insmod)されたときと, アンロード(rmmod)されたときの挙動を記述する(今回は単純にHelloWorld的な出力をするだけ)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Makefileを用意する.</dt>
+<dd><ul class="first last simple">
+<li>カーネルモジュールのビルドは勿論自分でgccコマンドを打ってもできるが, インクルードパスの指定などが面倒. <a class="reference internal" href="Introduction.html"><span class="doc">Introduction</span></a> で示した通りビルド用のMakefileがインストールされているので, ソースファイル名を指定してそのMakefileを呼び出す.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>ビルドして実行する.</dt>
+<dd><ul class="first last simple">
+<li>makeしてビルドし, ismodでモジュールロード, rmmodでアンロードした後, dmesgでメッセージを確認してみる. ここでプログラムした出力が得られればOK</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h2>02. コードを書く<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ファイル名は, test.c とする.</p>
+<p>アプリケーション開発の場合, インクルードするヘッダファイルは「stdio.h」や「string.h」などになるだろうが, それらは <a class="reference internal" href="#id7">ユーザ空間</a> で使用するライブラリであり, ドライバ開発ではインクルードしない.
+代わりに, 「linux/module.h」や「linux/init.h」などをインクルードする.</p>
+<p><cite>module_init</cite> でinsmod用のエントリーポイントを, <cite>module_exit</cite> でrmmod用のエントリーポイントを指定する.
+(それぞれのコマンド実行時などに呼び出される. 戻り値に「0」を返すことで, insmodコマンドは成功する. ロード時の処理で何かしらエラーが発生した場合は0以外を返すようにする. rmmmod用のエントリーポイント関数の戻り値は不要.)
+それぞれの関数は以下に定義されている.</p>
+<ul class="simple">
+<li>module_init, module_exit   : <a class="reference internal" href="../../Library/Kernel/linux/module.h.html"><span class="doc">module.h</span></a></li>
+</ul>
+<p>カーネル内では, <cite>printf</cite> は使用できないため(標準ライブラリをインクルードしてないため当然である).
+というよりそもそも, カーネル空間で動作するドライバはコンソール画面(標準出力)が無いため使いようがない.
+しかし, それではデバッグが大変なため, 代わりに用意されたのが <cite>printk</cite> 関数( <a class="reference internal" href="../../Library/Kernel/linux/kernel.h.html"><span class="doc">kernel.h</span></a> でマクロ定義されている).</p>
+<p><cite>printk</cite> をするときは <cite>\n</cite> がないと, dmesgのログに出力されないようだ.</p>
+<p>わかりやすいように, <cite>#include&lt;linux/kernel.h&gt;</cite> するべきかもしれないが, <cite>module.h</cite> が読み込んでいる各種ヘッダファイルから <cite>printk</cite> 関数にまで到達するパスがあるのだろう. 実行することができる.</p>
+</div>
+<div class="section" id="makefile">
+<h2>03. Makefileを用意する.<a class="headerlink" href="#makefile" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>上述したとおり, Makefile内でソースファイル名を指定して対象のMakefileを呼び出す.</p>
+<p>Makefileの解説を使用したが, 正直骨が折れる割にほぼテンプレート化しているように見えたので時間があるときにこの欄は記述することにする.</p>
+</div>
+<div class="section" id="id3">
+<h2>04. ビルドして実行する<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p><cite>make</cite> すると, <cite>test.ko</cite> というファイルが出来上がる.
+拡張子が「.ko」のファイルは, 動的リンクされるカーネルモジュールを示している.
+これを, <cite>insmod</cite> コマンドでこのモジュールのロード, <cite>rmmod</cite> コマンドでこのモジュールのアンロードをすることができる.</p>
+<p>以下のコマンドを実行して結果を確認してみる.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">make</span>
+<span class="n">sudo</span> <span class="n">insmod</span> <span class="n">test</span><span class="o">.</span><span class="n">ko</span>
+<span class="n">sudo</span> <span class="n">rmmod</span> <span class="n">test</span><span class="o">.</span><span class="n">ko</span>
+<span class="n">dmesg</span>
+</pre></div>
+</div>
+<p>dmesgでprintkの結果を確認すると, 実装したコードが実行されていることがわかる.
+doc:<cite>./../../Library/Kernel/linux/kernel.h</cite> でも少し触れているが, printkはメモリ上のバッファにその内容を出力する. そのバッファはリングバッファになっているためそのうち上書きされる. dmesgはそのバッファを出力しているだけ.</p>
+<div class="section" id="id4">
+<h3>モジュール関連コマンド<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>雑だが, いくつか示しておく.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">lsmod</span> <span class="p">:</span> <span class="n">モジュールの一覧表示</span>
+<span class="n">modprobe</span> <span class="p">:</span> <span class="n">モジュールのロード</span> <span class="p">(</span><span class="n">依存関係を考える</span><span class="p">)</span>
+<span class="n">insmod</span> <span class="p">:</span> <span class="n">モジュールのロード</span> <span class="p">(</span><span class="n">依存関係は考慮しない</span><span class="p">)</span>
+<span class="n">rmmod</span> <span class="p">:</span> <span class="n">モジュールのアンロード</span> <span class="p">(</span><span class="n">削除</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>用語解説<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p id="id6"><strong>カーネルモジュール</strong></p>
+<div class="line-block">
+<div class="line">マシン起動中にカーネルに機能を追加するための部品. カーネルの機能のうちの多くの部分は, 最初からカーネルに組み込んでおくこともできるし, モジュールとして独立したファイルにしておいて, 必要になったときにカーネルに組み込む事もできる.</div>
+<div class="line">例えば, 各種デバイスを操作するデバイスドライバなどがそうである.</div>
+<div class="line">ディストリビューションのカーネルは, カーネルが提供するほとんどのドライバをカーネルモジュールとして提供しており, 起動時に読み込むカーネル本体は最小のサイズに押さえている.</div>
+<div class="line">その後に, 必要に応じてモジュールのロードを行っている. これにより,</div>
+<div class="line"><br /></div>
+<div class="line">* 高速な起動</div>
+<div class="line">* カーネルによるメモリ使用量の最小化</div>
+<div class="line">* なるべく多くのデバイスのサポート</div>
+<div class="line"><br /></div>
+<div class="line">を同時に達成している.</div>
+</div>
+<p id="id7"><strong>ユーザ空間</strong></p>
+<div class="line-block">
+<div class="line">これはリンクを貼る.</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="02.driver_register_static.html" class="btn btn-neutral float-right" title="02. Driver Register (Static)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Introduction.html" class="btn btn-neutral" title="Introduction" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

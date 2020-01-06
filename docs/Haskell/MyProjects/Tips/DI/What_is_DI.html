@@ -1,0 +1,257 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>What is DI &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../../index.html"/>
+        <link rel="up" title="DI" href="index.html"/>
+        <link rel="next" title="DI Logger" href="DI_Logger.html"/>
+        <link rel="prev" title="DI" href="index.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">Haskell Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Monad/index.html">Monad</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Haskell MyProject</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">Haskell Tips</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="index.html">DI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../JSON/index.html">JSON</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../YAML/index.html">YAML</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Signals/index.html">Singals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../Web/index.html">Haskell Web Project</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../LanguageExtension/index.html">LanguageExtension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../Monoid/index.html">Monoid</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../C/index.html">C Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">Haskell Documents</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Haskell MyProject</a> &raquo;</li>
+      
+          <li><a href="../index.html">Haskell Tips</a> &raquo;</li>
+      
+          <li><a href="index.html">DI</a> &raquo;</li>
+      
+    <li>What is DI</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/Haskell/MyProjects/Tips/DI/What_is_DI.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="what-is-di">
+<h1>What is DI<a class="headerlink" href="#what-is-di" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<div class="section" id="di">
+<h2>DI<a class="headerlink" href="#di" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>DIとは. hogehoge</p>
+<p>DIの重要性はここ数年で急速に高まってきている. 依存性が注入されたりとかはどうでもよく, 設計と実装を分けたいということを工夫を凝らした結果行き着いた先の一つがDIだったのだろう.</p>
+<p>Haskellでも設計と実装を分けるためにDIしたいというのは自然である.</p>
+<p>ここでは, 型も含めて設計が実装に依存してはいけないことを要求する. 例えば, 設計でMySqlConnection, みたいな型が出現することも分離できていないので禁止とする.</p>
+</div>
+<div class="section" id="problem">
+<h2>Problem<a class="headerlink" href="#problem" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>設計を定義するときには, 他の言語ではインターフェースなどの仕組みが使われることが多い. Haskellには型システムという仕組みがあるため, これがインターフェース相当の機能として紹介される場合がある.</p>
+<p>しかしながら, 型システムはインターフェースとは違い, 型を固定する仕組みがない. 型クラス <cite>TypeClass a</cite> のインスタンス値が <cite>x:TypeClass a =&gt; a</cite> と <cite>y:TypechClass a =&gt; a</cite> のように2つ与えられたとしても, x と y が同じ型である保証はないし, これが同じ方であることを矯正するには x と y を同時に作って同時に運ぶ必要がある.</p>
+<p>というわけでインターフェースを使うと方が固定できないのでDIしようとすると困ったことになる, と考えられそうである.</p>
+</div>
+<div class="section" id="reflection">
+<h2>存存型とreflection<a class="headerlink" href="#reflection" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>型を固定する仕組みは実はどうにかできる. 要は存在型を使って <cite>data Trapped = forall a. TypeClass a =&gt;  Trapped a</cite> とやると型を外から見えないように隠蔽することができる.</p>
+<p>存在型は中を開いたときにもともと何が入っていたかはわからなくなるが, 設計ではそれを意識するはずがないので特に問題ない.</p>
+<p>さらに, いわゆるDIコンテナ的な仕組みでは生成したオブジェクトが必要な所に注入してくれるという機能があることは多いが, 実はこれとおなじこともHaskellではできる.</p>
+<p><a class="reference external" href="https://www.stackage.org/lts-11.16/package/reflection-2.1.3">reflection</a> というパッケージがあり, これはconfigデータを外から与えるためによく使用される. <cite>Given a =&gt; ...</cite> なる型を持つプログラムは <cite>given</cite> と書くといつでも好きなタイミングで外から挿入された値を取り出すことができる.</p>
+<p>同じ型に対しては一つの値しか注入できないが, 実際にDIするときには利用する型は1つだけで問題がない.</p>
+<p>というわけで, これでHaskellでDIができそう! ということが分かる.</p>
+<p>Loggerの例を <a class="reference internal" href="DI_Logger.html"><span class="doc">DI Logger</span></a> に示す.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="DI_Logger.html" class="btn btn-neutral float-right" title="DI Logger" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="DI" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

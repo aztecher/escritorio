@@ -1,0 +1,356 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>03. Driver Register (Dynamic) &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../index.html"/>
+        <link rel="up" title="Device Driver" href="index.html"/>
+        <link rel="next" title="04. read/write and Memory" href="04.read_write_and_memory.html"/>
+        <link rel="prev" title="02. Driver Register (Static)" href="02.driver_register_static.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Library/index.html">Libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">C MyProjects</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Device Driver</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="01.create_simple_kernel_module.html">01. Create Simple Kernel Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="02.driver_register_static.html">02. Driver Register (Static)</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">03. Driver Register (Dynamic)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="04.read_write_and_memory.html">04. read/write and Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="05.raspi_gpio_device_driver.html">05. Raspi GPIO Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="06.ioctl_implementation.html">06. ioctl Implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="07.interface_for_procfs.html">07. interface for procfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="08.interface_for_debugfs.html">08. interface for debugfs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="09.call_other_kernel_module.html">09. call other kernel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="10.i2c_device_driver.html">10.I2C Device Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="11.add_i2c_device_to_device_tree.html">11. Add I2C Device to DeviceTree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="12.bootloading_device_driver.html">12. bootloading device driver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="../index.html">C MyProjects</a> &raquo;</li>
+      
+          <li><a href="index.html">Device Driver</a> &raquo;</li>
+      
+    <li>03. Driver Register (Dynamic)</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../_sources/C/MyProjects/DeviceDriver/03.driver_register_dynamic.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="driver-register-dynamic">
+<h1>03. Driver Register (Dynamic)<a class="headerlink" href="#driver-register-dynamic" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>Staticにメジャー番号を設定して, カーネルに登録する方法は, 現在では推奨されていないようである.
+今回はこれを動的に設定する.
+また, udevの仕組みを利用して, デバイスファイルを自動で作成する.</p>
+<p>参考URL</p>
+<ul class="simple">
+<li><a class="reference external" href="https://qiita.com/take-iwiw/items/6b02494a3668f79800e6">組み込みLinuxデバイスドライバの作り方</a></li>
+</ul>
+<div class="section" id="id1">
+<h2>多少の修正<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<ul>
+<li><dl class="first docutils">
+<dt>カーネルモジュールのライセンスを示す必要がある. 本に倣い, 以下のようなライセンス設定を行う.</dt>
+<dd><ul class="first last simple">
+<li><cite>MODULE_LICENSE(&#8220;Dual BSD/GPL&#8221;);</cite></li>
+<li>このマクロは, <a class="reference internal" href="../../Library/Kernel/linux/module.h.html"><span class="doc">module.h</span></a> に記載されている.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">C99を明示的に使用するように, Makefileを修正する.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>動的にメジャー番号を割り当てて, カーネルに登録する<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="id3">
+<h3>ソースコードの解説<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><cite>mydevice_init</cite> 関数(insmod用のハンドラ)内に以下のような登録処理を追加する.</p>
+<ol class="arabic simple">
+<li><cite>alloc_chrdev_region</cite> 関数によって空いているメジャー番号を動的に取得する. その時, 本デバイスドライバが使うマイナー番号に関する情報も設定する.</li>
+<li><cite>cdev_init</cite> 関数によって, cdevオブジェクトを初期化する. 具体的には, システムコールハンドラ(open/close/read/write)のテーブルを登録する.</li>
+<li><cite>cdev_add</cite> 関数を利用して, 初期化したcdevオブジェクトをカーネルに登録する.</li>
+</ol>
+<p>また, 開放処理も合わせて変更する.
+1. <cite>cdev_del</cite> 関数によって, デバイスドライバをカーネルから取り除く.
+2. <cite>unregister_chrdev_region</cite> 関数で, このデバイスドライバで使用していたメジャー番号の登録を取り除く.</p>
+<p>上記の関数や構造体は以下に示す部分に定義されている.</p>
+<ul class="simple">
+<li><cite>alloc_chrdev_region</cite>, <cite>unregister_chrdev_region</cite> : <a class="reference internal" href="../../Library/Kernel/linux/fs.h.html"><span class="doc">fs.h</span></a></li>
+<li><cite>cdev</cite>, <cite>cdev_init</cite>, <cite>cdev_add</cite>, <cite>cdev_del</cite> : <a class="reference internal" href="../../Library/Kernel/linux/cdev.h.html"><span class="doc">cdev.h</span></a></li>
+<li><cite>dev_t</cite> : <a class="reference internal" href="../../Library/Kernel/linux/types.h.html"><span class="doc">types.h</span></a></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3>もう少し細かくコードを追っていく<a class="headerlink" href="#id4" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>登録部分 (<cite>mydevice_init</cite> 関数)からみてみる.</p>
+<p>まず, alloc_chrdev_region(&amp;dev, MINOR_BASE(0), MINOR_NUM(2), DRIVER_NAME(&#8220;MyDevice&#8221;))を呼び出し, charデバイス番号の範囲を割り当てる.
+メジャー番号は動的に選択され, devの最初のマイナー番号とともに返される.
+戻り値が0でない場合(負の値), エラーとなる.
+この, dev構造体で, メジャー番号, マイナー番号を取り扱う.</p>
+<p>ここで, MAJOR()を利用してメジャー番号を取得し, その値とマイナー番号の値を組み合わせてdev_t型のキャラクタデバイス番号を作成する (この処理は不要かもしれない)</p>
+<p>次に, cdev_init(&amp;mydevice_cdev, &amp;s_mydevice_fops) を呼び出し, キャラクター型デバイスの初期化を行う. <cite>cdev_init</cite> 後の <cite>mydevice_cdev</cite> の要素である. <cite>mydevice_cdev.owner</cite> には <cite>THIS_MODULE</cite> を指定しているがこれはほぼテンプレと思っていいだろう. ここまでやって初期化である.</p>
+<p>これでキャラクタ型デバイスに割り当てる番号(動的に取得した番号)と, 割り当てるデバイス(ハンドラセット済み)が手に入ったため, これをカーネルに登録すればいい.
+cdev_add(&amp;mydevice_cdev, dev, MINOR_NUM) を呼び出し, このデバイスドライバ(cdev)をカーネルに登録する. これでメジャー番号を動的に取得した <cite>MyDevice</cite> という名のデバイスドライバが作成される.</p>
+<p>以上が, 登録部分である.</p>
+<p>次に解放部分(<cite>mydevice_exit</cite>)である.
+とはいえこちらは基本リソースの解放を行えばいいだけであるため単純である.</p>
+<p>まず, 作成時と同様に MKDEV() を使って dev_t型の番号(dev)を作成する.</p>
+<p>そして, cdev_del(&amp;mydevice_cdev)を実行して, キャラクタ型デバイスの削除を行う.</p>
+<p>最後に, このデバイスドライバで使用していたメジャー番号の登録を取り除くため, unregister_chrdev_region(dev, MINOR_NUM)によって, devからMINOR_NUMまでの範囲のデバイスの登録を取り除く.</p>
+<p>以上により, 動的にデバイスを登録/解放することができるようになった.</p>
+</div>
+<div class="section" id="id5">
+<h3>ビルドしてロードする<a class="headerlink" href="#id5" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ビルド, ロードは同じなので省略するが, デバイスファイルの作成で少し考えなければいけない. <cite>mknod</cite> コマンドで作成するのだが, メジャー番号が動的に決定されるので, これまでのように静的な値を指定して作成することができない.
+今回はメジャー番号を得るために, <cite>/proc/devices</cite> を参照しそこから <cite>MyDevice</cite> についているメジャー番号を頑張って引っ張ってくるわけである.</p>
+<p>ここで, デバイスファイルは複数作成できるが, <cite>cdev_add</cite> 関数でデバイス数は2個だと指定しているため, 2個以上のデバイスファイルは作れても, openしたりアクセスしようとすると, <cite>No such device or address</cite> というエラーが出る.</p>
+</div>
+<div class="section" id="id6">
+<h3>マイナー番号ごとに処理を変える<a class="headerlink" href="#id6" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>例えば, マイナー番号0(/dev/mydevice0)とマイナー番号1(/dev/mydevice1)で処理を変えたい時, read/writeハンドラ内で, マイナー番号を使って switch-case で処理を分けてもいいが, 登録するハンドラテーブルを分けることでも実現できる.</p>
+<p>具体的には, <cite>s_mydevice_fops</cite> を処理を分けたいマイナー数分だけ用意する(例えば, <cite>s_mydevice_fops0</cite> と <cite>s_mydevice_fops1</cite>)
+<cite>struct cdev mydevice_cdev</cite> を配列にして, <cite>cdev_init()</cite>, <cite>cdev_add()</cite>, <cite>cdev_del()</cite> で, 別々の設定をすることで対応できる.</p>
+</div>
+</div>
+<div class="section" id="udev-dev-xxx">
+<h2>udev対応して自動的にデバイスファイル(/dev/XXX)を作る<a class="headerlink" href="#udev-dev-xxx" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>上記のようにデバイスファイルを手動で作るのはいささか面倒である.</p>
+<p>Linuxには, udevという仕組みがあり, ドライバロード時に, <cite>/sys/class/</cite> にクラス登録をすると, <cite>udevd</cite> というデーモンがそれを検出して自動的にデバイスファイルを作ってくれる.
+実装上は, 「ドライバロード時に, <cite>/sys/class/</cite> にクラス登録をする」という処理が追加で必要になる.</p>
+<p>実際には, udevは <a href="#id10"><span class="problematic" id="id11">プラグアンドプレイ_</span></a> 機能に使われるようである.</p>
+<p>デバイスドライバモジュール(.ko)を特別な場所(<cite>lib/modules/</cite>)に置いておくと, デバイスが検出されたときに, 自動的に対応するデバイスドライバがロードされるらしい. そのため, insmodも本来は不要である.</p>
+</div>
+<div class="section" id="id7">
+<h2>ソースコードの解説<a class="headerlink" href="#id7" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>さて, では <cite>udev</cite> を使って, 自動的にデバイスファイルを作成するようにする.
+上述したことを踏まえ, <cite>mydevice_init</cite> と <cite>mydevice_exit</cite> を変更する.</p>
+<ol class="arabic simple">
+<li>デバイスドライバのクラスオブジェクトを定義しておき, <cite>class_create</cite> でデバイスのクラス登録をする. (<cite>/sys/class/mydevice/</cite> を作る)</li>
+<li><cite>mydevice_init</cite> 内に, <cite>/sys/class/mydevice/mydevice*</cite> を作る. この際に <cite>device_create</cite> 関数を利用する.</li>
+<li><cite>mydevice_exit</cite> 内に, <cite>/sys/class/mydevice/mydevice*</cite> を削除する. この際に <cite>device_destroy</cite> 関数を利用する.</li>
+<li><cite>mydevice_exit</cite> 内で, <cite>class_destroy</cite> を呼び出し, (<cite>/sys/class/mydevice/</cite> を削除する)</li>
+</ol>
+<p>新たな <cite>class</cite>, <cite>class_create</cite>, <cite>device_create</cite>, <cite>device_destroy</cite> だろう.</p>
+<ul class="simple">
+<li><cite>class</cite>, <cite>class_create</cite>, <cite>device_create</cite>, <cite>device_destroy</cite> : <a class="reference internal" href="../../Library/Kernel/linux/device.h.html"><span class="doc">device.h</span></a></li>
+<li><cite>module</cite> : <a class="reference internal" href="../../Library/Kernel/linux/module.h.html"><span class="doc">module.h</span></a></li>
+</ul>
+<p>上記のようにコードを修正することで, <cite>/sys/class/mydevice/mydevice*/dev</cite> が作られる. <cite>udev</cite> の仕組みによって, <cite>/sys/class/mydevice/mydevice*/dev</cite> の情報を基に自動的にデバイスファイル <cite>/dev/mydevice*</cite> が作られる.</p>
+<div class="section" id="id8">
+<h3>ルールファイルの追加<a class="headerlink" href="#id8" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>デバイスファイルを作ったあと, 手動でその権限を666に設定していた. これは上記のコードでも同じで, このままだと, 一般ユーザーではアクセス権限がない. そのため, ルールファイルを追加することで, アクセス権限を変更する. ルールファイルは, <cite>/etc/udev/rules.d</cite> にある. ルールファイル自体は数字から始まり, 拡張子は <cite>.rules</cite> のファイルなら何でも良いようだ. ラズパイの場合, はじめから <cite>/etc/udev/rules.d/99-com.rules</cite> というルールファイルがあるため, そこに追加しても良い.
+ここでは一応分けて考える.</p>
+<p>下記のコードで, ルールファイルを作成するが, <cite>sudo</cite> をつけても, 新規ファイルを作れなかったため, <cite>sudo -i</cite> で一度スーパーユーザーモードに入ってから以下のコマンドを打ち込む.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">i</span>
+<span class="n">echo</span> <span class="s1">&#39;KERNEL==&quot;mydevice[0-9]*&quot;, GROUP=&quot;root&quot;, MODE=&quot;0666&quot;&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">udev</span><span class="o">/</span><span class="n">rules</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="mi">81</span><span class="o">-</span><span class="n">my</span><span class="o">.</span><span class="n">rules</span>
+<span class="n">exit</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id9">
+<h3>ビルドしてロードする<a class="headerlink" href="#id9" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>ビルドしてinsmodしてみる.
+今回は, insmodするだけで自動的にデバイスファイル(/dev/mydevice0, /dev/mydevice1) が作られる.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="04.read_write_and_memory.html" class="btn btn-neutral float-right" title="04. read/write and Memory" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="02.driver_register_static.html" class="btn btn-neutral" title="02. Driver Register (Static)" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,459 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Examples &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../index.html"/>
+        <link rel="up" title="Packer Documents" href="index.html"/>
+        <link rel="next" title="KickStart" href="KickStart.html"/>
+        <link rel="prev" title="BoxCutter" href="Boxcutter.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../C/index.html">C Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Infrastructure Documents</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Packer Documents</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="What_is_Packer.html">What is Packer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Boxcutter.html">BoxCutter</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#packer-virtualbox">Packer実行ファイル(Virtualbox)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kickstart">KickStart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">ビルドの実行</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vagrantfile">Vagrantfileに追加</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="KickStart.html">KickStart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Preseed.html">Preseed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Ansible/index.html">Ansible Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Vagrant/index.html">Vagrant Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Docker/index.html">Docker Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Kubernetes/index.html">Kubernetes Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../OpenStack/index.html">OpenStack Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Network/index.html">Network Documents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Infrastructure Documents</a> &raquo;</li>
+      
+          <li><a href="index.html">Packer Documents</a> &raquo;</li>
+      
+    <li>Examples</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/Infrastructure/Packer/Examples.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>PackerのExampleを示しながら各動作に関して説明する.</p>
+<p>いろいろなプロバイダ向けに作成できるため, 今回は現状一番利用の可能性がある Virtualbox (Vagrant) 向けのboxファイルの作成を通して説明していく.</p>
+<p>本来, JSONファイルにはコメントアウトを喜寿捨つすることができないが, ここで示すExampleは説明のために&#8217;#&#8217;始まりをコメントアウトとして擬似的にコメントを記述していく.</p>
+<div class="section" id="packer-virtualbox">
+<h2>Packer実行ファイル(Virtualbox)<a class="headerlink" href="#packer-virtualbox" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="highlight-json"><div class="highlight"><pre><span></span>{
+  &quot;builders&quot;: [
+    {
+      # 何の仮想インスタンスを作成するかを指定する項目.
+      # AWSのインスタンスなども可能.
+      # 今回はvirtualboxなので, 「virtualbox-iso」を記載
+      &quot;type&quot;: &quot;virtualbox-iso&quot;,
+
+      # デフォルトのvm名.
+      # Vagrantでもオーバーライドできるため記載がなくても問題なし
+      &quot;vm_name&quot;: &quot;box&quot;,
+
+      # 最初にVirtualboxがbootするまでの待ち時間
+      &quot;boot_wait&quot;: &quot;10s&quot;,
+
+      # Virtualboxのディスク容量を指定
+      &quot;disk_size&quot;: 512000,
+
+      # CentOSx86系なら, 「RedHat_64」を指定.
+      # typeの一覧は 「VBoxManage list ostype」 でわかる
+      &quot;guest_os_type&quot;: &quot;RedHat_64&quot;,
+
+      # isoのchecksum.
+      # わからない場合は, 「md5 作るOS.iso」でわかる
+      &quot;iso_checksum&quot;: &quot;4a5fa01c81cc300f4729136e28ebe600&quot;,
+
+      # isoのDL先のURL
+      # HTTPしかサポートしていないよう?
+      &quot;iso_url&quot;: &quot;http://ftp.iij.ad.jp/pub/linux/centos/6.4/isos/x86_64/CentOS-6.4-x86_64-minimal.iso&quot;,
+
+      # sshユーザー名.
+      # vagrantと連携したいならユーザ名はvagrantにしたほうが楽
+      &quot;ssh_username&quot;: &quot;vagrant&quot;,
+
+      # sshユーザのパスワード
+      &quot;ssh_password&quot;: &quot;vagrant&quot;,
+
+      # sshポート番号
+      &quot;ssh_port&quot;: 22,
+
+      # sshの接続時間
+      &quot;ssh_wait_timeout&quot;: &quot;10000s&quot;,
+
+      # シャットダウンコマンド
+      # haltコマンドを利用 (halt -p = shutdown -h now)
+      # (要コマンド確認 - vagrantをパイプで渡しているのはなぜ...?)
+      &quot;shutdown_command&quot;: &quot;echo &#39;/sbin/halt -p&#39; &gt; shutdown.sh; echo &#39;vagrant&#39; | sudo -S sh &#39;shutdown.sh&#39;&quot;,
+
+      # Virtualboxのguest_additionsのパス
+      &quot;guest_additions_path&quot;: &quot;VBoxGuestAdditions_{{.Version}}.iso&quot;,
+
+      # Virtualboxのバージョン番号
+      &quot;virtualbox_version_file&quot;: &quot;.vbox_version&quot;,
+
+      # Virtualboxのインスタンス設定
+      # 今回はメモリを2G, CPUコア数を2としている
+      &quot;vboxmanage&quot;: [
+        [
+          &quot;modifyvm&quot;,
+          &quot;{{.Name}}&quot;,
+          &quot;--memory&quot;,
+          &quot;2048&quot;
+        ],
+        [
+          &quot;modifyvm&quot;,
+          &quot;{{.Name}}&quot;,
+          &quot;--cpus&quot;,
+          &quot;2&quot;
+        ]
+    ],
+
+    # インストール時にローカルにwebサーバーをたてて,
+    # kickstartなどの設定情報を持っていくための設定.
+    # kickstartはOSのインストールを自動化する仕組み
+    #   * 言語は何にする?
+    #   * ポスト名は何にする?
+    #   * パッケージはなにをいれる?
+    # というのを選択していく部分の自動化である.
+    &quot;http_directory&quot;: &quot;./packer/builders/&quot;,
+
+    # boot字のkickstartを実行するときの,
+    # ks.cfg の場所を指定する.
+    &quot;boot_command&quot;: [
+      &quot;&lt;tab&gt; text ks=http://{{.HTTPIP}}:{{.HTTPPort}}/ks.cfg&lt;enter&gt;&lt;wait&gt;&quot;
+      ]
+    }
+  ],
+
+  # インスタンスが作成された後に実行するもの.
+  # kickstartで仮想インスタンスにプラスアルファの機能を追加する場合
+  # このprovisioners側で管理するといい.
+  &quot;provisioners&quot;: [
+    {
+      &quot;type&quot;: &quot;shell&quot;,
+      &quot;scripts&quot;: [
+        &quot;packer/provisioners/base.sh&quot;
+        &quot;packer/provisioners/vagrant.sh&quot;
+        &quot;packer/provisioners/virtualbox.sh&quot;
+        &quot;packer/provisioners/cleanup.sh&quot;
+      ],
+      &quot;override&quot;: {
+        &quot;virtualbox-iso&quot;: {
+          &quot;execute_command&quot;: &quot;echo &#39;vagrant&#39; | sudo -S sh &#39;{{.Path}}&#39;&quot;
+        }
+      }
+    }
+  ],
+  &quot;post-processors&quot;: [
+    {
+      # vagrantのボックスを作る場合はvagrantで
+      &quot;type&quot;: &quot;vagrant&quot;
+
+      # vagrantのボックスを作った後の,
+      # .boxの吐き出し場所の指定.
+      &quot;output&quot;: &quot;./packer/vagrant-boxes/CentOS-6.4-x86_64-minimal.box&quot;
+    }
+  ]
+}
+</pre></div>
+</div>
+<div class="section" id="builders">
+<h3>builders<a class="headerlink" href="#builders" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>まず, <code class="docutils literal"><span class="pre">builders</span></code> である. これは作る仮想インスタンスの設定を記載する領域になる. それぞれの意味は上記コメントアウト参照のこと.</p>
+</div>
+<div class="section" id="provisioners">
+<h3>provisioners<a class="headerlink" href="#provisioners" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>インスタンスが作成された後に実行するもの. KickStartで作成した仮想インスタンスにプラスアルファの機能を追加する場合は, このprovisioners側で管理するほうがいい.</p>
+</div>
+<div class="section" id="post-processors">
+<h3>post-processors<a class="headerlink" href="#post-processors" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>名前の通り, OSを作成した後に実行することを記載する項目. それぞれの意味は上記のコメントアウト参照のこと</p>
+</div>
+</div>
+<div class="section" id="kickstart">
+<h2>KickStart<a class="headerlink" href="#kickstart" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Kickstartに関しての詳細は <span class="xref doc">./KickStart.rst</span> を参照されたし.</p>
+<p>今回は次のようなファイルを作成</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="c1"># まずはディレクトリ作成</span>
+mkdir -r packer/vagrant-boxes packer/builders
+vim packer/builders/ks.cfg
+</pre></div>
+</div>
+<div class="highlight-cfg"><div class="highlight"><pre><span></span>install cdrom
+lang en_US.UTF-8
+keyboard us
+network --bootproto=dhcp
+rootpw vagrant
+firewall --enabled --service=ssh
+authconfig --enableshadow --passalgo=sha512
+selinux --disabled
+timezone Asia/Tokyo
+bootloader --location=mbr
+
+text
+skipx
+zerombr
+
+clearpart --all --initlabel
+autopart
+
+auth --useshadow --enablemd5
+firstboot --disabled
+reboot
+
+%packages --ignoremissing
+@core
+gzip2
+kernel-devel
+kernel-headers
+-ipw2100-firmware
+-ipw2200-firmware
+-ivtv-firmware
+%end
+
+%post
+/usr/bin/yum -y install sudo
+/usr/sbin/groupadd -g 501 vagrant
+/usr/sbin/useradd vagrant -u 501 -g vagrant -G wheel
+echo &quot;vagrant&quot; | passwd --stdin vagrant
+echo &quot;vagrant   ALL=(ALL)   NOPASSWD: ALL&quot; &gt;&gt; /etc/sudoers.d/vagrant
+chmod 0440 /etc/sudoers.d/vagrant
+%end
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>ビルドの実行<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>記述したjsonファイル(packer.json)が存在するディレクトリで次のコマンドを実行する.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>packer build --only<span class="o">=</span>virtualbox-iso packer.json
+</pre></div>
+</div>
+<p>これで指定した場所に, boxファイルできる.</p>
+</div>
+<div class="section" id="vagrantfile">
+<h2>Vagrantfileに追加<a class="headerlink" href="#vagrantfile" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>Vagrantfileがない場合は作成する. 今回の場合は, 例えば以下のようになる</p>
+<div class="highlight-rb"><div class="highlight"><pre><span></span><span class="no">BOX_NAME</span> <span class="o">=</span> <span class="s2">&quot;CentOS6.4-x86-minimal&quot;</span>
+
+<span class="no">Vagrant</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="no">BOX_NAME</span>
+
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box_url</span> <span class="o">=</span> <span class="s2">&quot;./packer/vagrant-boxes/CentOS-6.4-x86_64-minimal.box&quot;</span>
+
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="ss">:private_network</span><span class="p">,</span> <span class="ss">ip</span><span class="p">:</span> <span class="s2">&quot;192.169.56.101&quot;</span>
+
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="ss">:virtualbox</span> <span class="k">do</span> <span class="o">|</span><span class="n">vb</span><span class="o">|</span>
+    <span class="n">vb</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="no">BOX_NAME</span>
+    <span class="n">vb</span><span class="o">.</span><span class="n">customize</span><span class="o">[</span><span class="s2">&quot;modifyvm&quot;</span><span class="p">,</span> <span class="ss">:id</span><span class="p">,</span> <span class="s2">&quot;--memory&quot;</span><span class="p">,</span> <span class="s2">&quot;2048&quot;</span><span class="o">]</span>
+    <span class="n">vb</span><span class="o">.</span><span class="n">customize</span><span class="o">[</span><span class="s2">&quot;modifyvm&quot;</span><span class="p">,</span> <span class="ss">:id</span><span class="p">,</span> <span class="s2">&quot;--cpus&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="o">]</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>これで,</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>vagrant up
+</pre></div>
+</div>
+<p>これで自作boxが作成されるはずである.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="KickStart.html" class="btn btn-neutral float-right" title="KickStart" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Boxcutter.html" class="btn btn-neutral" title="BoxCutter" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

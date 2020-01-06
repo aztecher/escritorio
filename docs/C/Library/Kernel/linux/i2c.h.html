@@ -1,0 +1,330 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>i2c.h &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../../../index.html"/>
+        <link rel="up" title="linux" href="index.html"/>
+        <link rel="next" title="i2c-core.h" href="i2c-core.h.html"/>
+        <link rel="prev" title="interrupt.h" href="interrupt.h.html"/> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../BasicKnowledge/index.html">BasicKnowledge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">Libraries</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">C Kernel Libraries</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="index.html">linux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../asm/index.html">asm</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../Standard/index.html">Standard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Sys/index.html">Sys</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../MyProjects/index.html">C MyProjects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Libraries</a> &raquo;</li>
+      
+          <li><a href="../index.html">C Kernel Libraries</a> &raquo;</li>
+      
+          <li><a href="index.html">linux</a> &raquo;</li>
+      
+    <li>i2c.h</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../../../_sources/C/Library/Kernel/linux/i2c.h.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="i2c-h">
+<h1>i2c.h<a class="headerlink" href="#i2c-h" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>&#8216;linux/i2c.h&#8217; の情報を記述する.</p>
+<div class="section" id="structures">
+<h2>Structures<a class="headerlink" href="#structures" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="i2c-driver">
+<h3>i2c_driver<a class="headerlink" href="#i2c-driver" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">i2c_driver</span><span class="p">{</span>
+    <span class="o">...</span>
+    <span class="o">--</span> <span class="nd">@probe</span> <span class="p">:</span> <span class="n">デバイスがバインドされたときのコールバック</span>
+    <span class="o">--</span> <span class="nd">@remove</span> <span class="p">:</span> <span class="n">デバイスがアンバインドされたときのコールバック</span>
+    <span class="o">--</span> <span class="nd">@id_table</span> <span class="p">:</span> <span class="n">このドライバがサポートするI2Cデバイスのリスト</span>
+    <span class="o">--</span> <span class="nd">@driver</span> <span class="p">:</span> <span class="n">このドライバのモジュールオーナや名前をセット</span>
+
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">probe</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="p">,</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">i2c_device_id</span> <span class="o">*</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">remove</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="p">);</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">i2c_device_id</span> <span class="o">*</span><span class="n">id_table</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">device_driver</span> <span class="n">driver</span><span class="p">;</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>i2cデバイスドライバを表す構造体
+一部の抜粋に留めるが, 説明は上記コードを見ればわかるだろう.</p>
+</div>
+<div class="section" id="i2c-client">
+<h3>i2c_client<a class="headerlink" href="#i2c-client" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">i2c_client</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="o">--</span> <span class="nd">@addr</span> <span class="p">:</span> <span class="n">親のアダプタとI2Cバスコネクションをする時のアドレス</span>
+    <span class="o">--</span> <span class="nd">@dev</span> <span class="p">:</span> <span class="n">スレーブのドライバモデルデバイスノード</span><span class="p">(</span><span class="n">device構造体</span><span class="p">)</span>
+
+    <span class="n">unsigned</span> <span class="n">short</span> <span class="n">addr</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">device</span> <span class="n">dev</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>I2Cスレーブデバイスを表現する.</p>
+</div>
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="i2c-del-driver">
+<h3>i2c_del_driver<a class="headerlink" href="#i2c-del-driver" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">i2c_del_driver</span><span class="p">(</span><span class="n">struct</span> <span class="n">i2c_driver</span> <span class="o">*</span><span class="n">driver</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>I2Cドライバの登録を解除する.
+第一引数に解除するドライバ構造体を与える.</p>
+</div>
+<div class="section" id="i2c-set-clientdata">
+<h3>i2c_set_clientdata<a class="headerlink" href="#i2c-set-clientdata" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">i2c_set_clientdata</span><span class="p">(</span><span class="n">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">dev_set_drvdata</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><cite>struct i2c_client</cite> に紐付いた情報を自由に保存することができる. この情報は何でもいいが, 通常は, probe時にalloc下デバドラ独自の構造体へのポインタを保持する. 取り出すときは, <cite>i2c_get_clientdata()</cite> を使う.</p>
+</div>
+<div class="section" id="i2c-get-clientdata">
+<h3>i2c_get_clientdata<a class="headerlink" href="#i2c-get-clientdata" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="o">*</span><span class="n">i2c_get_clientdata</span><span class="p">(</span><span class="n">const</span> <span class="n">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="n">dev</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">dev_get_drvdata</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><cite>i2c_set_clientdata</cite> で紐づけた情報を取得することができる.</p>
+</div>
+</div>
+<div class="section" id="macros">
+<h2>Macros<a class="headerlink" href="#macros" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<div class="section" id="to-i2c-client">
+<h3>to_i2c_client<a class="headerlink" href="#to-i2c-client" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">#define to_i2c_client(d) container_of(d, struct i2c_client, dev)</span>
+</pre></div>
+</div>
+<p>これは内部的に <cite>container_of</cite> を呼んでいるだけである. <a class="reference internal" href="kernel.h.html"><span class="doc">kernel.h</span></a> に定義されているため, 詳細はそちらに任せるが, 引数dをメンバとしてもつ構造体 <cite>i2c_client</cite> へのポインタを, 引数d(構造体メンバへのポインタ)から得る関数.</p>
+</div>
+<div class="section" id="i2c-add-driver">
+<h3>i2c_add_driver<a class="headerlink" href="#i2c-add-driver" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">#define i2c_add_driver(driver) i2c_register_driver(THIS_MODULE, driver)</span>
+</pre></div>
+</div>
+<p>内部的にi2c_register_driverを呼んでおり, これは <a class="reference internal" href="i2c-core.h.html"><span class="doc">i2c-core.h</span></a> で定義されている. 詳しくは見ていないがI2Cドライバの登録を行う関数だろう.</p>
+</div>
+<div class="section" id="module-i2c-driver">
+<h3>module_i2c_driver<a class="headerlink" href="#module-i2c-driver" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<dl class="docutils">
+<dt>::</dt>
+<dd><dl class="first last docutils">
+<dt>#define module_i2c_driver(__i2c_driver)</dt>
+<dd>module_driver(__i2c_driver, i2c_add_driver, i2c_del_driver)</dd>
+</dl>
+</dd>
+</dl>
+<p>I2Cドライバを登録するヘルパーマクロ. I2C機器用のデバドラでは, ロード/アンロード時に行う処理は, 殆どの場合 <cite>struct i2c_driver</cite> の登録だけなので, このヘルパーマクロで簡略化できる.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="i2c-core.h.html" class="btn btn-neutral float-right" title="i2c-core.h" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="interrupt.h.html" class="btn btn-neutral" title="interrupt.h" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>PreProcessor &mdash; SphinxRoot 1.0.0 ドキュメント</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="SphinxRoot 1.0.0 ドキュメント" href="../../index.html"/>
+        <link rel="up" title="BasicKnowledge" href="index.html"/>
+        <link rel="next" title="VisualStudio" href="VisualStudio/index.html"/>
+        <link rel="prev" title="Build" href="Build.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SphinxRoot
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Haskell/index.html">Haskell Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Golang/index.html">Golang Documents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">C Documents</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">BasicKnowledge</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Build.html">Build</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PreProcessor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#abstract">Abstract</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#what-s-preprocessor">What&#8217;s PreProcessor?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#preprocessor-directive">PreProcessor Directive</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#other-function-of-preprocessor">Other Function of PreProcessor</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="VisualStudio/index.html">VisualStudio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MemoryAllocation.html">Dynamic Memory Allocation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Inline.html">inline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Static.html">static</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Extern.html">extern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ConstPointer.html">Const and Pointer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Virtual_Func_Class.html">Virtual (Function/Class)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../GDB/index.html">GDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../LLDB/index.html">LLDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Library/index.html">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../MyProjects/index.html">C MyProjects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Infrastructure/index.html">Infrastructure Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Micon/index.html">Micon Documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Git/index.html">Git Documents</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">SphinxRoot</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">C Documents</a> &raquo;</li>
+      
+          <li><a href="index.html">BasicKnowledge</a> &raquo;</li>
+      
+    <li>PreProcessor</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/C/BasicKnowledge/PreProcessor.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="preprocessor">
+<h1>PreProcessor<a class="headerlink" href="#preprocessor" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<p>ここでは, ビルド作業におけるプリプロセッサの詳細について記述していく</p>
+<div class="section" id="abstract">
+<h2>Abstract<a class="headerlink" href="#abstract" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>ビルド作業では, コンパイル処理の前工程として, プリプロセス(前処理)の工程がある. これはプリプロセッサ命令(プリプロセッサディレクティブ)の処理やコメントアウトの削除などの処理に相当する.</p>
+</div>
+<div class="section" id="what-s-preprocessor">
+<h2>What&#8217;s PreProcessor?<a class="headerlink" href="#what-s-preprocessor" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>プリプロセッサとはその名の通り「前処理をするもの」である.</p>
+<p>C/C++のプログラムをコンパイルするのにCCなどのコンパイラを利用すると思うが, 実はその処理は何段階かに別れており, その処理の一番最初に行われる処理がプリプロセッサによる処理である. この処理を施した時点ではまだ高水準言語はそのままのレベルのコードであり, それを後続のコンパイル処理にかけることでバイナリレベルのコードに翻訳される.</p>
+<p>さて, プリプロセスというのは一般的な言葉であり, 何かしらの重要な処理をするに当たって, その処理の準備として実行される処理(前処理)という意味を持っている. ビルド処理において, コンパイル処理という重要な処理に先立って, その準備となる処理を実行するため, このように呼ばれているわけである.</p>
+<p>プリプロセッサの機能はコンパイラとは独立に用意されていることもあれば, コンパイラの機能の一部として含まれていることもある. 現在のCCのようなコンパイラはその本体にプリプロセッサ機能を搭載しており, オプションによりコンパイル処理を行わず, プリプロセッサが機能だけを動作させることも可能である. プリプロセッサ処理を直に確認したい場合には有効であろう. ここでは省略する.</p>
+</div>
+<div class="section" id="preprocessor-directive">
+<h2>PreProcessor Directive<a class="headerlink" href="#preprocessor-directive" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>プリプロセッサ命令は, C/C++でいうならば, ソースコード内の <cite>#</cite> 付きで始まる命令だと思ってもらって差し支えないだろう. 本記事では, <cite>#define</cite> <cite>#include</cite> に焦点を当てて説明するが, これらの考え方がわかればその他の指令に対してもさほど抵抗なく理解することが可能だろう.</p>
+<div class="section" id="define-1">
+<h3>#define (1)<a class="headerlink" href="#define-1" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><cite>#define</cite> はプリプロセッサ命令のうちでも最もよく使われる命令だろう. 特に数値や式に名前をつけるためによく用いられる.</p>
+<p>たとえば, 以下のようなコードを書いたとしよう.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define PI 3.14159265</span>
+
+<span class="p">....</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">PI</span> <span class="o">*</span> <span class="n">r</span>
+</pre></div>
+</div>
+<p>これは, 円周率を示す数値に <cite>PI</cite> という名前を付けるという命令である. このようなソースコードをプリプロセッサに食わせることで, 以下のように展開される.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="n">s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">3.14159265</span> <span class="o">*</span> <span class="n">r</span>
+</pre></div>
+</div>
+<p>このような使い方は俗に, 「マクロ定義」と呼ばれる.
+記述方法(構文)などの詳細は自明なのでここでは説明しないが,
+「プリプロセッサディレクティブはプリプロセッサにより処理される」
+ことを知っておくと, 以下のようなミスはめるだろう.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define PI 3.14159265; # &lt;- セミコロンを付けるエラー(よくある)</span>
+</pre></div>
+</div>
+<p>セミコロンはあくまで, 「コンパイラが1行を認識するために必要なもの」であり, この様に書くと, <cite>PI</cite> の値が, <cite>3.14159265;</cite> となり予期せぬエラーの原因となるわけである. プリプロセッサディレクティブがプリプロセッサ処理によって展開されることを知っておくとこれらのエラーは起こしにくくなるだろう.</p>
+<p>さて, これがプリプロセッサの構文解析によってうまく展開される.
+文字列で同様の <cite>PI</cite> があった場合はもちろん無視され, <cite>PI2</cite> などの変数があってもそこには展開されないようになっている. 細かい方法はプリプロセッサ自体の実装の話まで足を突っ込むことに成るので省略するが, プリプロセッサの構文解析の賜である.</p>
+<p>余談だが, このように数値定数に名前をつけることはプログラムの可読性を上げるだけでなく, 修正を容易にしたりする効力もある. 名前付け(タグ付け)というのはプログラムの領域に限らず強力な手法である.</p>
+</div>
+<div class="section" id="include">
+<h3>#include<a class="headerlink" href="#include" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>プリプロセッサはインクルード命令を見つけると, <strong>ファイル名で示されたファイルの中身をその部分に挿入する</strong> . ファイルの中身をそこに含める(include)ということから, <cite>#include</cite> 命令という名前がついたわけである. このように <cite>#include</cite> 命令で読み込まれるファイルは一般的に <strong>ヘッダファイル</strong> と呼ばれる.</p>
+<p>当然ながらヘッダファイルが読み込まれることで, プログラムの行数は増える. もしもヘッダファイル内にまた, <cite>#include</cite> 命令があると, そこでまた別のヘッダファイルの読み込みが発生する.</p>
+<p>さて, この挙動を知っていると納得のいくことと疑問に思うことがいくつかでてくるだろう.</p>
+<p>まず真っ先に疑問に思うこととして, プリプロセッサは「ヘッダーファイル」をどこから探してくるのだろうかということである. これに関しては, 以下のような規則がある.</p>
+<ul class="simple">
+<li><cite>#include &lt;ファイル名&gt;</cite> という形式の命令では, ヘッダファイルをシステム標準の場所から探す.</li>
+<li><cite>#include &#8220;ファイル名&#8221;</cite> という形式の命令では, まず今コンパイルしようとしているプログラムと同じ場所からヘッダファイルを探し, 見つからなければシステム標準の場所から探す. この時, コンパイルオプションで任意のディレクトリを指定することができ, その場合はそのディレクトリも探索範囲に含める. プログラマが自身で作成したヘッダファイルを読み込ませたい場合はこの形式を使う.</li>
+</ul>
+<p>システム標準のディレクトリ位置はおおよそそのOSに依存する. Linuxをはじめ, 大抵のUNIXでは, <cite>/usr/include</cite> というディレクトリ以下に標準的なヘッダーファイル, ないし標準的なヘッダーファイルを含むようなサブディレクトリが置かれている.</p>
+<p>さて, 疑問は晴れたので次に納得のいくことについて明確にしておく. よくヘッダーファイルに書く内容については「マクロ定義, 新しい型の宣言, 関数の型の宣言(関数プロトタイプ宣言)」というように言われ, 「関数の中身, クラスの中身とかは記述してはならぬ」的なことを言われるだろう. つまり, 「定義・宣言」は記述するが, 「実体」は記述してはいけないということだ. これに関しては明快に理解することができるだろう.</p>
+<p>一応, 正確に書いておくならば, ヘッダファイルに含めていいもの, ダメなものは以下のようになっている.</p>
+<p><strong>ヘッダーファイルに含めていいもの</strong></p>
+<ol class="arabic simple">
+<li>様々なマクロの定義</li>
+<li>新しい型の定義.</li>
+<li>関数の型の宣言. 正式には関数プロトタイプ</li>
+</ol>
+<p><strong>ヘッダーファイルに含めてはいけないもの</strong></p>
+<ol class="arabic simple">
+<li>記憶領域の確保(と初期化)を行なう文</li>
+<li>関数の定義. (宣言と定義は別)</li>
+</ol>
+<p><cite>#include</cite> はプリプロセッサによって展開され, そのヘッダーファイルの中身がその位置に直接書き出されるのであった. つまり, 「定義・宣言」が書き出されると, そのファイル内でその定義関数などが自由に使えるわけである. 実体に関しては, リンカーによって参照されることを期待すればよい. さて, ではここで例えば実体を書いてしまうとどうなるだろう. 例えば, <cite>int i = 0</cite> のような変数定義(変数iに対応して, int型の整数を入れるために必要な記憶領域を確保し, 初期値として0を設定する)をヘッダーファイルに書いていて, そのヘッダーファイルを <cite>hoge.c</cite> と <cite>fuga.c</cite> の両方で <cite>#include</cite> しているとする. この場合に <cite>hoge.c</cite> と <cite>fuga.c</cite> を利用するようなコンパイルをすると「 <strong>iの多重定義エラー</strong> 」が発生する. それ故に, ヘッダーファイルにて定義できるもの, できないものという切り分けが存在している.</p>
+<p>とはいえ, 多重定義を避ける方法ももちろん存在する. それらは, <cite>#ifdef</cite> <cite>#ifndef</cite> などのプリプロセッサディレクティブであるが, ここでは詳細は省略する.</p>
+<p>このようにプリプロセッサの挙動を知ることは, ヘッダーファイルの設計に関することやエラーデバッグに関することについての知見も与えてくれる.</p>
+</div>
+<div class="section" id="define-2">
+<h3>#define (2)<a class="headerlink" href="#define-2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>再度, <cite>#define</cite> について説明する. こちらでは主に, 「パラメータ付きマクロ定義」について取り上げる. これはLinuxのソースコードなどを呼んでいるとガシガシ書かれているものであり, 非常に強力な能力である.</p>
+<p>これに関しては少々丁寧に説明していく.</p>
+<p>具体的に「パラメータ付きマクロ定義」では, 次のようなマクロ定義を行なう.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define SQ(x) ((x) * (x))</span>
+</pre></div>
+</div>
+<p>上の例では, <cite>SQ</cite> がマクロ名, <cite>x</cite> がパラメータ, <cite>((x) * (x))</cite> 定義であり, 基本的には「名前付け」で見た方法と同じであるが, パラメータ部分を任意の表現で置き換えられるというのが違いである.</p>
+<p>例えば, <cite>SQ(3)</cite> であれば, <cite>((3) * (3))</cite> と展開され, 値としては <cite>9</cite> を返すことに成る. 3の例ではあまり嬉しさが少ないだろうが, 例えば配列aのある要素(i+j+1)の二乗を得るなどの場合は, <cite>SQ(a[i+j+1])</cite> と書くだけなので, 展開後の式をべた書きするよりいくぶんかよくなりそうな雰囲気があるだろう.</p>
+<p>パラメータは複数持たせることができる. マクロ定義の一般形は次のようになる.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define マクロ名(パラメータ1, ... , パラメータn) 定義本体</span>
+</pre></div>
+</div>
+<p>ここで注意されたいのは, マクロ名と括弧の間である. ここにスペースを入れるとエラーになる.</p>
+<p>パラメータを複数持つマクロとして次のような例が考えられる.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define dist2(x,y) (SQ(x[0]-y[0]) + SQ(x[1]-y[1]) + SQ(x[2]-y[2]))</span>
+</pre></div>
+</div>
+<p>これはx, yをベクトルとした場合の距離の公式である.</p>
+<p>さて, ここでも落とし穴が何個かある. 定義本体においてパラメータを示す場合は, パラメータを括弧で括る必要がある. 決まりと言ってしまえばそれまでだが, 難しい話ではないので少し考えてみよう. 以下のようなことが起きてしまう.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span>#define SQ(x) x*x
+
+SQ(a+1) # 本来 (a+1) * (a+1) を計算して欲しいが...
+&gt; a + 1 * a + 1
+&gt; a + (1 * a) + 1
+</pre></div>
+</div>
+<p>パラメータをカッコでくくらないとこのような計算が起きるわけだ.
+要するに演算の順位付け周りで問題ごとを起こしたくない場合は, 素直にパラメータを括弧で括るようにせよということである.</p>
+</div>
+<div class="section" id="define-3">
+<h3>#define (3)<a class="headerlink" href="#define-3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>さて, 上ではマクロをうまく利用する方法を説明したが(プリプロセッサの話からどうしてこうなった...?), ここの引数部分にはあまり複雑な式を書かないほうがいい. せいぜい四則演算や配列要素の値の取り出し, それらの組み合わせ程度に留めるべきである. 関数呼び出しや, i++ や i&#8211; のような形, つまり変数や中身を変更するような式をマクロの引数部分に書くとトラブルになりやすいのでやめておくべきである.</p>
+<p>先の例を取り上げると, この例では <strong>パラメータを2回評価していた</strong> . この文言だけであらかたわかるだろうが, 評価の回数は1度とは限らず, 例えば <cite>i++</cite> などは2回のインクリメントが発生するということが起こりうるわけである.</p>
+</div>
+<div class="section" id="id1">
+<h3>関数とマクロの使い分け<a class="headerlink" href="#id1" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p>プリプロセッサから完全に話が逸脱したが, まぁせっかくなのでここまで書いておくことにする.</p>
+<p>引数を持つマクロと関数はよく似ている. 少なくとも呼び出し方はほぼ同じである. UNIXには, 関数のように思えるマクロが多数用意されており, それらは普通に使っている分にはほぼ関数と見分けがつかない(マクロと意識して使いことがない)ような場合が多い. これはカーネルのソースコードを追ってみると顕著である.</p>
+<p>ただし, 我々の立場としては関数とマクロの間のはっきりした違いをしっかりと把握し, 御する力を持っていないと行けないだろう. その指針と成るように, どのような場面で関数を利用し, どのような場面でマクロを使うかの例をいくつか挙げてみる.</p>
+<p><strong>関数呼び出しの手間を嫌ってマクロを使用</strong></p>
+<p>CPUが関数呼び出しをするには多少手間がかかる. それはユーザプログラムに, 引数の指定や, 返り値の指定という形の手間で現れる. 例えば, 2乗を計算する関数を <cite>square(x)</cite> とすると以下のような実装になるだろう.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">double</span> <span class="nf">sequare</span><span class="p">(</span><span class="kt">double</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>たった, 2乗をするだけのコードに, 型や返り値のハンドリングをするのは手間であると言えよう. この程度の処理であれば先に定義した <cite>SQ(x)</cite> のようなマクロを使う価値があるだろう.</p>
+<p><strong>複雑な処理は関数しかできない</strong></p>
+<p>上でも少し話したが, マクロではパラメータの機械的な展開程度の処理しかできないので複雑な処理を書くべきではない. 条件判定程度の処理もループもできず, 別マクロは呼べても自身を再帰的に呼ぶことはできない. そのくらいの身分であることは肝に銘じておく.</p>
+<p><strong>マクロは展開の度にコンパイルされる</strong></p>
+<p>非常に複雑な長い表現に展開されるようなマクロを定義したとする. その場合そのマクロを何度も使うとその度に長い表現に展開され, それらが全てコンパイルされ展開されるので, プログラムの大きさが膨張することになる. これに対して関数は一度しかコンパイルされないため, 関数を度々呼び出してもプログラムはさほど大きくはならない.</p>
+<p><strong>マクロでしか書けないこともある</strong></p>
+<p>少しテクニカルな話のため, 直接の言明は避けるが, 関数では書けない便利なマクロを定義することが可能だったりもする.</p>
+<p><strong>使い分けの目安</strong></p>
+<p>上記のような話から, 割合簡単な処理を高速に実行したい場合はマクロで記述するメリットが生まれやすく, 複雑な処理では関数で記述すべきケースが多くなると考えられるだろう. とはいえ, 明確なせんびきは無いので, マクロの落とし穴にも注意した上で使い分けるべきだろう.</p>
+</div>
+</div>
+<div class="section" id="other-function-of-preprocessor">
+<h2>Other Function of PreProcessor<a class="headerlink" href="#other-function-of-preprocessor" title="このヘッドラインへのパーマリンク">¶</a></h2>
+<p>さてすっかり忘れてしまっていたが, 本稿はプリプロセッサの話であった. 特に <cite>#define</cite> <cite>#include</cite> というプリプロセッサディレクティブに着目し, プリプロセッサの動作について説明し, それ故に発生する問題点やその改善方法などの言明を行ってきた.</p>
+<p>もちろんこれら以外にも, プリプロセッサには様々な機能がある. 詳しい説明はしないが, 以下にリストアップしておくので, 各々必要なタイミングで確認しておくといいだろう.</p>
+<div class="section" id="id2">
+<h3>マクロ定義の抹消<a class="headerlink" href="#id2" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><cite>#undef</cite> 命令を用いると, 定義されていたマクロを未定義に戻すことができる.</p>
+</div>
+<div class="section" id="id3">
+<h3>条件付きコンパイル<a class="headerlink" href="#id3" title="このヘッドラインへのパーマリンク">¶</a></h3>
+<p><cite>#if</cite>, <cite>#ifdef</cite>, <cite>#ifndef</cite> などを用いると, ある条件下である領域のコードをコンパイルするというような指定ができるようになる. Linuxではこちらを実行するが, Windowsでは別の処理をするなどの記述に使える.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="VisualStudio/index.html" class="btn btn-neutral float-right" title="VisualStudio" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Build.html" class="btn btn-neutral" title="Build" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, mikiyaf.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/translations.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

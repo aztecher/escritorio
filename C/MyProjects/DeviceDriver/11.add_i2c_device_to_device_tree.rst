@@ -1,0 +1,295 @@
+=================================
+11. Add I2C Device to DeviceTree
+=================================
+
+参考URL
+
+* 組み込みLinuxデバイスドライバの作り方_
+
+また, 今回は別に, Device Tree についての参考URLも載せておく
+* DeviceTreeについてのまとめ
+
+これまで, いくつかのデバイスドライバを実装してきた. しかし, どのデバイスドライバも, 「ハードウェア固有の情報」を直接デバイスドライバ内に持ってしまっていた.
+
+例えば, :doc:`./05.raspi_gpio_device_driver` では, 直接メモリマップアドレスレジスタを叩くことでGPIOデバドラを実装した. この時, オフセットアドレスなどのチップ(SoC)固有の情報をデバドラ内で持っていたが, これは良くないだろう(そもそも, GPIOそのもののデバドラを作ることはなく, Linuxカーネル標準の関数を普通は利用する)
+
+仮に, Linuxカーネル標準の関数を使っても, まだハードウェア固有情報をデバドラは持ち得る. `./10.i2c_device_driver` では, Linuxカーネル標準のI2C制御関数を使用してI2Cデバイスにアクセスした. しかし, 対象となるI2Cデバイスが, どのI2Cバスにつながっているかや, スレーブアドレスといったボード固有の情報をデバドラ内に記載していた.
+
+こういったことは, 現在ではルール的に許されていない. 理由は, SoC, ボードのバリエーション毎にコードがどんどん増加してしまうためである. 現在では, こういったハードウェア固有情報は **デバイスツリー** によって管理している.
+
+前回, I2C接続されたジャイロセンサ(L3GD20)のデバドラを作成した. しかし, この時は, 手動でカーネルに対してI2C機器の情報を教えてあげる必要があった. 今回はこの情報をデバイスツリーに組み込んでみる.
+
+デバイスツリーに関連するファイル
+================================================
+
+**デバイスツリー** と言っているが, その実態はバイナリ形式のファームウェアになる. 拡張子は `.dtb` になる. これは, ラズパイでは `/boot` の下にある. 例えば, ラズパイ3Bの場合は, `/boot/bcm2710-rpi-3-b.dtb` になる
+
+SoC固有情報はDTSIファイルに, ボード固有情報はDTSファイルに記載することになっている. これらをDTCという特別なコンパイラでコンパイルすることで, さっきほどのDTBファイルが作られる.
+
+1. dtbファイルを直接書き換える(手抜き版)
+==============================================
+
+.. warning::
+
+    この方法は非推奨である. 正しくは以降に説明する2の方法を利用する.
+
+デバイスツリーに追加する
+--------------------------
+
+本来は後述する2の方法(Linuxソースツリーを引っ張ってきて, `bcm2710-rpi-3-b.dts` を編集してコンパイルする流れ)が正しい. ただとりあえずお手軽にやってみる. ちょっと危険なので最悪OSの再インストールになるが, 落ち着いてやれば問題ないだろう.
+
+ひとまずデバイスツリー用のコンパイラ(DTC)をインストールする(私の環境ではデフォルトでインストールされていた)
+
+.. code-block:: sh
+
+    sudo apt-get install device-tree-compiler
+
+続いて, 現在使用されているDTBファイルを逆コンパイルしてDTSに戻す.
+
+.. code-block:: sh
+
+    dtc -I dtb -O dts /boot/bcm2710-rpi-3-b.dtb > dis_bcm2710-rpi-3-b.dts
+
+これにより, `dis_bcm2710-rpi-3-b.dts` というテキストができる. このファイルにはこのボード(ラズパイ3)上でのデバイスの接続情報がツリー状に記載されている. また, レジスタ番地なども記載されている. 今回は, I2C_1 に L3GD20(スレーブアドレス=0x6b)を接続するとする. まず, I2C1のノードを探す. アドレスで書かれていまっているが, `i2c@7e804000` の所になる. そこに `mydevice` というノードを追加する. `compatible` に `mycompany,myoriginaldevice` を設定することで, 「mycompanyというメーカー製のmyoriginaldeviceという名前のデバイス」だと指定する. また `reg` の所にはスレーブアドレスを設定する. これによってカーネルは, 「このボードには, I2C_1の0x6bに"mycompany,myoriginaldevice"というデバイスがつながっている」と認識する.
+
+.. code-block:: txt
+
+    ...
+
+    i2c@7e804000 {
+        compatible = "brcm,bcm2835-i2c";
+        reg = <0x7e804000 0x1000>;
+        ...
+        phandle = <0x20>;
+
+        /* 自分用のデバイスを追加 */
+        mydevice@6b {
+            compatible = "mycompany,myoriginaldevice";
+            reg = <0x6b>;
+        };
+    };
+
+    ...
+
+編集したら, 以下のコマンドでコンパイルして, 元のDTBファイルに上書きする. 一応アクセス権の設定もしておく.
+
+.. code-block:: sh
+
+    dtc -O dtb -o bcm2710-rpi-3-b.dtb dis_bcm2710-rpi-3-b.dts
+    chmod 755 bcm2710-rpi-3-b.dtb
+    sudo cp bcm2710-rpi-3-b.dtb /boot/bcm2710-rpi-3-b.dtb
+    sudo reboot
+
+`/proc/device-tree` でデバイスツリーの情報を確認できる. 再起動後に, I2C1の下に mydevice が追加されていれば成功
+
+.. code-block:: sh
+
+    ls /proc/device-tree/soc/i2c@7e804000/mydevice@6b/
+    >> compatible name reg
+
+
+デバドラ側の対応
+------------------
+
+デバイスドライバ側では, 対応するデバイスを登録する必要がある. デバイスツリーには "mycompany,myoriginaldevice" というデバイスを登録したので, それに対応するようにする. そのために, `struct of_device_id` に `"mycompany,myoriginaldevice"` を設定して, `struct i2c_driver` の `.of_match_table` に登録する. それ以外は, 前回の内容と同じ. (以下, ソースコード)
+
+
+.. code-block:: c
+
+    /*
+     * デバイスツリーに登録した
+     * "mycompany,myoriginaldevice"
+     * という情報に合わせて, デバドラ側でもデバイスを登録する.
+     *
+     * Date :  2018.08.24
+     * @author Mikiya Michishita
+     */
+    
+    #include <linux/module.h>
+    #include <linux/i2c.h>
+    #include <linux/of_platform.h>
+    
+    // Device Information
+    MODULE_LICENSE("Dual BSD/GPL");
+    #define DRIVER_NAME "MyDevice"
+    
+    // このデバイスドライバで取り扱うデバイスのマッチングテーブル
+    // dts内の下記に対応する
+    // i2c@7e804000 { /* i2c-1 */
+    //   ...
+    //   mydevice@6b { /* 0x6b : ジャイロセンサのアドレス */
+    //     compatible = "mycompany,myoriginaldevice";
+    //     reg = <0x6b>;
+    //   };
+    //   ...
+    
+    static const struct of_device_id mydevice_of_match_table[] = {
+      {.compatible = "mycompany,myoriginaldevice",},
+      {},
+    };
+    MODULE_DEVICE_TABLE(of, mydevice_of_match_table);
+    
+    // このデバイスドライバで取り扱うデバイスを識別するテーブルを登録する.
+    static struct i2c_device_id mydevice_i2c_idtable[] = {
+      {"MyI2CDevice", 0},
+      {}
+    };
+    MODULE_DEVICE_TABLE(i2c, mydevice_i2c_idtable);
+    
+    static int mydevice_i2c_probe(struct i2c_client *client, const struct i2c_device_id *id)
+    {
+      printk("mydevice_i2c_probe\n");
+      if (id != NULL) printk("id.name = %s, id.driver_data = %ld\n", id->name, id->driver_data);
+      if (client != NULL) printk("slave address = 0x%02X\n", client->addr);
+    
+      // 通常はここで, このデバドラでサポートしているデバイスかどうかチェックする.
+      
+      int version;
+      version = i2c_smbus_read_byte_data(client, 0x0f);
+      printk("id = 0x%02X\n", version);
+    
+      return 0;
+    }
+    
+    static int mydevice_i2c_remove(struct i2c_client *client)
+    {
+      printk("mydevice_i2c_remove\n");
+      return 0;
+    }
+    
+    static struct i2c_driver mydevice_driver = {
+      .driver = {
+        .name = DRIVER_NAME,
+        .owner = THIS_MODULE,
+        .of_match_table = mydevice_of_match_table,
+      },
+      .id_table = mydevice_i2c_idtable,
+      .probe = mydevice_i2c_probe,
+      .remove = mydevice_i2c_remove,
+    };
+    
+    module_i2c_driver(mydevice_driver);
+
+デバイスツリーに記載されている接続情報に基づいて, カーネルが対応するデバイスドライバを呼んでくれる. `mydevice_i2c_probe()` に渡される, `struct i2c_client` 内には, デバイスツリーで設定したスレーブアドレスが格納されている.
+
+`of_device_id`: :doc:`./../../Library/Kernel/linux/mod_devicetable.h`
+`of_match_table(in driver structure)` : :doc:`./../../Library/Kernel/linux/device.h`
+
+(余談だが, `of_` は `Open Firmware` を指しているようだ. このへんはより詳細にデバイスツリーを調べることでわかるだろう.)
+
+一点, 注意点としては, この場合は `struct i2c_device_id` にはNULLが入る. そのためかはわからないが, `.probe` はそのうち廃止されるようである. 代わりに, `.probe_new` を使用するようである. `.probe_new` では `struct i2c_device_id` が消されている.
+
+
+動かしてみる
+--------------
+
+以下のコマンドでビルド, ロードする.
+
+.. code-block:: sh
+
+    make
+    sudo insmod MyDeviceDriver.ko
+    dmesg
+    >> ...
+    >> [...] mydevice_i2c_probe
+    >> [...] slave address = 0x6b
+    >> [...] id = 0xd4
+
+ログを見ると, ちゃんとprobeが呼ばれて, I2C通信もできていることが分かる. 前回は, 手動でデバイス接続通知が必要だったが, 今回は不要という点が違い.
+
+2. ソースコードからDTBを作る
+================================
+
+環境準備
+-----------
+
+上記のDTBファイルを作成するための, DTSファイルのダウンロードを行う. コンパイラはデフォルトで入っていたが, 必要ならダウンロードすればいいだろう.
+
+.. code-block:: sh
+
+    sudo apt-get install git bc
+    git clone --depth=1 https://github.com/raspberrypi/linux
+
+    ls -lat linux/arch/arm/boot/dts | grep bcm2710
+    >> ...
+    >> bcm2710-rpi-3-b.dts
+    >> ...
+
+ラズパイ3B用のDTSファイルは上記コマンドで得られる `bcm2710-rpi-3-b.dts` になる.
+
+ラズパイ用のDTSファイルを編集してみる
+----------------------------------------
+
+上記のファイルを以下のように修正してみる.
+基本修正内容は1と同じだが, こちらのファイルのほうが見やすいだろう.
+
+.. code-block:: txt
+
+    ...
+    &i2c1 {
+        pinctrl-names = "default";
+        pinctrl-0 = <&i2c1_pins>;
+        clock-frequency = <100000>;
+
+        /* 自分用のデバイスを追加 */
+        mydevice@6b {
+            compatible = "mycompany,myoriginaldevice";
+            reg = <0x6b>;
+        };
+    };
+    ...
+
+DTBをビルドしてみる
+-----------------------
+
+以下のコマンドでビルドする. bcm2709_defconfigを指定しているが, これで問題ない.
+
+.. warning::
+
+    以下のコマンドはフルコンパイルになるため安易に実行しないこと. 無限に時間がかかる. DTBのコンパイルだけなら更に下に示すコマンドを実行する.
+
+.. code-block:: sh
+
+    cd linux
+    KERNEL=kernel7
+    make bcm2709_defconfig
+    make -j4 zImage modules dtbs
+    sudo make modules_install
+    sudo cp arch/arm/boot/dts/*.dtb /boot/
+    sudo cp arch/arm/boot/dts/overlays/*.dtb* /boot/overlays/
+    sudo cp arch/arm/boot/dts/overlays/README /boot/overlays/
+    sudo cp arch/arm/boot/zImage /boot/$KERNEL.img
+
+なお, これは 本家_ に載っているので確認してみるといい.
+さて, 私はこれで実行したが, これはどうもフルコンパイルらしく恐ろしく時間がかかったので, 今回のようなケースでは推奨しない.
+以下のように, DTBだけコンパイルしよう.
+
+.. code-block:: sh
+
+    cd linux
+    KERNEL=kernel7
+    make bcm2709_defconfig
+    make -j4 dtbs
+    sudo cp arch/arm/boot/dts/*.dtb /boot/
+    sudo cp arch/arm/boot/dts/overlays/*.dtb* /boot/overlays/
+    sudo cp arch/arm/boot/dts/overlays/README /boot/overlays/
+
+Note
+------
+
+overlays用のDTBは, カーネル起動後に, 動的に接続状態が変わるときに使うらしい. なので, 特にコピーは必要ないかもしれない.
+
+動かしてみる
+---------------
+
+デバドラは, 1の手抜きバージョンと同じでOK. 再起動すると同じ結果になるはず. これによりデバイスの認識を手動で行わないようにできた.
+
+.. ==============================
+.. リンク
+.. ==============================
+
+.. _組み込みLinuxデバイスドライバの作り方: https://qiita.com/take-iwiw/items/0d13142863d9ed064e41
+
+.. _DeviceTreeについてのまとめ: https://qiita.com/koara-local/items/ed99a7b96a0ca252fc4e#_reference-7fb61179985d53e7a181
+
+.. _本家: https://www.raspberrypi.org/documentation/linux/kernel/building.md

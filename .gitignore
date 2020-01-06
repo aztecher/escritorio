@@ -1,0 +1,7 @@
+.envrc
+_build*
+_static*
+_templates*
+*.backup
+*.DS_Store*
+.python-version

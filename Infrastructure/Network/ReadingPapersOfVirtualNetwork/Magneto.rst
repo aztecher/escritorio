@@ -51,16 +51,46 @@ OpenFlow switchからlegacy switchに対して ``seed packet`` を注入する�
 Short Commings of Baseline Telekinesis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-(これここに書くかファイルを分けるか考える)
+Telekinesis単体だけでは、２つの欠点が存在することがわかっている。
 
+**Coarse-grained paths**
+path controlが粗雑になってしまうという欠点である。
+これは、Legacy network L2ルーティングが、宛先ベースのルーティングであることに起因している。
+宛先MACは各スイッチの単一interfaceに関連付けられるため、オペレータはその中でpath diversityを担保するためにオペレーションコストを増やして、VLANやECMPを利用している。(耳が痛い)
+対して、OpenFlowの場合は、宛先と送り先MACアドレスともとにしたトラフィックベースのより繊細なpath controlを行うことができるわけである。
+Telekinesisはどうしてもlegacy networkの制約を受け継いでしまうことになる。つまり、あるpath updateをトリガには同じ宛先に到達するすべてのpathがupdateされる(この辺はちょっと勉強しないとわからない)
+Figure1に例を示す。この図において、H1とH4はともにH3に対してtrafficを流す。
+ここでもしH1とH3の間のpathを(LE1, LE6, OF7, LE5)と変更すると、H4からH3へのパケットを含め、H3宛のすべてのパケットをOF7に転送することになる。
+(この辺の知識はない。。。理解しなければ)
+
+**Unstable paths**
+(MACの学習の仕組みとかもわからんが。。。)
+MACの学習は ``seed packet`` であろうとそうでなかろうとどんなパケットに対しても働く。
+MACアドレス ``m`` の転送エントリーは、スイッチが ``m`` からのpacketをリレーするたびに変更されうるということ。
+これにより最も単純なpath updateでさえ不安定になる可能性がある。
+理解するために一般的なあるシナリオを検討してみる。それは、Figure2に示すように、２つのホスト間で双方向にtrafficが流れている状況で、TCP communicationをしているような場合である。(非常に一般的だと思われる)
+Path updateが十分早くない場合、つまりまだpathとしてはPであるが、P'をpathとするようなpacketはforwarding entryのupdateを無効にし、Pの状態に戻す。
+(これもいまいちよくわからない。TCPだからかな？やっぱりpath updateの仕組みがわからないのが地味に足を引っ張っている)
+
+reverse trafficが存在するときのこの問題の最も単純な解決方法は、 forwarding entryがstable stateになるまで ``seed packet`` を継続的にinjectすることである。
+つまり、seed packetがdata packetより早く付けば、updateは行われるみたいな雰囲気。
+
+ただ、これを小さいケースではあるがリアルワールドでテストした構成がFigure3である。説明はTable1のちょい下に書いてあるので参考にして図に起こす。
+成功レートを算出したのがTable1である。細かい試行回数などは上記と同じ位置を参照されたし。
+
+これから、legacy switch間のdata packetが多ければ多いほど、path updateはうまく行かないということ。場合によってはupdateの見込みすらないということ。更にはoverheadが非常に大きいことなどがわかった。
 
 magnet addresses
 ------------------
 
 ``magnet address`` とはARP messageの際に、エンドホストのARP cache tableに差し込む「架空の」MAC addressである。 ``magnet address`` によりnetwork visibilityの獲得やエンドホスト、legacy switchのforwarding behaviorのコントロールを行うことができる。
 
-example
---------
+
+
+Magneto + Telekinesis
+----------------------
+
+Telekinesisでは、そのままだと使えない感じがわかったかと思われる。ただし、これと ``magnet address`` を組み合わせることによって、fine-grainedなpath controlや、visibilityの向上、ホストあいだのアクセスコントロールの強化など色々な利点を教授することができるようになる。
 
 
 Magneto path control components

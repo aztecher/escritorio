@@ -2,6 +2,10 @@
 Magneto
 ============
 
+本記事は前提知識として、 ARPの詳細知識を要求する( :doc:`../ARP/Specification` )
+
+また、本論文中で利用されるメカニズムとして、:doc:`./Telekinesis` を取り扱う。
+
 Abstraction
 =============
 
@@ -86,11 +90,12 @@ magnet addresses
 ``magnet address`` とはARP messageの際に、エンドホストのARP cache tableに差し込む「架空の」MAC addressである。 ``magnet address`` によりnetwork visibilityの獲得やエンドホスト、legacy switchのforwarding behaviorのコントロールを行うことができる。
 
 
-
 Magneto + Telekinesis
 ----------------------
 
-Telekinesisでは、そのままだと使えない感じがわかったかと思われる。ただし、これと ``magnet address`` を組み合わせることによって、fine-grainedなpath controlや、visibilityの向上、ホストあいだのアクセスコントロールの強化など色々な利点を教授することができるようになる。
+Telekinesisでは、そのままだと使えない感じがわかったかと思われる。ただし、これと ``magnet address`` を組み合わせることによって、fine-grainedなpath controlや、visibilityの向上、ホストあいだのアクセスコントロールの強化など色々な利点をきょうじゅすることができるようになる。
+
+
 
 
 Magneto path control components

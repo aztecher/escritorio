@@ -12,5 +12,7 @@ Sphinx-Documentation-Library
     Golang/index
     C/index
     Infrastructure/index
+    Mathematics/index
     Micon/index
     Git/index
+    Makefile/index

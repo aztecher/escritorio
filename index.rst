@@ -14,3 +14,4 @@ Sphinx-Documentation-Library
     Infrastructure/index
     Micon/index
     Git/index
+    FPGA/index

@@ -96,8 +96,17 @@ Magneto + Telekinesis
 Telekinesisでは、そのままだと使えない感じがわかったかと思われる。ただし、これと ``magnet address`` を組み合わせることによって、fine-grainedなpath controlや、visibilityの向上、ホストあいだのアクセスコントロールの強化など色々な利点をきょうじゅすることができるようになる。
 
 
-
-
 Magneto path control components
 ===================================
+
+重要なのは、MAC Address Leariningの機能(L2 SW)とARPによるMACの学習(L2/L3)は全く別ものということ。
+MAC Learningに関しては気持ちとしては、意図的に行うものではなく、packetが流れ着いたときに受動的に行われるものだというイメージ。
+対して、ARP requestはTCP/IPで通信するときなどに積極的に利用される。そうじゃないと通信できないから。
+そのタイミングでbroadcastなどが行われるが、これはARP Protocolによるもの（カーネル内の機能）
+それによってpacketが流れたりするわけなんだが、そのような流れの中でL2はL2でMAC Address Learningを行うし(MAC Address Tableを更新するし)
+ARP ProtocolはARP Tableを作成／更新するイメージ
+つまり完全に別モンなのだという認識.
+
+ただしARP リクエストはEthernetIIだとかいうフレーム形式(L2)に準拠しているので、MAC Address Learningも機能するみたいな気持ちでいいと思う。
+ARPリクエストの際のEthernetフレームにmagneto MACがどうこう。。。みたいな話が出てくるのでそこをちゃんと読めれば良さそう。
 

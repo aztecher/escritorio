@@ -6,6 +6,6 @@ Reading Papers of Virtual Network Documents
 
 
 .. toctree::
-    Nvme-over-TCPIP
-    Magneto
+    Nvme-over-TCPIP/Nvme-over-TCPIP
+    Magneto/Magneto
     Telekinesis

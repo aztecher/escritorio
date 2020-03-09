@@ -6,6 +6,7 @@ Reading Papers of Virtual Network Documents
 
 
 .. toctree::
-    Nvme-over-TCPIP
-    Magneto
-    FreeFlow
+    Nvme-over-TCPIP/Nvme-over-TCPIP
+    Magneto/Magneto
+    Telekinesis
+    FreeFlow/FreeFlow

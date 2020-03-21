@@ -5,3 +5,10 @@ _templates*
 *.backup
 *.DS_Store*
 .python-version
+*.log
+*.aux
+*.out
+*.dvi
+*.nav
+*.snm
+*.toc

@@ -2,6 +2,7 @@
 %%%% 和文用 %%%%%
 \usepackage{bxdpx-beamer}
 \usepackage{pxjahyper}
+\usepackage{pdfpcnotes}
 \usepackage[absolute,overlay]{textpos}
 \usepackage{minijs}%和文用
 \renewcommand{\kanjifamilydefault}{\gtdefault}%和文用
@@ -46,7 +47,6 @@
 \institute{\footnotemark[1]Carnegie Mellon University, \footnotemark[2]Microsoft, \footnotemark[3]Alibaba, \footnotemark[4]Bytedance}
 
 \begin{document}
-
 \begin{frame}[plain]\frametitle{}
 \titlepage %表紙
 \end{frame}
@@ -66,7 +66,15 @@
   	\end{itemize}
 	\item その一方でdata-intensiveなアプリケーション（deeplearning, data analytics）は高性能のネットワーク（RDMA）を要求する
 	\item コンテナ化によるメリットとRDMAによるメリットをいいとこ取りしたい！ $\rightarrow$ \bm{{\color{red} FreeFlow}}
+	\item FreeFlowによりベアメタルRDMAと同程度のネットワークパフォーマンスを達成しながらコンテナの恩恵を受けることができる。
 \end{itemize}
+\pnote{
+	まず、本論文の概要をざっくりと説明します。
+	近年、大規模クラウド環境でコンテナを利用したアプリケーション開発が盛んにされています。
+	コンテナを利用するメリットは大きくて、高リソース効率であることや、軽量な隔離環境でアプリケーションが実行できることなどが挙げられると思います。
+	ただし、その一方でデータインテンシブなアプリケーション、例えばディープラーニング関係のものや、データアナリティクス関係のものは、高性能なネットワーク環境、それこそRDMA環境を要求することが多々あります。
+	この論文では、コンテナ化によるメリットを享受しながらRDMAによるハイパフォーマンスネットワークを利用する方式として新たにFreeFlowを提唱し、検証によりその性能を確認した、という話です。
+}
 \end{frame}
 \section{目的・背景}
 \begin{frame}\frametitle{背景}
@@ -75,15 +83,28 @@
 	\item containerized cloudではネットワークについて以下の要件をコンテナが満たしていてほしい
 	\begin{itemize}
 		\item \textit{{\color{red} Isolation}} : containerはそれぞれのnamespaceを持っていてほしい
-		\item \textit{{\color{red} Portability}} : virtual network (overlay network) を利用してコンテナ間通信できてほしい
+		\item \textit{{\color{red} Portability}} : virtual networkを利用してどのホストでも固定のvirtual ipでコンテナ間通信できてほしい
 		\item \textit{{\color{red} Controllability}} : control / data plane policy をコントロールできてほしい
 	\end{itemize}
-  \item RDMAの完全仮想化は性能を殺してしまうし、RDMA自体はcontrol / data plane のpolicy変更が難しい（HWに寄るため）
+  \item RDMAの完全仮想化は性能を殺してしまうし、RDMA自体はcontrol / data plane のpolicy変更が難しい
 	\begin{itemize}
 		\item 実際のところ、TensorFlowやSparkなどは専用ベアメタル + RDMAなどの形態で運用しパフォーマンスを担保するケースがある。
 		\item これは提供側にとってもユーザ側にとっても辛い
 	\end{itemize}
 \end{itemize}
+\pnote{
+	まず背景からお話します。
+	先程話したとおり、コンテナ化には様々なメリットがあり現在ではアプリケーションマネジメントの方式としては非常に復旧しています。
+	ここでクラウド環境におけるコンテナの利用を考えたときに、コンテナは以下の要件を満たすことで非常に効率的で柔軟なアプリケーション環境を提供することができると、筆者らは定義付けています。
+	１つ目は、ContainerがそれぞれのNetwork namespaceを持っていること。（Isolation）
+	２つ目は、virtual networkを利用し、どのホストでも固定のvirtual ipを利用してコンテナ間通信ができること。（Portability）
+	３つ目は、コントロールプレーン、データプレーンのポリシーを柔軟にコントロールできること。
+	です。
+
+  これらの全てを満たした状態でRDMAの環境を提供することが目的になります。
+	ただRDMAの完全仮想化を行えばこれらは達成できそうだけどパフォーマンスが出ないし、逆にRDMAをパススルーする方式をうまくやろうとしてもコントロールプレーンやデータプレーンのポリシー変更が柔軟ではなくなってしまうという問題がある。
+	ちなみに現在だと、データインテンシブなアプリケーションは専用ベアメタル＋RDMAでパフォーマンスを担保するようなケースが多いようで、この形態は提供側もユーザ側もしんどいよね、という感じ。
+}
 \end{frame}
 
 \begin{frame}\frametitle{目的}
@@ -96,27 +117,40 @@
     \centering
     \includegraphics[scale=1]{fig/table1.png}
   \end{figure}%
+	\pnote{
+		そのため本論文では、先に上げた全てのコンテナ化のメリット＋パフォーマンスがベアメタルくらい出るようなRDMA環境をコンテナに提供することが目的です。
+	  現時点で存在する、コンテナにRDMA通信を可能にさせる方式と、今回の評価軸にのっとって評価した場合の結果を表にしています。
+		* SR-IOVに関しては本質的にPortabilityに難あり。
+		* HyVなるものがあるらしい（これは知らないしちゃんと調べられていないが）Visibilityやdata trafficのcontrolができないらしい。
+		* SoftRoCEというUDPネットワークスタックの上でRDMAを実行するソリューションは、既存のIPネットワークソリューションを利用して多くを実現できるものの、パフォーマンスはUDPで制限されてしまうため出ない。
+
+    本論文紹介する方式はFreeFlowと読んでいます。以降ではFreeFlowを概要から追って説明していきます。
+	}
 \end{frame}
+
 \section{FreeFlow}
 \begin{frame}\frametitle{FreeFlowの概要}
 	\begin{itemize}
-		% TODO: shadow memoryの話は詰めたい
-		\item RDMAではAPIを利用してアプリケーションが直接HW NICにコマンドを投げる
+		\item RDMAではAPIを利用してアプリケーションからHW NICにコマンドを投げる
 		\item FreeFlowではこのアプリケーションとHW NICの間に割って入る。
 		\begin{itemize}
-			\item FreeFlow Router (以降, FFR) は同一ホストの別コンテナとして起動しておく。
 			\item FFRでvirtual networkの提供 + control / data plane policyの適用。
 			\item FFRは各contianerのmemory領域をshareしていて、App $\rightarrow$ NIC も NIC $\rightarrow$ App もここのメモリを橋渡しにする。
-			\item 同じ物理メモリを利用している（これがshadow memory?）ためzero-copy (FFR $\rightarrow$ App)
 		\end{itemize}
 	\end{itemize}
-	% figure2-a, figure2-bを入れる
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[scale=1]{fig/figure2.png}
+  \end{figure}
+	\pnote{
+		RDMAではAPIを利用してアプリケーションがHW NICに対してコマンドを投げるような形になっています。
+		FreeFlowではこのアプリケーションとHW NICの間に一層作る形になります。図でいうとFreeFlow Routerと記述のあるグレーの部分です。
+		このFreeFlow Routerでvirtual networkの提供と、コントロールプレーン、データプレーンのポリシーの適用を行います。
+		またFreeFlow Routerでは、コンテナのメモリ領域をshareしており、アプリケーションからNICへのデータコピーも、NICからアプリケーションへのデータコピーも、FreeFlow Routerのメモリを橋渡しとする形で行います。
+	}
 \end{frame}
 
-% vebsの話はどうしようね...
-
 \begin{frame}\frametitle{Architecture}
-	% ここはなんとか説明したい
 	\begin{itemize}
 		\item グレーの部分がFreeFlowで修正した部分
   \end{itemize}
@@ -124,9 +158,14 @@
     \centering
     \includegraphics[scale=1]{fig/figure4.png}
   \end{figure}
+\pnote{
+	全体のアーキテクチャの概要がこちらの図になります。
+	これから各部分（FreeFlow Network Library, FreeFlow Router, FreeFlow orchestrator）について説明をしていきます。
+}
 \end{frame}
 
-\begin{frame}\frametitle{FreeFlow Library (FFL)}
+% 説明順序変えていいのでは?
+\begin{frame}\frametitle{FreeFlow Network Library (FFL)}
 	\begin{itemize}
 		\item Appコンテナ内部でAppに \\
 			    FreeFlow transparentを提供する
@@ -140,41 +179,52 @@
   	\centering
 		\includegraphics[width=30mm]{fig/figure4-ffl.png}
   \end{textblock*}
+\pnote{
+	まずはFreeFlow Network Libraryです。
+	これはアプリケーションが利用するRDMAのVerbs libraryを改良した感じのものになります。
+	ただこれは後ほど説明しますが、Application側が利用するAPIにはほぼ手を付けない形で改良するため、通常のRDMA通信コードから、FreeFlowの通信にするためには、ライブラリの差し替えを行うだけで、アプリケーション側でコードを変更する必要がほとんどないようになっています。
+	FFLは次に説明するFreeFlow Routerとやり取りを行います。
+}
 \end{frame}
 
+% TODO: RDMAなのにIPアドレス？（RoCEなどのことか？）
 \begin{frame}\frametitle{FreeFlow Router (FFR)}
 	\begin{itemize}
 		\item 各ホストでシングルインスタンス（コンテナ）として起動し、そのホストの各コンテナにvirtual networkの提供を行う
 		\item FFLとのchannelをコントロールすることで、data planeのリソースポリシー（QoSなど）を実装する
-		\item message-level eventのハンドリングになる。
+		% \item message-level eventのハンドリングになる。
 		\item FFOと連携し、IPアドレスなどのタスク処理も行う
   \end{itemize}
   \begin{figure}[htb]
     \centering
     \includegraphics[scale=1]{fig/figure4-ffr.png}
   \end{figure}
+	\pnote{
+		FreeFlow Routerはホスト毎に一つコンテナで起動し、そのホストに対してvirtual networkの機能提供を行う。
+		FFLとのIPC channelをコントロールすることでデータプレーンのリソースポリシーなどを実現します。
+		% これは方式の性質上、メッセージレベルでのイベントハンドリングにはなる。
+		次に説明するFFOを連携することでIPアドレスなどのタスク処理なども行う（？）
+	}
 \end{frame}
 
+% ApplicationとFFRのメモリマップの保持だと思うが、これはTransparentの詳細の内容になってしまう。
 \begin{frame}\frametitle{FreeFlow Orchestrator (FFO)}
 	\begin{itemize}
 		\item コントロールプレーンを司る \\
 			   （らしいが論文を通してあまり説明が無い。。。）
 		\item コンテナ通信のコントロールや \\
-			    クラスタのリアルタイムモニタリングなど。
-		\item メモリマップの保持もここで行っている
+			    リアルタイムモニタリングなど。
+		% \item アプリケーションとFFRのメモリマップの保持もここで行っている
   \end{itemize}
   \begin{textblock*}{0.4\linewidth} (230pt, 100pt)
   	\centering
   	\includegraphics[width=30mm]{fig/figure4-ffo.png}
   \end{textblock*}
-\end{frame}
-
-\section{Transparent Support for RDMA operation}
-% まず大きな概要だけ書いて（後の理解に必要）詳細は再度考える
-\begin{frame}\frametitle{Transparent Support for RDMA operation}
-	\begin{itemize}
-		\item これどこまでかこうかね...
-	\end{itemize}
+	\pnote{
+		FFOはコントロールプレーンを司るようなコンポーネントらしいんですが、実はFFOの詳細はあまり書いてなかったです。。。
+		コンテナ間通信のコントロールやリアルタイムモニタリングなどを行うようです。
+		% また、メモリマップの保持はここで行っている。
+	}
 \end{frame}
 
 % ここの話は性能に関わるのでいる
@@ -183,36 +233,54 @@
 \begin{frame}\frametitle{Communication Channel between FFL and FFR}
 	\begin{itemize}
 		\item FFLとFFRの間のCommunication Channelについて。
-		\item FFR側ではAppがRDMAに対して行ったリクエスト（APIコール）を模倣する必要がある。
-		\item 2つの考え方がある。
+		\item FFL側でAppが行ったRDMAリクエスト（APIコール）を、FFR側で模倣する必要がある。
+		\item 2つの方式を考えた。
 		\begin{itemize}
-			\item Unix file descriptorを利用する
-			\item Fastpathを利用する
+			\item File Descriptorを利用する。(Unix domain socketによるIPC)
+			\item Fastpathを利用する。(Shared memoryによるIPC)
 		\end{itemize}
+		\item 以降特に断りがない場合、FreeFlowはFastpathによる方式だと思っていただければ。
 	\end{itemize}
+	\pnote{
+		アプリケーションがFFL側で実行したRDMAのAPIコールを、FFR側で実行する必要があります。
+		というのも、アプリケーションがコールした内容を、FFR経由でそのホストのPhysical NICに同様のリクエストを必要があるからです。
+		つまりあるコンテナから別のコンテナに対してAPI実行をバイパスする必要がある、ということをする。
+		直感的に考えつく方法としてRPCがあるかと思います。
+		今回は、次に説明する2種類の方法で実現します。
+		１つ目は、File Descriptorをうまく変更する方法で、言ってしまえばUnix domain socketによるIPCになります。
+		２つ目は、Fastpathという手法で、これはイメージとしてはShared memoryによるIPCになります。
+	}
 \end{frame}
 
 % Queuenの話が出てきちゃった。。。
 \begin{frame}\frametitle{Verbs forwarding via File Descriptor}
 	\begin{itemize}
-		\item APIコール自体をRPCのように模倣するのではなく、NIC fdに対して行われる要求をFFR側で模倣する。
-		\item コンテナ内部のNIC fdをUnix domain socketに差し替える。もう片方の終端はFFR。
-		\item FFRはコンテナ内の仮想Queueへの操作を物理NICの実際のQueueへの同じ操作にmappingする。逆の通信も同様の動きをする。
-		% TODO: ここはもう少し詳細に語れるようになりたいな。
-		% \item 物理NICからの応答も、仮想Queueを持つ仮想NICからの応答に変換し、Unixソケットを通じてFFLに応答を返す。
+		\item APIコール自体をRPCのように模倣するのではなく、NIC fdに対して行われる要求をFFR側で模倣する。（{\color{orange}そのためApp側の変更は少ない}）
+		\item コンテナ内部のNIC fdをUnix domain socketに差し替える。もう片方の終端をFFRにすることでFFLの内容をFFRに伝える。
+		\item Unix Domain SocketベースのIPC
 	\end{itemize}
   \begin{figure}[htb]
     \centering
     \includegraphics[scale=1]{fig/figure7-bc.png}
   \end{figure}
+	\pnote{
+		まずはFile Descriptorをうまく変更する方式についてです。
+		Verbs Libraryはレイヤ構造になっていて、特にApplication側は結構複雑な構造体のポインタがたくさん出てくる感じになっているので、RPCで行おうとするとかなり深いDeepCopyなどをしないと行けなくて、速度面で問題になってしまいます。
+		ただ、NICファイルディスクリプタに対して行われる要求部分は比較的単純になっているらしく、ここをUnix domain socketに差し替え、もう片方の端点をFreeFlow Routerにするようにすれば、FreeFlow Routerに対してNICファイルディスクリプタに対して実行される内容がFFRに伝わることになるので、FFRはそれと同じことをPhysical NICに対して行ってあげる、という手法になります。
+		このように、うまくレイヤ構造になっているライブラリの低い部分を差し替えるため、アプリケーション側としては通常のAPIコールをするだけでよいようになっている。
+	}
 \end{frame}
 
 \begin{frame}\frametitle{File Discriptor方式の欠点}
 	\begin{itemize}
 		\item レイテンシが大きい。ラウンドトリップタイムを計測したらかんたんに$5\mu$sを超える。
-		\item レイテンシセンシティブなアプリケーションでは致命的。。。
+		\item レイテンシセンシティブなアプリケーションでは致命的らしい。
 		\item ただし、CPUはほとんど使わない $\rightarrow$ ボトルネックの解消にCPUリソースを少しだけ拝借する設計 \bm{{\color{red} Fastpath}} を考えた
 	\end{itemize}
+	\pnote{
+		ただしこの方式はレイテンシがどうしても大きくなってしまうため、レイテンシセンシティブなアプリケーションではまだ微妙です。
+		この方式の良い点はCPUをほとんど利用しない点なのですが、逆にこのボトルネックを解消するためにCPUリソースを少し利用する設計が、次に説明するFastpathになります。
+	}
 \end{frame}
 
 \begin{frame}\frametitle{Fastpath between FFL and FFR}
@@ -223,67 +291,41 @@
 			\item リクエストを受け取ったらFFRは直ちに処理する、その際FFLもCPUを回しレスポンスを確認する。
 			\item レスポンスが帰ってきたら直ちに処理し、FFL側はCPUを手放す。
 	  \end{enumerate}
+		\item shared memoryによるIPC
 	\end{itemize}
   \begin{figure}[htb]
     \centering
     \includegraphics[scale=1]{fig/figure8.png}
   \end{figure}
+	\pnote{
+		Fastpathは言ってしまえば、shared memoryを利用するIPCになります。
+		まずFastpathでは、FFLとFFRでメモリをshareしておきます。
+		FFR側ではCPUを（おそらく）pinningし、shared memoryの内容を確認します。
+		FFL側ではリクエスト内容をメモリに書き、その内容を受け取った、FFRが直ちにそのリクエスト内容を処理します。
+		このタイミングでFFL側でもCPUを利用して、レスポンスを待ち受けます。
+		FFRから同様にレスポンス内容がメモリに書かれると、それがFFLに渡り、処理されます。
+		FFL側では処理し終わったら、CPUを手放します。
+		このようにshared memoryを利用してプロセス間通信をします。
+	}
 \end{frame}
 
 \begin{frame}\frametitle{Fastpath方式の欠点と対策のための実装}
 	\begin{itemize}
-		\item CPU overheadがある。
+		\item CPU を消費する。（メモリチェックが必要）
 		\begin{itemize}
 			\item 1FFR（つまり1ホスト）で1CPUのみ利用する。複数コンテナの着信確認は1CPUで行うようにデザインした。
-			\item データパス上にあり、且つnon-blockingな関数のときにのみ利用される（？）ため、FFL側でのCPU利用時間は極めて小さい。
+			\item non-blockingな関数のときにのみ利用されるなどの制限を設けたため、FFL側でのCPU利用時間は極めて小さい。
 		\end{itemize}
-		\item FFOはホスト上にレイテンシセンシティブなアプリケーションが無いことを知っている場合（これはコンテナイメージの実行で判断？）、FastpathとCPUの利用を止めることができる。
+		\item FFOはホスト上にレイテンシセンシティブなアプリケーションが無いことを知っている場合、FastpathとCPUの利用を止めることができる。
 	\end{itemize}
-\end{frame}
-
-\section{Discussion}
-\begin{frame}\frametitle{CPU overhead}
-	\begin{itemize}
-		\item 今回はperformanceためにあえて許容した。
-		\item CPUがやるべき仕事をhardwareにオフロードできれば解決は可能かもね。
-		\item future workの一つ
-	\end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Security}
-	\begin{itemize}
-		\item FFRで各コンテナのメモリ状態を取りまとめているから、同一ホストだしIPC領域スキャンすれば確認できるのでは？
-		\begin{itemize}
-			\item FFRは個々のQPに共有メモリバッファを作成する、つまりコンテナ内部に存在する共有メモリが、コンテナの仮想メモリアドレスにマッピングされるため問題ない。
-		\end{itemize}
-		\item memory key（？）の問題. これはFreeFlowというよりraw RDMAにおけるone-sided operationの問題であり、FreeFlowで別段悪化するなどはない。
-	\end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Work with external legacy peer}
-	\begin{itemize}
-		\item FFRはリモートのpeerがFFR使ってるか普通のRDMAかなどの判別をするわけではないため、RDMAで普通に通信可能。
-	\end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Container migration}
-	\begin{itemize}
-		\item offline migration（shutdown $\rightarrow$ move $\rightarrow$ reboot）可能。
-		\item IPアドレスは変わらないので、rebootしたらRDMA connectionを再確立させることができる。
-		\item live migrationはできない。
-	\end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{VM host}
-	\begin{itemize}
-		\item 今回のprototypeでは基本的にベアメタル上にコンテナを起動させているが、physical NICにアクセスできればいいので、SR-IOVなどを利用しているVM上なら可能。
-	\end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{Congestion control}
-	\begin{itemize}
-		\item RDMA NICに輻輳制御メカニズムは入っており、FreeFlowはそれに準拠する。
-	\end{itemize}
+\pnote{
+	Fastpathのメリットはレイテンシが小さいことですが、デメリットはもちろんCPUを消費することです。
+	実装的にできる限りCPUの利用を削減するために、いくつか制限を設けているようです。
+	１つ目は、1つのFFR、つまり1ホストでは1CPUのみを利用するように、複数コンテナの着信確認を1CPUでおおなうようなデザインにしたということです。
+	２つ目は、non-blockingな関数の場合にのみ利用するなどの制限を設け、FFL側でのCPU利用時間は極めて少なくしたということです。
+	また、FFOが、ホスト上にレイテンシセンシティブなアプリケーションが存在しないことを確認できる場合はFastpathとCPUの利用を止めるようにできるそうです。
+	その判定は、起動しているコンテナの内容で判断すると一言書いてありましたが、詳細はあまりわからなかったです。
+}
 \end{frame}
 
 % Discussionの内容は適宜入れるかまとめる
@@ -304,22 +346,24 @@
 			\item NIC : 40Gbps Mellanox CX3 NIC
 			\item OS  : Ubuntu 14.04 (4.4.0-31-generic)
 		\end{itemize}
-		\item その他
-		\begin{itemize}
-			\item Container Runtime : Docker (v1.13.0)
-			\item Virtual Network   : Weave (v1.8.0)
-			\item OvS kernel module : enabled
-		\end{itemize}
 	\end{enumerate}
+	\pnote{
+		評価に利用するサーバー構成としては2種類を整えた。
+		1つ目はInfinibandで通信する構成のもの、2つ目はRoCEで通信する構成のものになります。
+	}
 \end{frame}
 
+% TODO: inter-hostで計測したという話は書いておきたい
 \begin{frame}\frametitle{Microbenchmark: Throughput and Latency}
 	\begin{itemize}
-		\item ib\_send\_lat, ib\_send\_bw でtwo-sided operation (SEND) のlatency, bandwidthの測定
-		\item ib\_write\_lat, ib\_write\_bw でone-sided operation (WRITE) のlatency, bandwidthの測定
-		\item これらのツールはFreeFlow上で{\color{orange}コードの変更なしに実行できた}
-		\item inter-hostとintra-hostを区別しないため（？）、inter-host performance valueを計測した。（なんかあとでLatency計測のときにThroughputと同じようにとか言いながらToR越しに接続しているのでなんともわからん。/あーinterhost文しか計測してないぞという話か？）
+		\item SEND/WRITEのlatency, bandwidthを測定
+		\item ベンチマーク測定用ツールはFreeFlow上で{\color{orange}コードの変更なしに実行できた}
+		% \item inter-hostとintra-hostを区別しないため（？）、inter-host performance valueを計測した。（なんかあとでLatency計測のときにThroughputと同じようにとか言いながらToR越しに接続しているのでなんともわからん。/あーinterhost文しか計測してないぞという話か？）
 	\end{itemize}
+	\pnote{
+		RDMAのSEND/WRITEのlatency, bandwidthを測定しました。
+		ベンチマーク測定用のツールはFreeFlow上でコードの変更なしに実行できたそうです。
+	}
 \end{frame}
 
 \begin{frame}\frametitle{Microbenchmark: Throughput}
@@ -334,49 +378,73 @@
     \centering
     \includegraphics[scale=1]{fig/figure9.png}
   \end{figure}
+	\pnote{
+		まずはスループットについて、先程述べた2種類の構成で測定したものを、それぞれベアメタル+RDMAの場合と比較した図がこちらの図になります。
+		この図は、READの結果ですが、Writeの結果もほぼ同様になったそうで、論文には掲載されていませんでした。
+		測定時は1GBのデータを2KBから1MBの単位で分割して転送しています。（横軸）
+		メッセージサイズが8KByte以上の場合はInfiniband / RoCEともにベアメタルの性能と同じになっています。
+		8KByte未満のところはサイズが細かすぎて帯域が飽和していないだけのようで、実際に2CPUをFFRに利用するとHost-RDMAと同じような値になったようです。
+	}
 \end{frame}
 
 
 \begin{frame}\frametitle{Microbenchmark: Throughput}
 	\begin{itemize}
-			\item message size $\leq$ 8KBの場合について、同時稼働コンテナ数（flow数）を512にスケールアップしたところブラフがベアメタル + RDMAとほぼ同じになった。
-			\item このときの帯域幅は各フローで均等に分散していることも Jain's fairness index により確認した。
-			\item 細かすぎてlatencyに食われる分、Throughputが飽和していなかっただけのよう。（実際2CPUをFRRに利用する方法でもうまく行ったらしい）
+			\item 同時稼働コンテナ数（flow数）を512にスケールアップした場合においてもグラフ。
+			\item 増加させてもほぼ一定の性能を維持している。（コンテナのスケールにも強い）
+			\item このときの帯域幅は各フローで均等に分散していることも確認した。
+			\item （このグラフのHost-RDMAは一体なんなのかはよくわからない。。。）
 	\end{itemize}
   \begin{figure}[htb]
     \centering
 		\includegraphics[scale=1]{fig/figure11.png}
   \end{figure}
+	\pnote{
+		同時稼働するコンテナペア（フロー数）を最大512まで増加させても、全てのフローの集約スループットはほぼ一定の性能を維持していること、及びこのときの帯域幅は各フロードで均等に分さんしていることも測定されました。
+		FreeFlowでコンテナを増加させても問題ないことがわかります。
+	}
 \end{frame}
 
 \begin{frame}\frametitle{Microbenchmark: Latency}
 	\begin{itemize}
 		\item 64B, 256B, 1KB, 4KBのメッセージを送信し、レイテンシを測定した。
-		\item one-sidedであるWRITEのほうが、two-sidedであるSENDよりレイテンシが少なく、FreeFlowとベアメタルの間のギャップも小さい。
-		\item とはいえSENDの場合であっても余剰Latencyは1.5$\mu$s程度。
-		\item これはFFLとFFRの間のIPCによるレイテンシで、WRITEの場合はtriggerが1回だけど、SENDの場合は2回なのが効いているから。
+		\item WRITEのほうが、SENDよりレイテンシが少なく、FreeFlowとベアメタルの間のギャップも小さい。
+		\item これはFFLとFFRの間のIPCの違いによるレイテンシの差。
+		\item とはいえSENDの場合であっても余剰レイテンシは1.5$\mu$s程度。
 	\end{itemize}
   \begin{figure}[htb]
     \centering
 		\includegraphics[scale=1]{fig/figure10.png}
   \end{figure}
+	\pnote {
+		次に、レイテンシについてです。
+		こちらはInfinibandの構成で測定しており、64Byte, 256Byte, 1KByte, 4KByteのメッセージ送信のレイテンシを測定しました。
+		こちらに関してはWRITEとSENDの両方の結果を掲載していました。
+		WRITEのほうがSENDに比べレイテンシが少なっく、FreeFlowとベアメタルのギャップも小さいです。これは今回のスライドでは説明を省いていますが、RDMAの通信方式によりFFLとFFRの間で起こるIPCに違いがあり、その部分のレイテンシが影響しているためです。
+		とはいっても、SENDの場合であってもHost-RDMAに比べ余剰のレイテンシは1.5$\mu$s程度です。
+		}
 \end{frame}
 
 \begin{frame}\frametitle{Microbenchmark: Latency}
 	\begin{itemize}
-		\item ちなみに、1.5$mu$sってどんれくらい？
-		\item ネットワークのone hop : 0.55$mu$s
-		\item TCP stack : least 10$mu$s
-		\item TCP virtual network latency : 40$mu$s以上（彼らのテストでは）
+		\item ちなみに、1.5$\mu$sってどれくらい？
+		\item ネットワークのone hop : 0.55$\mu$s
+		\item TCP stack : least 10$\mu$s
+		\item TCP virtual network latency : 40$\mu$s以上（彼らのテストでは）
 		\item $\rightarrow$ {\color{red}FreeFlowはcontainer virtual networkを有効にした状態でRDMAのlatency advantageを保存できている！}
 	\end{itemize}
+	\pnote{
+		ちなみに1.5$\mu$sってどれくらいかというのも丁寧に書いてくれていました。
+		大体、ネットワークのワンホップにかかる時間が0.55$\mu$s程度なので、これが比較対象として上がってくるくらいの速度のようです。
+		TCP stackは最低でも10$\mu$s程度、TCP virtual network latencyは40$\mu$s程度にもなるそうなので感覚的喉の程度の速度かはわかっていただけるかと思います。
+	}
 \end{frame}
 
 \begin{frame}\frametitle{Microbenchmark: CPU overhead}
 	\begin{itemize}
 		\item Fastpath enableの場合とそうでない場合は実際どのくらいレイテンシに差が出るか。
 		\begin{itemize}
-			\item Fastpathだと2.4$\mu$sだが、disableすると17.0$\mu$sまで上昇する。
+			\item Fastpathだと2.4$\mu$sだが、そうでない場合は17.0$\mu$sまで上昇する。
 		\end{itemize}
 	\item Throughput測定時（このときどのパターンでも帯域はフルに使っており、message sizeは1MB）のCPU UtilizationはやはりLowCPU（disable Fastpath）のほうが断然良い。
 	\item {\color{orange}ワークロードによって使い分けるのがベスト}
@@ -393,28 +461,38 @@
   		\end{minipage}
 		\end{tabular}
   \end{figure}
+	\pnote{
+		また、CPUオーバーヘッドに関しても測定しておく。
+		Fastpathを用する場合とそうでない場合のレイテンシとCPU coreの利用率を見るとこちらのようになっています。
+		まずレイテンシの観点から行くとHost-RDMAが1.8$\mu$sである一方、Fastpathだと2.4$\mu$s、LowCPU（これは名言はなかったですが、おそらくfdを利用する方式）では17.0$\mu$s程度になってしまいます。
+		一方で、FastpathはCPUを1つフルに使用しますが、LowCPUでは全然利用しないことがわかります。
+	}
 \end{frame}
 
-% 6章のrate limiterの話を書いてない。。。。
+% TODO: 6章のrate limiterの話を書いてない。。。。
+% でもrate limitの話をしようとすると、Queueの話をしないといけない.
 \begin{frame}\frametitle{Microbenchmark: Rate limiter and Performance Isolation}
 	\begin{itemize}
 		\item rate limiterの性能を検証した
 		\item Infinibandのtestbedで、異なるホストのコンテナ間で単一のフローを開始した。
 		\item flow rateに制限をかけ、帯域幅を1Gbps〜40GBpsまで変更して測定した。
-		\item 図から分かる通り理想通りにリミットがかかっている。これを6のCPU overheadで実現している。
-		\item これはコンテナペア間で分離できており、それぞれに制限をかけても問題なく動いた。
+		\item 複数コンテナペア間でそれぞれに制限をかけても想定通り動いた。
 	\end{itemize}
   \begin{figure}[htb]
     \centering
 		\includegraphics[scale=1]{fig/figure13.png}
   \end{figure}
+	\pnote{
+		rate limitに関しても検証を行い、データプレーンポリシーがうまく適用されているかの検証も行う。
+		frow rateに制限をかけて、帯域幅を変更しながら検証したところ理想的な値を推移することがわかった。
+		この実験を、複数コンテナペア間でリミットを変更しながら確認しても問題なく動くことがわかった。
+	}
 \end{frame}
 
 % 個々らへん理由とかはちゃんと言えるようにする。（書いてある。m）
 \begin{frame}\frametitle{Microbenchmark: TCP socket over RDMA}
 	\begin{itemize}
-		\item 本説とは少しずれる気がするが、socket-based applicationについても利益をもたらすよという話。
-		\item 通常のTCP/IP virtual networkに比べて、rsocketを利用してFreeFlowでRDMAすると早い。
+		\item 本説とは少しずれる気がするが、socket-based application（rsocket）についても利益をもたらすよという話。
 		\item iperfでTCP throughputを、NPtcpを利用してTCP latencyをそれぞれ計測した。({\color{orange}これらも変更の必要はなかった}）
 		\item Weaveと比べると常に早く、Throughputでホストに勝てないのはsocketとverbsの変換部分のoverhead。
 	\end{itemize}
@@ -422,6 +500,15 @@
     \centering
 		\includegraphics[scale=1]{fig/figure14.png}
   \end{figure}
+\pnote{
+	rsocket - RDMA socket APIのこと。
+	socket-level APIとしてRDMAを提供してくれているプロトコルで、通常のsocket callと同様の取り回しでRDMAを利用できる。
+	内部的にはsocketとverbsの変換処理を行っているらしく、Host-TCPほどの性能は出ないものの、Weaveよりは性能が出ている。
+
+	rsocketを利用した性能の検証も行ったようです。
+	iperfでTCPのスループット、NPtcpでTCPのレイテンシをそれぞれ計測したところ、virtual nnetworkであるWeaveと比較すると常に早く、Host-TCPには勝てないくらいの性能にはなった。
+	Host-TCPに負けている理由はsocketとverbsの間の変換に関するoverheadが原因だということでした。
+	}
 \end{frame}
 
 
@@ -431,23 +518,34 @@
 		\item 比較対象はHost-RDMA（これに近づくほど理想的）、Host-TCP, Weaveの三種類。
 		\item これらはすべてInfiniband構成で実行した。
 	\end{itemize}
+	\pnote{
+		ここからは現実的なアプリケーションを取り上げて性能検証の話をしていきます。
+		今回はTensorflowとSparkを取り上げ、機械学習とデータ・アナリティクスのアプリケーションの性能を測定しました。
+		Infinibandの構成で行い、比較対象はHost-RDMA、Host-TCP、Weaveの三種類です。
+	}
 \end{frame}
 
 \begin{frame}\frametitle{Tensorflow}
 	\begin{itemize}
 		\item 3台のサーバ上でRDMA対応のTensorflowを実行。（{\color{orange}変更は一行}）
-		\item 各サーバにはNVIDIA GTX 1080Ti $\times$ 3がそれぞれ搭載されており、一基がmasterかつparameterサーバ, それ以外がworkor
+		\item 各サーバにはNVIDIA GTX 1080Ti $\times$ 3がそれぞれ搭載されており、一基がmasterかつparameterサーバ, それ以外がworkerサーバ。
 		\item 2種類のtraining workloadを実行する
 		\begin{itemize}
 			\item Convolutional Neural Network : 画像認識用途
 			\item Recurrent Neural Network : 音声認識用途
 		\end{itemize}
 	\end{itemize}
+	\pnote{
+		まずはtensorflowの性能検証から話します。
+		3台のサーバー上でRDMA対応のtensorflowを実行します。
+		各サーバにはGPUが搭載されており、一基がmasterかつparameterサーバ、2基がworkerサーバーの構成です。
+		training workloadとして、2種類、CNNとRNNを実行しています。
+	}
 \end{frame}
 
 \begin{frame}\frametitle{Tensorflow: CNN}
 	\begin{itemize}
-		\item 3種類のモデル（ResNet-50, Inception-v3, AlexNet）をtraining dataとしてsynthetic ImageNet dataを利用。
+		\item 3種類のモデル（ResNet-50, Inception-v3, AlexNet）をtraining dataとしてImageNet dataを利用。
 		\item 分散トレーニングにおいてネットワークパフォーマンスがボトルネックになる。
 		\begin{enumerate}
 			\item Host-RDMAとHost-TCPの比較をするとRDMAのほうが1.8〜3倍程度良い。
@@ -459,6 +557,14 @@
     \centering
 		\includegraphics[scale=1]{fig/figure15-a.png}
   \end{figure}
+\pnote{
+	まずはCNNの方の結果を話します。
+	モデルとして利用したのは3種類で、トレーニングデータとしてはImageNetのデータを利用したとのことです。
+	分散トレーニングをするわけですが、結果からどのモデルに関しても同じ傾向が見られるため、ネットワークパフォーマンスがボトルネックになっていることがわかります。
+	Host-RDMAとHost-TCPを比較するとRDMAのほうが1.8〜3倍程度早いです。
+	また、FreeFlowとWeaveを比較すると更に大きい差がでています。
+	そのようななか、FreeFlowはHost-RDMAに迫る性能が出ていることがわかります。
+}
 \end{frame}
 
 \begin{frame}\frametitle{Tensorflow: RNN}
@@ -471,6 +577,12 @@
     \centering
 		\includegraphics[scale=1]{fig/figure15-b.png}
   \end{figure}
+	\pnote{
+		次にRNNの方の結果です。
+		RNNの設定部分の話はイマイチわかりませんでした。。。
+		こちらは各訓練ステップに費やされた時間をCDFグラフにしたものです。
+		CNNの場合と同様の傾向を示していて、FreeFlowはHost-RDMAに迫る性能が出ています。
+	}
 \end{frame}
 
 \begin{frame}\frametitle{Spark}
@@ -484,7 +596,84 @@
     \centering
 		\includegraphics[scale=1]{fig/figure16.png}
   \end{figure}
+	\pnote{
+		次にSparkの結果について話します。
+		こちらは2つのサーバーでSparkを実行し、片方にはmaster, slaveのコンテナ, もう片方にはslaveのコンテナで動作させたそうです。
+		Sparkに同梱されているGroupByとSortByというベンチマークで計測したようです。
+		結果をみると、こちらもtensorflowと同様の結果になっていることがわかります。
+		こちらでもFreeFlowはHost-RDMAに迫る性能が出ていることがわかります。
+	}
 \end{frame}
+
+
+\section{Discussion}
+\begin{frame}\frametitle{CPU overhead / Congestion Control}
+	\begin{itemize}
+		\item CPU overhead
+		\begin{itemize}
+			\item 今回はperformanceためにあえて許容した。
+			\item CPUがやるべき仕事をhardwareにオフロードできれば解決は可能かもね。
+			\item future workの一つ
+		\end{itemize}
+		\item Congestion Control
+		\begin{itemize}
+			\item RDMA NICに輻輳制御メカニズムは入っており、FreeFlowはそれに準拠する。
+		\end{itemize}
+	\end{itemize}
+	\pnote{
+		最後にこの方式でいくつか議論になりそうな話に関してまとめて議論しておきます。
+		まず、CPUオーバーヘッドについては今回はあえてレイテンシ改善のために許容しました。
+		もしうまくハードウェアにオフロードできれば解決はできるかもねという言葉とともに、今後の課題としていました。
+
+		輻輳制御に関してはRDMA NIC側に輻輳制御メカニズムが入っており、FreeFlowはHW NICとしてそれを利用するため、そちらに準拠することになります。
+	}
+\end{frame}
+
+% TODO: ここは再読
+\begin{frame}\frametitle{Security}
+	\begin{itemize}
+		\item FFRで各コンテナのメモリ状態を取りまとめているから、同一ホストだしIPC領域スキャンすれば確認できるのでは？
+		\begin{itemize}
+			\item FFRは個々のQPに共有メモリバッファを作成する、つまりコンテナ内部に存在する共有メモリが、コンテナの仮想メモリアドレスにマッピングされるため問題ない。
+		\end{itemize}
+		\item memory keyの問題（？）。説明がないのでわからなかったが、RDMAの問題なのでFreeFlowで別段悪化はしない。
+	\end{itemize}
+	\pnote{
+		% メモリの状態に関しては再読して書く。
+
+		memory keyの問題という言葉だけ書いてあり、これに関してはそもそも問題がよくわからなかった。ただこれに関してはRDMAの問題なのでFreeFlowでどうこうという話ではないよね、ということが書いてありました。
+	}
+\end{frame}
+
+\begin{frame}\frametitle{Container migration}
+	\begin{itemize}
+		\item offline migration（shutdown $\rightarrow$ move $\rightarrow$ reboot）可能。
+		\item FFR／FFOによりIPアドレスは変わらないので、rebootしたらRDMA connectionを再確立させることができる。
+		\item live migrationはできない。
+	\end{itemize}
+	\pnote{
+		コンテナマイグレーションに関しては、まずオフラインマイグレーション、すなわちシャットダウンして、移動して、再起動する形のマイグレーションに関しては可能で、virtual IP が変わらないのでそのまま利用できます。
+		ただしライブマイグレーションはできないということでした。
+	}
+\end{frame}
+
+\begin{frame}\frametitle{VM host / Work with external legacy peer}
+	\begin{itemize}
+		\item VM上でコンテナを動作させる場合
+		\begin{itemize}
+			\item 今回のprototypeでは基本的にベアメタル上にコンテナを起動させているが、SR-IOVなどを利用しているVM上なら可能。
+		\end{itemize}
+		\item その他RDMAピアとの通信
+		\begin{itemize}
+			\item FFRはリモートのpeerがFFR使ってるか普通のRDMAかなどの判別をするわけではないため、RDMAで普通に通信可能。
+		\end{itemize}
+	\end{itemize}
+	\pnote{
+		VM上でコンテナを起動させる場合にFreeFlowが使えるのかという問題に関しては、今回のプロトタイプでは基本的にコンテナはベアメタル上で動かしていたが、SR-IOVなどを利用しているVMであれば問題ないだろうと書いてありました。
+		その他のRDMAピアとの通信はどうなるのかという問題は、基本的に通信対象がFRRを利用しているかどうかなどは関係しないため、RDMAで普通に通信することが可能になっているということでした。
+	}
+\end{frame}
+
 
 \section{結論}
 \begin{frame}\frametitle{結論}
@@ -493,7 +682,26 @@
   	\item 肝心のPerformanceに関してもベアメタルRDMAに匹敵するくらいの性能が出る。
 		\item Githubは\href{https://github.com/microsoft/Freeflow}{こちら}
 	\end{itemize}
+	\pnote{
+		結論です。
+		FreeFlowによりコンテナの環境に対して、Isolation, Portability, Controllability, Performanceを満たすRDMA環境を提供することができるようになりました。
+		Controllabilityに関してはmicrobenchmarkでうまくフロー制御ができていることがわかりました。
+		肝心のPerformanceに関してもベアメタルRDMAに匹敵するくらいの性能が出ることをいくつかの性能検証で確認できました。
+		以上で、発表は終わりです。何か質問等あればいただければと思います。
+    論文の内容を省いている部分もあるので、話していない論文の内容についても何かあれば質問いただければと思います。
+	}
 \end{frame}
+
+% \section{時間が余ったら...}
+% % これ書き始めるとRDMAの説明から必要なので時間的にしんどい
+% \section{Transparent Support for RDMA operation}
+% % まず大きな概要だけ書いて（後の理解に必要）詳細は再度考える
+% \begin{frame}\frametitle{Transparent Support for RDMA operation}
+% 	\begin{itemize}
+% 		\item これどこまでかこうかね...
+% 	\end{itemize}
+% \end{frame}
+
 
 \newcounter{finalframe}
 \setcounter{finalframe}{\value{framenumber}}

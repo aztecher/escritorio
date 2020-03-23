@@ -51,6 +51,21 @@
 \titlepage %表紙
 \end{frame}
 
+\begin{frame}\frametitle{動機}
+	\begin{itemize}
+		\item 自分が抱えていたタスクの中にRDMAが絡むようなものがあったので知識をつけたかった。
+		\item 軽く読んだらもしかして弊社の機械学習とかに提供するインフラとして一考の余地があるのかなと気になった。
+		\item 仮想化するのにベアメタル構成と同じくらい性能が出るよと書いてあって、嘘つくなと思った。
+	\end{itemize}
+	\pnote{
+		はじめにこの論文を選んだ動機ですが３つありまして、
+		１つ目はRDMAに関する知識をつけたかったという点です。抱えていたタスクにRDMAが少し絡むことがあったのでそれも後押しになっていました。
+		２つ目は軽く流し見したときにTensorflowとかをターゲットにしている雰囲気で、もしかしたら弊社の機械学習関係のインフラとして良さそうな感じのものか興味が湧いたからです。
+		３つ目は仮想化するのにベアメタル構成と同じくらいパフォーマンス出るよと書いてあって、そんな訳あるかと思ったからです。
+		こんな理由から今回はこの論文を取り上げさせてもらいました。
+	}
+\end{frame}
+
 \begin{frame}\frametitle{Contents}
 \raggedright
 \tableofcontents
@@ -187,13 +202,11 @@
 }
 \end{frame}
 
-% TODO: RDMAなのにIPアドレス？（RoCEなどのことか？）
 \begin{frame}\frametitle{FreeFlow Router (FFR)}
 	\begin{itemize}
 		\item 各ホストでシングルインスタンス（コンテナ）として起動し、そのホストの各コンテナにvirtual networkの提供を行う
 		\item FFLとのchannelをコントロールすることで、data planeのリソースポリシー（QoSなど）を実装する
-		% \item message-level eventのハンドリングになる。
-		\item FFOと連携し、IPアドレスなどのタスク処理も行う
+		\item FFOと連携し、IPアドレスの割り当てなどの処理を行ったりもするらしい。（これはいまいち明記されてなかった）
   \end{itemize}
   \begin{figure}[htb]
     \centering
@@ -202,8 +215,9 @@
 	\pnote{
 		FreeFlow Routerはホスト毎に一つコンテナで起動し、そのホストに対してvirtual networkの機能提供を行う。
 		FFLとのIPC channelをコントロールすることでデータプレーンのリソースポリシーなどを実現します。
-		% これは方式の性質上、メッセージレベルでのイベントハンドリングにはなる。
-		次に説明するFFOを連携することでIPアドレスなどのタスク処理なども行う（？）
+		次に説明するFFOを連携することでIPアドレスなどのタスク処理なども行うらしいです。
+		FFRが提供するvirtual networkというのがRDMAのみの話ではないのかとも思ったのですが、ちょっと論文の中身では触れられていなかったです。
+		ただ実際、Githubの実行例を見ると docker runのタイミングでweaveネットワーク指定できるみたいで、任意のコンテナオーバーレイネットワークソリューションを使用できそうでな形になっていて、TCP/IPで通信をすることもできるみたいなのでそのへんのやり取りのことかなと思っています。
 	}
 \end{frame}
 
@@ -214,16 +228,16 @@
 			   （らしいが論文を通してあまり説明が無い。。。）
 		\item コンテナ通信のコントロールや \\
 			    リアルタイムモニタリングなど。
-		% \item アプリケーションとFFRのメモリマップの保持もここで行っている
+		\item その他にもユーザ定義情報をストアする。
   \end{itemize}
   \begin{textblock*}{0.4\linewidth} (230pt, 100pt)
   	\centering
   	\includegraphics[width=30mm]{fig/figure4-ffo.png}
   \end{textblock*}
 	\pnote{
-		FFOはコントロールプレーンを司るようなコンポーネントらしいんですが、実はFFOの詳細はあまり書いてなかったです。。。
+		FFOはコントロールプレーンを司るようなコンポーネントらしいんですが紙面の都合上、FFOの詳細はあまり書いてなかったです。
 		コンテナ間通信のコントロールやリアルタイムモニタリングなどを行うようです。
-		% また、メモリマップの保持はここで行っている。
+		FFOではZooKeeperを利用してユーザ定義の情報。例えばIPアサインの情報や、アクセスコントロール、リソース共有のポリシー、メモリに関する情報などを管理するそうです。
 	}
 \end{frame}
 
@@ -328,7 +342,69 @@
 }
 \end{frame}
 
-% Discussionの内容は適宜入れるかまとめる
+\section{Control \& data plane policies}
+\begin{frame}\frametitle{Control \& data plane policies}
+	\begin{itemize}
+		\item FreeFlowではコントロール／データプレーン両方のオペレーションが可能。
+		\item 下記のような一般的なコントロール／データプレーンポリシーを適用できる。
+		\begin{itemize}
+			\item 帯域幅の制御
+			\item フローの順位付け
+			\item リソース使用の制御
+		\end{itemize}
+		\item 紙面の都合上、詳細ではないもののcontrol planeの例とdata planeの例を一つづつ挙げてくれている。
+	\end{itemize}
+	\pnote{
+		次にコントロールプレーン、データプレーンのポリシーに関する話です。
+		これは論文的にも必要最低限しか書いてなく、「紙面の都合で割愛する」という言葉が結構出てきていました。
+		FreeFlowでは基本的にコントロールプレーン／データプレーンの両方のオペレーションが可能で、一般的なポリシーの適用は可能であると記述がありました。
+		挙げられていたものとしては、帯域幅の制御や、フローの順位づけ、リソースの制限などです。
+		基本的にRDMAはメッセージ単位の通信になるため、そのレベルでの制限はつけられるというような肌感です。
+	  コントロールプレーンの例とデータプレーンの例を簡単ですが挙げてくれていました。
+	}
+\end{frame}
+
+\begin{frame}\frametitle{Control plane policy example}
+	\begin{itemize}
+		\item 各コンテナが作成できるQP（Queue Pair : RDMA通信において端点に対応するもの）の数に制限をつけることができる。
+		\item RDMAにおいて、大量にQPを作成すると性能に影響することが知られている。
+		\item コンテナ単位でこのQP数の制御を行うことができる。
+	\end{itemize}
+	\pnote{
+		まずコントロールプレーンのポリシーの例です。
+		RDMAにおける通信の端点（TCPとかUDPでいうsocketみたいなもの）にQueue Pairというのがあるんですが、各コンテナが作成できるQPの数に制限をつけることができます。
+		一般にRDMAではこのQPの数が膨大になると性能に影響することが知られているようで、これを各アプリケーションが起動するコンテナ単位でリミットを設けてハンドリングすることができます。
+
+		(理論的にQPは一つのHCA（コントローラデバイス）ごとに2^24個作れるものの、メモリの制限で4万〜7万個くらいがせいぜいらしい)
+	}
+\end{frame}
+
+\begin{frame}\frametitle{Data plane policy example}
+	\begin{itemize}
+		\item per-flowのレートリミットをかけることができるとのこと。
+		\item FFRに簡単なトークンバケットのデータ構造を実装しており
+		\begin{enumerate}
+			\item アプリケーションがQPを作成したときにFFOにポリシーをチェック
+			\item 予め設定されていたレート制限を持つトークンバケットをQPに関連付け
+			\item アプリケーションがリクエスト送信要求をするたびにFFRが送信していいかハンドリング
+		\end{enumerate}
+		\item これはあくまで一例で、実装の仕方は柔軟にできるらしく、APIも提供しているらしいが割愛していた。
+	\end{itemize}
+	\pnote{
+		次にデータプレーンのポリシーの例です。
+		フローごとにレートリミットをかけることができるようです。
+		FFRの中に簡単なトークンバケットのデータ構造を実装していて
+		まず、アプリケーションがQueue Pairを作成したときにFFOにポリシーチェックをし、
+		予め設定されていたレート制限を持つトークンバケットをQueue Pairに関連付けて、
+		アプリケーションがリクエスト送信要求をするたびに、FFRがトークンバケットを確認し送信するかどうかをハンドリングする
+		という流れでレートリミットを実装する形になります。
+		ただ、この実装はあくまで今回の論文用の一例らしく、実際にはもっと自由に実装できるようにAPIの提供などを行っているようです。
+
+		このようにして、コントロールプレーンやデータプレーンにポリシーを適用することができます。
+	}
+\end{frame}
+
+
 \section{評価}
 \begin{frame}\frametitle{構成}
 	\begin{enumerate}
@@ -353,12 +429,10 @@
 	}
 \end{frame}
 
-% TODO: inter-hostで計測したという話は書いておきたい
 \begin{frame}\frametitle{Microbenchmark: Throughput and Latency}
 	\begin{itemize}
 		\item SEND/WRITEのlatency, bandwidthを測定
 		\item ベンチマーク測定用ツールはFreeFlow上で{\color{orange}コードの変更なしに実行できた}
-		% \item inter-hostとintra-hostを区別しないため（？）、inter-host performance valueを計測した。（なんかあとでLatency計測のときにThroughputと同じようにとか言いながらToR越しに接続しているのでなんともわからん。/あーinterhost文しか計測してないぞという話か？）
 	\end{itemize}
 	\pnote{
 		RDMAのSEND/WRITEのlatency, bandwidthを測定しました。
@@ -431,7 +505,6 @@
 		\item ネットワークのone hop : 0.55$\mu$s
 		\item TCP stack : least 10$\mu$s
 		\item TCP virtual network latency : 40$\mu$s以上（彼らのテストでは）
-		\item $\rightarrow$ {\color{red}FreeFlowはcontainer virtual networkを有効にした状態でRDMAのlatency advantageを保存できている！}
 	\end{itemize}
 	\pnote{
 		ちなみに1.5$\mu$sってどれくらいかというのも丁寧に書いてくれていました。
@@ -469,8 +542,6 @@
 	}
 \end{frame}
 
-% TODO: 6章のrate limiterの話を書いてない。。。。
-% でもrate limitの話をしようとすると、Queueの話をしないといけない.
 \begin{frame}\frametitle{Microbenchmark: Rate limiter and Performance Isolation}
 	\begin{itemize}
 		\item rate limiterの性能を検証した
@@ -634,14 +705,15 @@
 	\begin{itemize}
 		\item FFRで各コンテナのメモリ状態を取りまとめているから、同一ホストだしIPC領域スキャンすれば確認できるのでは？
 		\begin{itemize}
-			\item FFRは個々のQPに共有メモリバッファを作成する、つまりコンテナ内部に存在する共有メモリが、コンテナの仮想メモリアドレスにマッピングされるため問題ない。
+			\item FFRは個々のQPに対して独立して共有メモリバッファを作成するため、IPC領域をスキャンしても他のコンテナの情報は読み取れない.
 		\end{itemize}
-		\item memory keyの問題（？）。説明がないのでわからなかったが、RDMAの問題なのでFreeFlowで別段悪化はしない。
+		\item memory keyの問題（？）。説明がないのでわからなかったが、RDMAの問題なのでFreeFlowで別段悪化はしないらしい。
 	\end{itemize}
 	\pnote{
-		% メモリの状態に関しては再読して書く。
+		次にセキュリティー的な問題についてです。
+		FFRでは各コンテナのメモリを共有するから、IPC領域スキャンすると別のコンテナのメモリ状態見れるのではという問題が考えられますが、FFRでは個々のQueue Pairに対して独立して共有メモリバッファを作成するため、スキャンしても他のコンテナ情報などを読み取ることはできなくなっています。
 
-		memory keyの問題という言葉だけ書いてあり、これに関してはそもそも問題がよくわからなかった。ただこれに関してはRDMAの問題なのでFreeFlowでどうこうという話ではないよね、ということが書いてありました。
+		また、これは私がわからなかったんですが、memory keyの問題があるよと書いてありました。ただこれに関してはRDMAの問題なのでFreeFlowでどうこうという話ではないよね、とのことでした。
 	}
 \end{frame}
 
@@ -652,7 +724,8 @@
 		\item live migrationはできない。
 	\end{itemize}
 	\pnote{
-		コンテナマイグレーションに関しては、まずオフラインマイグレーション、すなわちシャットダウンして、移動して、再起動する形のマイグレーションに関しては可能で、virtual IP が変わらないのでそのまま利用できます。
+		コンテナマイグレーションに関しては、まずオフラインマイグレーション、すなわちシャットダウンして、移動して、再起動する形のマイグレーションに関しては可能で、virtual IP が変わらないのでそのままRDMAの接続を再確立するそうです。
+		（これはRoCEみたいなIP層を利用するものだとわかりますが、InfinibandだとそもそもIP使うっけ？みたいなレベルの理解が無いのでちょっとわかりません。）
 		ただしライブマイグレーションはできないということでした。
 	}
 \end{frame}
@@ -687,21 +760,11 @@
 		FreeFlowによりコンテナの環境に対して、Isolation, Portability, Controllability, Performanceを満たすRDMA環境を提供することができるようになりました。
 		Controllabilityに関してはmicrobenchmarkでうまくフロー制御ができていることがわかりました。
 		肝心のPerformanceに関してもベアメタルRDMAに匹敵するくらいの性能が出ることをいくつかの性能検証で確認できました。
+		一応Githubで公開してくれていて、まだプロトタイプ段階とのことですが、ハードウェア要件を満たせば試して確認することもできると思います。issueを見ると、k8sへの対応なども勧めていて、結構頑張っていそうだなという印象でした。
 		以上で、発表は終わりです。何か質問等あればいただければと思います。
     論文の内容を省いている部分もあるので、話していない論文の内容についても何かあれば質問いただければと思います。
 	}
 \end{frame}
-
-% \section{時間が余ったら...}
-% % これ書き始めるとRDMAの説明から必要なので時間的にしんどい
-% \section{Transparent Support for RDMA operation}
-% % まず大きな概要だけ書いて（後の理解に必要）詳細は再度考える
-% \begin{frame}\frametitle{Transparent Support for RDMA operation}
-% 	\begin{itemize}
-% 		\item これどこまでかこうかね...
-% 	\end{itemize}
-% \end{frame}
-
 
 \newcounter{finalframe}
 \setcounter{finalframe}{\value{framenumber}}

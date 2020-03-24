@@ -1,0 +1,17 @@
+on: [push, pull_request]
+
+jobs:
+  escritorio_build:
+    runs-on: ubuntu-latest
+    name: A job to build escritorio
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: check directory
+        run: ls -lat
+      - name: build action
+        id: build
+        uses: ./.github/actions/
+        with:
+          echo-output: 'Test escritorio action'
+

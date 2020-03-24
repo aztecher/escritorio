@@ -1,0 +1,12 @@
+name: 'escritorio build'
+description: 'Build escritorio documents'
+inputs:
+  echo-output:
+    description: 'output of echo'
+    required: true
+    default: 'sample'
+runs:
+  using: 'docker'
+  image: 'mikiyaf/escritorio:0.0.2'
+  args:
+    - ${{ inputs.echo-output }}

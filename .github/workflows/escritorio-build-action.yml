@@ -10,8 +10,9 @@ jobs:
       - name: check directory
         run: ls -lat
       - name: build action
-        id: build
-        uses: ./.github/actions/
+        uses: ./.github/actions/escritorio-build/
         with:
           echo-output: 'Test escritorio action'
+      - name: push action
+        uses: ./.github/actions/github-push/
 

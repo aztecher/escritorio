@@ -7,6 +7,6 @@ inputs:
     default: 'sample'
 runs:
   using: 'docker'
-  image: 'mikiyaf/escritorio:0.0.2'
+  image: 'mikiyaf/escritorio:0.0.3'
   args:
     - ${{ inputs.echo-output }}

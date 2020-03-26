@@ -16,12 +16,15 @@ inputs:
     description: 'Branch name to push. Default is `master` branch'
     required: false
     default: 'master'
+  initialize_git:
+    description: 'Remove .git to initialize'
+    required: false
   test:
     description: 'test execution for debugging'
     required: false
     default: ''
 runs:
   using: 'docker'
-  image: 'mikiyaf/github-init2commit:0.0.2'
+  image: 'mikiyaf/github-init2commit:0.0.3'
   args:
-    - ${{ inputs.test }}
+    - docs

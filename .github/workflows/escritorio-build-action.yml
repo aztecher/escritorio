@@ -17,13 +17,13 @@ jobs:
         uses: ./.github/actions/github-init2commit
         with:
           email: 'mikiyaf.business@gmail.com'
-          directory: ./docs
           branch: master
+          initialize_git: true
       - name: push action
         uses: ./.github/actions/github-push/
         with:
           repository: aztecher/escritorio-docs
           branch: master
-          directory: ./docs
+          directory: .
           force: true
           github_token: ${{ secrets.GITHUB_ACCESS_TOKEN }}

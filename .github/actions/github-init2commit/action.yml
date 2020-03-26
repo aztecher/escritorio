@@ -25,6 +25,6 @@ inputs:
     default: ''
 runs:
   using: 'docker'
-  image: 'mikiyaf/github-init2commit:0.0.3'
+  image: 'mikiyaf/github-init2commit:0.0.4'
   args:
     - docs

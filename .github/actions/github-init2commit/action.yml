@@ -1,0 +1,30 @@
+name: 'Github Push Action'
+description: 'Push local changes to Github repository'
+author: 'mikiyaf'
+inputs:
+  user:
+    description: 'Github user name. Default is ${GITHUB_ACTOR}'
+    required: false
+  email:
+    description: 'Github emal.'
+    required: true
+  directory:
+    description: 'Specify the directory to push. Default is currrent directory'
+    required: false
+    default: '.'
+  branch:
+    description: 'Branch name to push. Default is `master` branch'
+    required: false
+    default: 'master'
+  initialize_git:
+    description: 'Remove .git to initialize'
+    required: false
+  test:
+    description: 'test execution for debugging'
+    required: false
+    default: ''
+runs:
+  using: 'docker'
+  image: 'mikiyaf/github-init2commit:0.0.4'
+  args:
+    - docs

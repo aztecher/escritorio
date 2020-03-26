@@ -1,0 +1,32 @@
+name: 'Github Push Action'
+description: 'Push local changes to Github repository'
+author: 'mikiyaf'
+inputs:
+  github_token:
+    description: 'Github token for repository. Using {{ secrets.GITHUB_TOKEN }}'
+    required: true
+  repository:
+    description: 'Repository name to push. Default is current github repository ${GITHUB_REPOSITORY}'
+    default: ''
+    required: false
+  branch:
+    description: 'Branch name to push. Default is `master` branch'
+    required: false
+    default: 'master'
+  force:
+    description: 'If you want to force push, you can set `true`'
+    required: false
+  tags:
+    description: 'If you want to push tag, you can set `true`'
+    required: false
+  directory:
+    description: 'Specify the directory to push. Default is currrent directory'
+    required: false
+    default: '.'
+  test:
+    description: 'test execution for debugging'
+    required: false
+    default: ''
+runs:
+  using: 'docker'
+  image: 'mikiyaf/github-push:0.0.6'

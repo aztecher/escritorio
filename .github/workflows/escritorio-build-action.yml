@@ -1,0 +1,29 @@
+on: [push, pull_request]
+
+jobs:
+  escritorio_build:
+    runs-on: ubuntu-latest
+    name: A job to build escritorio
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: check directory
+        run: ls -lat
+      - name: build action
+        uses: ./.github/actions/escritorio-build/
+        with:
+          echo-output: 'Test escritorio action'
+      - name: git init, add, commit action
+        uses: ./.github/actions/github-init2commit
+        with:
+          email: 'mikiyaf.business@gmail.com'
+          branch: master
+          initialize_git: true
+      - name: push action
+        uses: ./.github/actions/github-push/
+        with:
+          repository: aztecher/escritorio-docs
+          branch: master
+          directory: .
+          force: true
+          github_token: ${{ secrets.GITHUB_ACCESS_TOKEN }}

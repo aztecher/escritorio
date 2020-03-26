@@ -13,6 +13,17 @@ jobs:
         uses: ./.github/actions/escritorio-build/
         with:
           echo-output: 'Test escritorio action'
+      - name: git init, add, commit action
+        uses: ./.github/actions/github-init2commit
+        with:
+          email: 'mikiyaf.business@gmail.com'
+          directory: ./docs
+          branch: master
       - name: push action
         uses: ./.github/actions/github-push/
-
+        with:
+          repository: aztecher/escritorio-docs
+          branch: master
+          directory: ./docs
+          force: true
+          github_token: ${{ secrets.GITHUB_ACCESS_TOKEN }}

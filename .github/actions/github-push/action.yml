@@ -5,7 +5,7 @@ inputs:
   github_token:
     description: 'Github token for repository. Using {{ secrets.GITHUB_TOKEN }}'
     required: true
-  repo:
+  repository:
     description: 'Repository name to push. Default is current github repository ${GITHUB_REPOSITORY}'
     default: ''
     required: false
@@ -29,6 +29,6 @@ inputs:
     default: ''
 runs:
   using: 'docker'
-  image: 'mikiyaf/github-push:0.0.4'
+  image: 'mikiyaf/github-push:0.0.5'
   args:
     - ${{ inputs.test }}

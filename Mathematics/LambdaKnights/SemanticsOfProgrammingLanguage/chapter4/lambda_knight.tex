@@ -1,0 +1,537 @@
+\documentclass[9pt,fleqn]{jarticle}
+\usepackage{float}
+\usepackage{fancybox}
+\usepackage{ascmac}
+\usepackage[dvipdfmx]{graphicx,hyperref}
+\usepackage{amsmath,amsthm,amssymb,cases}
+\usepackage{setspace}
+\usepackage[]{multicol}
+\usepackage{latexsym}
+\usepackage{tikz}
+\usepackage{pxjahyper}
+\usepackage{bm}
+\usepackage{sopl}
+\renewcommand{\figurename}{Fig.}
+\renewcommand{\tablename}{Table}
+
+% \reservestyle{\command}{\mathrel}
+% \command[\mathbf]{let,in}
+
+\begin{document}
+
+\pagestyle{empty}
+
+\begin{center}
+	\LARGE{Passionが大事}\\
+\end{center}
+\begin{flushright}
+	\large{mmichish}
+\end{flushright}
+
+% \tableofcontents
+% \clearpage
+
+\section{Intro}
+
+% 目標はこの章
+プログラミング言語の観点から見たとき、今までやってきたsimply-typed $\lambda$-calculusとその拡張のお話だけではプログラミング言語としては成り立たなくて、評価(evaluation)のnotationとかが必要になるわね。今までequational theoryなんかを確認したけど、評価はこれらから直ちに導かれるものでもないし、評価のアプローチ自体にはいくつか考えられるからちょっと見ていくわ。そんな中でこの章では再帰定義の導入とそのsemanticsを考えていきたいぞ。プログラミング言語にはほしいもんね。semanticsをいくつか定義することができるので、それぞれがどんな感じに関係しているのかを調べていくよ。さて最初に、反復を表現する構築子や再帰定義の話に加えて、それ以外にもベーシックな型(integer, boolean)とか定数があると便利だよね。というお話から始めて、どういう感じに再帰定義していくといいかという話をしていくぞ。
+
+\nl
+はじめにいくつか再帰定義の例を見ていく。例えば階乗関数の再帰定義の例で、MLの場合だとこんな感じに書く。
+\begin{eqnarray}
+	val\ rec\ f\ =\ fn\ n:int\ =>\ if\ n\ =\ 0\ then\ 1\ else\ n\ *\ f\ (n\ -\ 1) \nonumber
+\end{eqnarray}
+
+この宣言だと、$f$という識別子に対して、等式の右辺を定義している。
+$\lambda$の代わりに'fn'を利用しbinding variableは'n:int' で、'.'でなく'$\Rightarrow$'で表現するイメージ。
+つまりfはint型の値を取って、'if n = 0 ...'を計算する関数として定義され、そのなかでfを(n-1)を伴って呼び出している。
+
+Lisp（正確にはScheme）だとこう
+\begin{eqnarray*}
+	(define\ f\ (lambda\ (n) & & \\
+	(if\ (=\ n\ 0) & & \\
+	1 & & \\
+	& (*\ n\ (f\ (-\ n\ 1)))))) &
+\end{eqnarray*}
+
+abstractionにおける型タグが存在しないが、まぁそれ以外は比較そのまま理解できるだろう。
+これを見ると、現状ではまだちゃんと$if$とかを表現する定数みたいなのは出てきてないが、気持ちとしてはsimply-typed $\lambda$ calculus with products and constantsで定義できそうな雰囲気になる（らしいです、僕はなりません）
+\begin{equation}\label{fact_lambda}
+	\lambda n : C_{int}.\ c_{if}(c_{=}(n, c_0),\ c_1,\ c_*(n, f(c_{-}(n, c_1))))
+\end{equation}
+これは気持ちとしては次のような感じ。
+
+\begin{itemize}
+	\item $\lambda n:C_{int}$ : 渡される値nで型は$C_{int}$. Constant Type $C$の一つ
+	\item $c_{if}$ $c_0$ $c_1$ $c_*$ $c_-$ : これらはそれぞれterm constant. 気持ちとしては$if$とか二項演算$*$とかの表現で、これらの挙動が評価のところの話に関わってきそうな気持ち
+	\item この式では、termとしては、たくさんのproductsで成立している感じで、例えばAppl + Prodで構成される、$c_{=}(n, c_0)$は, 値$n$と$c_0$（定数の0）を二項演算=で比較している。
+\end{itemize}
+
+上記気持ちにより、まぁ確かにそれらしいsyntaxを決めて、それに対して評価方法が定義されていれば雰囲気計算できそうな気持ちはある。passionが大事。これはちょっとよくわからなかったが、なんかconstantsが'curried'typeであるとか適当なことを言うと、なんか知らないがproductを使わずに以下のようにかけるらしい。ちょっとわからん（すまん）。
+\begin{equation*}
+	\lambda n : C_{int}.\ c_{if}(c_{=}(n)(c_0))(c1)(c_{*}(n)(f(c_{-}(n)(c_{1}))))
+\end{equation*}
+
+こう見ると、条件演算子のif、二項演算子の =, *, - が与えられていると、これは下記のような式になりそうな気になる。
+\begin{eqnarray*}
+	(define\ f\ (lambda\ (n) & & \\
+	(((if\ ((=\ n)\ 0)) & & \\
+	1) & & \\
+	& ((*\ n)\ (f\ ((-\ n)\ 1)))))) & 
+\end{eqnarray*}
+
+ただこれ、まぁ中身はいいとして、$f$の定義ってどう行われてるか不明瞭だよね、って問題がある。例えば、先に見たMLの例とかだと、"val rec"とかいうnotationを使って$f$の定義を与えていたわけだけど、現状我々の見てきた$\lambda$-calculusの中で同じようなことしようとしたときに使えるのはAbstractionのbindingしかない。ちょっとAbstractionではつらみがあるので、再帰定義のためにいくつかの新しい定数を導入したいね。
+途端にガッツリ変わるが、例えば下記のような感じ。
+\begin{equation}\label{y-conbinator}
+	\bm{Y} \lambda f: \bm{num}\rightarrow\bm{num}. \lambda n:\bm{num}.\ \bm{if}\ n\ =\ 0\ \bm{then}\ 1\ \bm{else}\ n*f(n-1)
+\end{equation}
+
+ここで、$\bm{Y}$はこのような型の定数
+\begin{equation*}
+	((\bm{num} \rightarrow \bm{num}) \rightarrow (\bm{num} \rightarrow \bm{num})) \rightarrow (\bm{num} \rightarrow \bm{num})
+\end{equation*}
+
+% つまりある関数 f :: (num -> num) -> (num -> num)があったときに
+% Y f と取れる関数fで
+% Y :: ((num -> num) -> (num -> num)) -> (num -> num)
+% f :: num -> num
+% λf :: (num -> num) -> s, s :: (num -> num)
+% Yλf :: ((num -> num) -> (num -> num)) -> (num -> num)
+% 型合わせとしてはこんな感じ?（λの解釈あってんのか?）
+
+新しいbinding演算子を表現するために高階関数（$\bm{Y}$）と定数たちを利用して、追加のsyntaxを導入しないように避ける感じ。（定数も高階関数もこれまでの枠組みの中でなんとかなるからね。）
+
+\nl
+実際にbindすることを考えると、termを名前にバインドする構文は、$\lambda$ではApplicationで表現する。
+例えば、Mが階乗関数で、プログラムNの中の関数名fにMをbindしたい場合、applicationを利用して
+\begin{equation*}
+	(\lambda f. N) M
+\end{equation*}
+
+と書くよね。ただいくつかの言語ではこれらは別の構文として用意されていて、
+
+\begin{equation*}
+	N\ where\ f\ =\ M
+\end{equation*}
+
+とか
+\begin{equation*}
+	let\ f\ =\ M\ in\ N
+\end{equation*}
+
+とか書く。ただし、この場合はちょっと注意が必要で、例えば$M$が$\ref{y-conbinator}$の例だと次のようになり、
+\begin{eqnarray*}
+	let\ f\ =\ \bm{Y} \lambda f: \bm{num}\rightarrow\bm{num}. λn:\bm{num}.\ \bm{if}\ n\ =\ 0\ \bm{then}\ 1\ \bm{else}\ n*f(n-1)
+\ in\ N \\
+\end{eqnarray*}
+
+これは$M$の中にfを束縛する$\lambda$ f が存在するため、'let f'がfを束縛しないことが明白だけど、$M$が$\ref{fact_lambda}$のときは次のようになり、
+\begin{eqnarray*}
+	let\ f\ =\ \lambda n : C_{int}.\ c_{if}(c_{=}(n, c_0),\ c_1,\ c_*(n, f(c_{-}(n, c_1))))\ in\ N
+\end{eqnarray*}
+
+この場合は、$M$の中のfの出現が'let f'に束縛されているかどうか明確ではない感じになっている。関数$f$が再帰定義のつもりなら、$\bm{M}$の中の$f$の出現は、'let f'の$f$に束縛されてほしいし、逆に再帰定義でない場合は、$f$は'let f'に束縛されないでほしいため、明確に使い分けられないとまずい。
+なのでこれを明確にするために、「束縛するよ」というnotationを新しく導入する。
+\begin{equation}\label{let_rec}
+	letrec\ f\ =\ M\ in\ N
+\end{equation}
+
+この場合、letrecに続く$f$は項$\bm{M}$の中の$f$の出現をbindする。結果的に、下記のnotationと同じ意味になる。
+\begin{equation*}
+	let\ f\ =\ \bm{Y}\lambda f.\ M\ in\ N
+\end{equation*}
+
+多くのプログラミング言語ではこれを使ってる。
+
+\nl
+一方で、論理的な利用の面からするとちょっと'letrec' notationは式$\ref{let_rec}$でいうところの項$N$を必ず含める必要がありしんどみがある。$\bm{Y}$というnotationを利用する場合は、$N$を無視して、再帰定義関数を単一の式を書くことができるから嬉しい。これをConstantで表現する方法よりも、もう新しいbinding operator（$\mu$）を導入したほうがシンプルらしいのでそうする。これは$\lambda$-binder（Abstractionの$\lambda$）に似てるけど、再帰定義を意味するよ。（実質$\bm{Y} \lambda$ を $\mu$で置き換えればいい。）
+\begin{equation}
+	\mu f: num \rightarrow num. \lambda n: num.\ if\ n\ =\ 0\ then\ 1\ else\ n*f(n-1)
+\end{equation}
+
+そもそも再帰定義をApplicationの特殊ケースとして考えるのではなく、新しいケースとして捉えてしまったほうが楽。と、良く$\mu$-notationを支持するときに言われるけど、まぁそれ以外もこっから先の議論のために十分役立つと思うよ。
+
+\nl
+ここまで、いくつかの再帰定義のSyntaxをいくつか見てきたけど、semanticsについてはやってないよね。
+まぁこれの評価方法って明示的に言わずもがなでよく利用されてて、例えば階乗関数の場合はこう
+
+\[
+	f(n) = \begin{cases}
+	1\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ n=0 & \\
+	n * f(n-1)\ \ \ \ \ if\ n > 0. &
+	\end{cases}
+\]
+
+これは例えば、
+
+\begin{eqnarray*}
+	f(3)\ &=& 3 * f(2) \nonumber \\
+	&=& 3 * 2 * f(1) \nonumber \\
+	&=& 3 * 2 * 1 * f(0) \nonumber \\
+	&=& 3 * 2 * 1 * 1 \nonumber \\
+	&=& 6
+\end{eqnarray*}
+
+こう計算できるわけだけど、これをどうformalに説明できるかが本章の目的である。
+議論の前に簡単に言語を定義して、それに基づいて話を進めていくよ。
+
+\newpage
+\subsection{A Programming Language for Computable Functions}
+
+次に示すのは、simple higher-order Programming language for Computable Functions (PCF)という、型付きラムダ計算の拡張だぞ。まずはsyntaxの定義はこんな感じ。
+
+\begin{align}
+	t\ ::=\ &num\ |\ bool\ |\ t \rightarrow t \nonumber \\
+	M ::=\ &0\ |\ true\ |\ false\ | \nonumber\\
+	&succ(M)\ |\ pred(M)\ |\ zero?(M)\ |\ if\ M\ then\ M\ else\ M\ | \nonumber \\
+	&x\ |\ \lambda x:t.M\ |\ MM\ |\ \mu x:t.M \nonumber
+\end{align}
+
+% 未追加（要復習）: λ-calculusの場合と同様に、具体的な構文、文法から生成された項木、および結合変数の名前変更を伴う項木の同値クラスを区別するために注意を払わなければならない。
+% なんか一言あるな : これらのうち最後のものがこの章での主な関心事です。これらはPCF項と呼ばれ、文脈によって明確になる場合は項 (the last of these is our primary concern in this chapter)
+ざっくり箇条書きにすると下記のような感じらしいぞ
+\begin{itemize}
+	\item simply-typed $\lambda$-calclusを含んでいる
+	\item ground typeは2つ。$num$と$bool$のみ。
+	\item PCF syntaxの扱いは基本的にSection2.1で取り扱った$\lambda$-calculusになる。
+		\begin{itemize}
+			\item 変数や項のnamingや、項のparsing-conventionは$\lambda$-calculusと同じ。
+			\item PCF termとか呼ぶけど、文脈から明白なときはtermと呼ぶ。
+		\end{itemize}
+	\item 新しい項
+		\begin{itemize}
+			\item $successor$, $predecessor$, $test\ for\ zero$
+			\item mix-fix operator (condition / $if\ then\ else$ の項）
+				\begin{itemize}
+					\item (ex.) $if\ L\ then\ M\ else\ N$
+					\item $L$ : condition / test
+					\item $M$ : first branch
+					\item $N$ : second branch
+					\item $L$, $M$に関するparseは問題ないだろうが、$N$は可能な限りスコープを広く取る。
+					\item (ex.) $if\ x\ then\ f\ else\ gy$ の場合、$(if\ x\ then\ f\ else\ g)(y)$ではなく、 $if\ x\ then\ f\ else\ (g(y))$として解釈する
+				\end{itemize}
+		\end{itemize}
+	\item 新しいbinding operatorの$\mu$、参戦。
+		\begin{itemize}
+			\item $\alpha$-equivalenceとparsing-conventionの定義は$\lambda$と同じ感じ。
+			\item $\mu x:t.M$という式ががあったとき、$x$がbinding occurence, $M$がbody
+			\item $\mu$の後の$x$の出現は、項$M$の中の自由な$x$全ての出現に対するbinding occurenceである。
+		\end{itemize}
+\end{itemize}
+
+構文木のcontext substitutionは以下のような感じになる。
+\begin{itemize}
+	% 項N=0であるとき、Nの中の自由変数xをMで置き換えた結果は0になる。booleanも同様。
+	\item $\{M/x\}0$ is $0$. $\{M/x\}true$ is $true$. $\{M/x\}false$ is $false$
+	\item $\{M/x\}zero?(N)$ is $zero?(\{M/x\}N)$. $\{M/x\}succ(N)$ is $succ(\{M/x\}N)$. $\{M/x\}pred(N)$ is $pred(\{M/x\}N)$.
+	\item $\{P/x\}if\ L\ then\ M\ else\ N$ is $if\ \{P/x\}L\ then\ \{P/x\}M\ else\ \{P/x\}N$.
+	\item $N$がAbstractionで、$\mu x:t. L$ (bound variable = $x$)のとき、$\{M/x\}N$ is $N$.
+	\item $N$がAbstractionで、$\mu y:t. L$ (bound variable = $y \neq x$)のとき、$\{M/x\}N$ is $\mu y:t. \{M/x\}L$
+\end{itemize}
+
+\newpage
+PCFの型付け規則（typing rule）はsimply-typed $\lambda$-calculus + $\alpha$ になる。
+\nl
+
+$\bm{Typing\ Rules\ for\ PCF\ (include\ Table\ 2.1)}$
+\hrulefill
+\begin{table}[htb]
+	\centering
+  \begin{tabular}{lc}
+		Proj & $H,x:t,H^{\prime} \vdash x:t$ \vspace{5mm} \\
+		Abs & \inference{H,x:s \vdash M:t}{H \vdash \lambda x:s. M: s \rightarrow t} \vspace{5mm} \\
+		Appl & \inference{H \vdash M: s \rightarrow t\ \ \ H \vdash N:s}{H \vdash M(N):t} \vspace{5mm} \\
+		Zero & $H \vdash 0 : num$ \vspace{5mm} \\
+		True & $H \vdash true : bool$ \vspace{5mm} \\
+		False & $H \vdash false : bool$ \vspace{5mm} \\
+		Pred & \inference{H \vdash M : num}{H \vdash pred(M) : num} \vspace{5mm} \\
+		Succ & \inference{H \vdash M : num}{H \vdash succ(M) : num} \vspace{5mm} \\
+		IsZero & \inference{H \vdash M : num}{H \vdash zero?(M) : bool} \vspace{5mm} \\
+		Cond & \inference{H \vdash L : bool\ \ \ H \vdash M : t\ \ \ H \vdash N : t}{H \vdash if\ L\ then\ M\ else\ N\ :\ t} \vspace{5mm} \\
+		Rec & \inference{H, x:t \vdash M : t}{H \vdash \mu x:t. M : t}
+  \end{tabular}
+\end{table}
+
+\hrulefill
+
+\begin{itemize}
+	\item $\bm{0}$は$num$型を持ち、$\bm{true}$、$\bm{false}$は$bool$型を持つ
+	\item $num$型の項（式）$M$が与えられ得たとき、$pred(M)$と$succ(M)$は$num$型で、$zero?(M)$は$boolean$型である。
+	\item $Cond(conditional\ expression)$では、$condition\ L$が$bool$型、$branch\ M、N$が同じ型$t$を持つ。Condition自身もこれと同じ型$t$を持つ。
+	\item type assignmentに$x:t$がある状態で$t$に片付けされる$M$に対して、$\mu x:t.M$は同じ型$t$を持つ。
+\end{itemize}
+
+$\bm{Example}$
+
+PCFを利用する例として、下記のような式を考えることができる。
+\begin{eqnarray}
+	Minus \equiv \mu\ minus:\ num \rightarrow num \rightarrow num.\ \lambda x:num.\ \lambda y:num. \nonumber \\
+	if\ zero?(y)\ then\ x\ else\ minus(pred(x))(pred(y)) \nonumber
+\end{eqnarray}
+% TODO: 実際に一つ計算してみる
+
+複雑な関数を考えるときは、$local\ definition$を利用するのが有効だぞ。
+例えば、乗算の定義をする場合は、$local\ definition$として加算を定義しておくと楽だぞ。
+（なんかlocal definitionの仕方も色々ありそうな気がしているが、本書では下記のように書いていた。）
+
+\begin{align*}
+	& (\lambda plus:\ num \rightarrow num \rightarrow num. \\
+		&\ \ \ \ \ \ \ \mu times:\ num \rightarrow num \rightarrow num.\ \lambda x:num.\ \lambda y:num. \\
+			&\ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ zero?(y)\ then\ 0 \\
+			&\ \ \ \ \ \ \ \ \ \ \ \ \ \ else\ plus(x)(times(x)(pred(y))) \\
+	& )\ \mu plus:\ num \rightarrow num \rightarrow num.\ \lambda. x:num.\ \lambda y:num. \\
+		&\ \ \ \ \ \ \ if\ zero?(y)\ then\ x \\
+		&\ \ \ \ \ \ \ else\ plus(succ(x))(pred(y)) \\
+\end{align*}
+% x + x + x + x + x みたいな形にするイメージ
+% TODO: 実際に一つ計算してみる
+
+実際にこんな感じの式の計算例は、次のequational ruleの定義を与えた後に行うことができる。
+
+\nl
+$\bm{4.1\ Lemma}$
+\begin{itemize}
+	\item[1] If $H \vdash M : s$ and $H \vdash M : t$, then $s \equiv t$
+	\item[2] If $H, x:s \vdash M : t$ and $H \vdash N : s$, then $H \vdash [N/x]M:t$
+\end{itemize}
+
+これらは別ノートにまとめてあるのでそちらを参照。
+
+\newpage
+次に、PCFの$equational\ theory$を考える。
+$equational\ theory$は$\lambda$-calculusでやったTable2.2に加えて、Table4.2のものが追加される。
+まず復習として、以前やったEquational Ruleの復習。
+\nl
+
+$\bm{Equational\ Rule\ (Table\ 2.2)}$
+\hrulefill
+\begin{table}[htb]
+	\centering
+  \begin{tabular}{lclc}
+		Axiom & \inference{(H \triangleright M = N : t) \in T}{T \vdash (H \triangleright M = N : t)} \vspace{5mm} \\
+		Add & \inference{T \vdash (H \triangleright M = N : t)\ \ \ x \notin H}{T \vdash (H, x:s \triangleright M = N : t)} \vspace{5mm} \\
+		Drop & \inference{T \vdash (H, x:s \triangleright M = N : t)\ \ \ x \notin Fv(M) \cup F(N)}{T \vdash (H \triangleright M = N : t)} \vspace{5mm} \\
+		Permute & \inference{T \vdash (H, x:s, y:s, H' \triangleright M = N : t)}{T \vdash (H, y:s, x:s, H' \triangleright M = N : t)} \vspace{5mm} \\
+		Refl & \inference{H \vdash M : t}{T \vdash (H \triangleright M = M : t)} \vspace{5mm} \\
+		Sym & \inference{T \vdash (H \triangleright M = N : t)}{T \vdash (H \triangleright N = M : t)} \vspace{5mm} \\
+		Trans & \inference{T \vdash (H \triangleright L = M : t)\ \ \ T \vdash (H \triangleright M = N : t)}{T \vdash (H \triangleright L = N : t)} \vspace{5mm} \\
+		Cong & \inference{T \vdash (H \triangleright M = M^{\prime} : s \rightarrow t)\ \ \ T \vdash (H \triangleright N = N^{\prime} : s)}{T \vdash (H \triangleright M(N) = M^{\prime}(N^{\prime}) : t} \vspace{5mm} \\
+		$\xi$ & \inference{T \vdash (H, x:s \triangleright M = N : t)}{T \vdash (H \triangleright \lambda x:s. M = \lambda x:s. N : s\rightarrow t)} \vspace{5mm} \\
+		$\beta$ & \inference{H, x:s \vdash M:t\ \ \ H \vdash N :s}{T \vdash (H \triangleright (\lambda x:s. M)(N) = [N/x]M:t)} \vspace{5mm} \\
+		$\eta$ & \inference{H \vdash M :s \rightarrow t\ \ \ x \notin Fv(M)}{T \vdash (H \triangleright \lambda x:s. M(x) = M : s \rightarrow t} \vspace{5mm} \\
+  \end{tabular}
+\end{table}
+
+\hrulefill
+
+\newpage
+次に、PCFの$equational\ theory$は次のように与える。
+\nl
+
+$\bm{Equational\ Rule\ for\ Call\ by\ Name\ PCF}$
+\hrulefill
+\begin{table}[htb]
+	\centering
+  \begin{tabular}{lc}
+		PredZero & $\vdash (H \triangleright pred(0) = 0 : num)$ \vspace{5mm} \\
+		PredSucc & $\vdash (H \triangleright pred(succ(n)) = n : num)$ \vspace{5mm} \\
+		ZeroIsZero & $\vdash (H \triangleright zero?(0) = true : bool)$ \vspace{5mm} \\
+		SuccIsNotZero & $\vdash (H \triangleright zero?(succ(n)) = false : bool)$ \vspace{5mm} \\
+		IfTrue & \inference{H \vdash M : t\ \ \ H \vdash N : t}{\vdash (H \triangleright if\ true\ then\ M\ else\ N = M : t)} \vspace{5mm} \\
+		IfFalse & \inference{H \vdash M ; t\ \ \ H \vdash N : t}{\vdash (H \triangleright if\ false\ then\ M\ else\ N\ = N : t)} \vspace{5mm} \\
+		$\mu$ & \inference{H, x:s \vdash M : t}{\vdash (H \triangleright \mu x:t. M = [\mu x:t.M /x]M : t)} \vspace{5mm} \\
+		Cong & \inference{\vdash (H \triangleright M = N : num)}{\vdash (H \triangleright pred(M) = pred(N) : num} \vspace{5mm} \\
+		& \inference{\vdash (H \triangleright M = N : num)}{\vdash (H \triangleright succ(M) = succ(N) : num)} \vspace{5mm} \\
+		& \inference{\vdash (H \triangleright M = N : num)}{\vdash (H \triangleright zero?(M) = zero?(N) : bool)} \vspace{5mm} \\
+		& \inference{\vdash (H, x:t \triangleright M = N : t)}{\vdash (H \triangleright \mu x:t. M = \mu x:t. N: t)} \vspace{5mm} \\
+		& \inference{\vdash (H \triangleright L = L^{\prime} : boot)\ \ \ \vdash(H \triangleright M = M^{\prime}:t)\ \ \ \vdash(H \triangleright N : t)}{\vdash (H \triangleright if\ L\ then\ M\ else\ N = if\ L^{\prime}\ then\ M^{\prime}\ else\ N^{\prime} : t}
+  \end{tabular}
+\end{table}
+
+\hrulefill
+
+\begin{itemize}
+	\item 数値$n$の$successor$の$predecessor$は$n$になる。$0$のpredecessorは$0$になる。
+	\item 数値の$successor$に対する$zero?$は$false$、$0$のとき$true$
+	\item condは、conditionの項が$true$ならば、condition自体がfirst branchと等しくなり、falseのときはsecond branchと等しくなる。
+	\item recursionである、$\mu x:t$はrecursionそれ自体をbodyの全ての$x$の出現に代入することで得られる$unwinding(巻き戻し、再帰の意味かな？)$と等しくなる。
+	\item 上記のやつらはassociated congluence ruleを持つよ。
+\end{itemize}
+
+この$syntax$、$typing\ rule$, $equational\ rule$で $2\ -\ 1\ =\ 1$を示すとこんな感じになるような気持ち。（minusは先に出てきたもの）。
+
+% TODO: 書き直すか?
+\begin{eqnarray}
+	minus(succ(succ(0)))(succ(0)) & = & if\ zero?(succ(0))\ then\ succ(succ(0)) \nonumber \\
+	& \  & else\ minus(pred(succ(succ(0))))(pred(succ(0)))\nonumber\\
+	& = & minus(pred(succ(succ(0))))(pred(succ(0))) \nonumber \\
+	& = & if zero?(pred(succ(0)))\ then\ pred(succ(succ(0)))\nonumber\\
+	& \  & else\ minus(pred(pred(succ(succ(0)))))(pred(pred(succ(0))))\nonumber\\
+	& = & pred(succ(succ(0)))\nonumber\\
+	& = & succ(0)\nonumber\\
+\end{eqnarray}
+
+ただ、$equational\ rule$はあくまである前提のもとに成り立つ$equality$を定めているだけであって、上記の例のような計算の手法については述べていないので、上記の通り現時点でこの式変形による2-1=1はお気持ち。
+
+ということでここからはその計算の手法に当たる話をしていく。リダクションとか戦略とか、$Operational\ Semantics$, 操作的意味を与える、とかいう話。
+リダクションを定めると、ある式が与えられたときに定義したリダクションに基づいて評価することで、結果（それ以上リダクションされない形。$value$）を得ることができる！嬉しい！！
+
+
+\newpage
+Table4.3に今回決めた二項遷移関係（$\rightarrow$）を示す。これが今回定義するリダクション規則になる。
+ちなみにこれはApplicationのruleを見るとわかるが、Call-by-Nameの戦略になっている。（Applicationの右側（適用される側）を評価せず、そのままsubstitutionの処理に進んで評価が進んでいく。）
+\nl
+
+$\bm{Transition\ Rules\ for\ Call\ by\ name\ Evaluation\ of\ PCF}$
+\hrulefill
+\begin{table}[htb]
+	\centering
+  \begin{tabular}{cc}
+		\inference{M \rightarrow N}{pred(M) \rightarrow pred(N)} & $pred(0) \rightarrow 0$ \vspace{5mm} \\
+		$pred(succ(V)) \rightarrow V$ \vspace{5mm} & \inference{M \rightarrow N}{zero?(M) \rightarrow zero?(N)} \vspace{5mm} \\
+		$zero?(0) \rightarrow true$ & $zero?(succ(V)) \rightarrow false$ \vspace{5mm} \\
+		\inference{M \rightarrow N}{succ(M) \rightarrow succ(N)} & \inference{M \rightarrow N}{M(L) \rightarrow N(L)} \vspace{5mm} \\
+		$(\lambda x:t. M)(N) \rightarrow [N/x]M$ \vspace{5mm}  & $if\ true\ then\ M\ else\ N\ \rightarrow M$ \vspace{5mm} \\
+		$if\ false\ then\ M\ else\ N\ \rightarrow N$ \vspace{5mm} & \inference{L \rightarrow L'}{if\ L\ then\ M\ else\ N \rightarrow if\ L^{\prime}\ then\ M\ else\ N} \vspace{5mm} \\
+		$\mu x:t. M \rightarrow [\mu x:t. M/x]M$
+  \end{tabular}
+\end{table}
+
+\hrulefill
+
+$M \rightarrow^{*} V$であるとき、項$M$は値$V$にのみ評価される。
+ここで、$\rightarrow^{*}$は定義した$\rightarrow$のtransitive, reflexive closureである。
+また、valueは以下の項のどれかである。
+
+\begin{equation}
+	V\ ::=\ 0\ |\ true\ |\ false\ |\ succ(V)\ |\ \lambda x:t.M
+\end{equation}
+
+$V$の代わりに$U$とか$W$を使うよ。
+注意してほしいのは、全てのvalueはそれぞれに評価されるし、transition relationは決定的だということ。（上の定義に従って推移するという意味で決定的と言ってるのか？）
+
+\nl
+$\bm{4.2, 4.3\ Lemma}$
+\nl
+
+これらは別ノートにまとめてあるので、そちらを参照。
+Lemma4.2では、リダクションが一意に決まることを言っているのでそれなりに大切そう。てかこれ成り立たつようにうまく定義するものだと思っている。
+Lemma4.3は後で使う。
+
+\nl
+
+さて、リダクション規則が定まったので、先の例（minus）を例に取り上げて計算してみる。
+
+TODO: 書く
+
+ただ、実はこれってequalityをリダクションをごっちゃにしているよね。リダクションは定義によって導出できるけど、これ自身はイコールでつないでいいみたいな議論はしていない。
+しちゃいなよYou、ということでこれ。
+
+
+\nl
+$\bm{4.4\ Lemma}$
+\nl
+
+これらは別ノートにまとめてあるので、そちらを参照。
+PCFの式のリダクションと$equality$との整合性を示す感じ。
+Theorem4.4によってわかることは下記の２つで。
+\begin{itemize}
+	\item[1] $H \vdash M : t $と$H \rightarrow N$は$H \vdash N : t$を意味する（$Subject\ Reduction$）
+	\item[2] equationに対するtranslation relation（$\rightarrow$）の健全性
+\end{itemize}
+
+Section1.2のSimple Imperative Languageで話したが、場合によってはrelation $M \rightarrow^{*} V$は新しいruleのセットによってもうちょい直接的に記述できる（$natural (operational) semantics$というらしい）。
+$M \Downarrow V$と書いたとき、右側がterm, 左側がそのtermを評価した結果の$value$である。
+これはTranslation Relationみたいな1ステップの評価ルールというより、一気に評価していくイメージ（あってんのか？）。これからPCFでこれを考えていく。
+項のメタ変数としては、$L$, $M$, $N$を利用し、Valueのメタ変数としては$U$, $V$, $W$を使うとのこと。
+
+\newpage
+$\bm{Natural\ Rules\ for\ Call-by-name\ Evaluation\ of\ PCF}$
+\hrulefill
+\begin{table}[htb]
+	\centering
+  \begin{tabular}{cc}
+		$0 \Downarrow 0$ & $true \Downarrow true$ \vspace{5mm} \\
+		$false \Downarrow false$ \vspace{5mm} \\
+		\inference{M \Downarrow 0}{pred(M) \Downarrow 0} & \inference{M \Downarrow succ(V)}{pred(M) \Downarrow V} \vspace{5mm} \\
+		\inference{M \Downarrow V}{succ(M) \Downarrow succ(V)} & \inference{M \Downarrow 0}{zero?(M) \Downarrow true} \vspace{5mm} \\
+		\inference{M \Downarrow succ(V)}{zero?(M) \Downarrow false} & $\lambda x:s.M \Downarrow \lambda x:s.M$ \vspace{5mm} \\
+		\inference{M \Downarrow \lambda x:s. M^{\prime}\ \ [N/x]/M^{\prime} \Downarrow V}{M(N) \Downarrow V} & \inference{M_1 \Downarrow true\ \ M_2 \Downarrow V}{if\ M_1\ then\ M_2\ else\ M_3 \Downarrow V} \vspace{5mm} \\
+		\inference{M_1 \Downarrow false\ \ M_3 \Downarrow V}{if\ M_1\ then\ M_2\ else\ M_3 \Downarrow V} & \inference{[\mu x:t. M/x]M \Downarrow V}{\mu x:t. M \Downarrow V}
+  \end{tabular}
+\end{table}
+
+\hrulefill
+
+\begin{itemize}
+	\item Constantsはそれ自身に評価する
+	\item predecessorについては項を先に評価する。その結果がzeroならpredecessorもzeroだし、n + 1ならn
+	\item successorについても項を先に評価する、その結果nがならsuccessorはn + 1
+	\item test for zeroについても最初に項を評価し、結果が0なら値はtrueになり、successorなら値はfalseになる。
+	\item abstractionはそれ自身に評価する。applicationは項Mに項Nを適用する場合、項Mから先に評価する。もしこのとき項Mを評価した結果がabstractionだった場合は項Nを代入した結果を評価する。
+	\item conditionの場合はtestから評価する。その結果trueとなったばあいは、conditionの評価の値はfirst branchの評価の値になり、falseの場合はsecond branchの評価の値になる。
+	\item recursionの場合は、自分自身のbodyにある束縛変数に自分自身を代入して、その項を評価する。もしこの操作で結果があるとすれば、その評価の値＝recursionの評価の値になる。
+\end{itemize}
+
+\nl
+
+$\bm{4.5\ Lemma}$
+
+これは別ノートにまとめてあるのでそちらを参照。
+
+\nl
+\nl
+$\bm{TODO:\ ここがうまくまとまらない。。。うまくまとめたい。}$
+\nl
+\nl
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ここがうまくまとめられないぃぃぃぃぃぃぃぃ (p.110 中段以降)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% % TODO: 個々の文章、意訳したいけどnature of argumentsとは？
+% $\Downarrow$と$\rightarrow^{*}$はPCF termとvalueの間に同一の関係を定義している、というこのproofは2つのsemantic descriptionの形式のそれぞれが関係しているnature of argumentsの素晴らしい例を示している（?）
+%
+% Theorem4.4からbasic propertyなrelationの$\rightarrow$は構造に関する帰納法で証明される。
+% これがうまくいくのは、Table4.3で与えられるtransition semanticsのruleの仮定が、結論のsubtermにのみ関与するという意味でstructurally inductiveであるかららしい。
+% このようなpropertyを持ったtransition semanticsをこれらの理由から、$structural\ operational\ semantics$などと呼ぶらしい。
+%
+% % TODO: なんかinductionについてつらつら書いてある。。。
+% 今、$\rightarrow^{*}$のpropertyを示すために、structural inductionと評価の長さに関する帰納法を合体した。
+% これはFigure1.1のtransition semanticsを見ると図的に理解することができる（これは嘘）
+% 帰納法の仮定の一つが垂直でそれ以外は水平である？？？
+% 対象的に、natural semantics evaluationは一切水平なコンポーネントを持たない（Figure1.1）
+% そのため、Lemma4.5で見たように帰納法の仮定は全体的に垂直であり、評価木の高さに関する帰納法による。
+% 帰納法の仮定は一つしか必要とされていないとしても、natural semanticsのruleを含む事実は、通常termの構造に関する帰納法で証明することはできない。なぜなら、ruleの仮説で利用されるtermは、結果で利用されるtermのsubtermではないかもしれないから。
+%
+% PCFのnatural semanticsにおいてはまず再帰のruleで仮定が$\mu x: t. M$を言っているため間違っている。
+%
+% \begin{eqnarray}
+% 	\inference{[\mu x: t. M/x]M \Downarrow V}{\mu x:t. M \Downarrow V} \nonumber
+% \end{eqnarray}
+%
+% Table1.5のnatural semanticsはwhile loopの評価のruleで同じ声質を持っているためだめ。
+% table1.4は与えられるSimple Imperative Languageのtransition semanticsはこれを満たす。
+% 後述するtheoremにあるように、sufficiencyはnatural semantics styleの評価の高さに関する帰納法によって示され、その逆はstructural operational semanticsの後の構造に関する帰納法と、評価の長さに関する帰納法によって示される。
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\nl
+$\bm{4.6\ Theorem}$
+\nl
+
+これは別ノートにまとめてあるのでそちらを参照。
+
+\nl
+$\bm{4.7\ Corollary}$
+\nl
+
+これは別ノートにまとめてあるのでそちらを参照。
+
+\nl
+$\bm{Exercises}$
+
+これは別ノートにまとめてあるのでそちらを参照。
+
+\end{document}
+
+

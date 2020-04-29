@@ -67,7 +67,7 @@ abstractionにおける型タグが存在しないが、まぁそれ以外は比
 	\item この式では、termとしては、たくさんのproductsで成立している感じで、例えばAppl + Prodで構成される、$c_{=}(n, c_0)$は, 値$n$と$c_0$（定数の0）を二項演算=で比較している。
 \end{itemize}
 
-上記気持ちにより、まぁ確かにそれらしいsyntaxを決めて、それに対して評価方法が定義されていれば雰囲気計算できそうな気持ちはある。passionが大事。これはちょっとよくわからなかったが、なんかconstantsが'curried'typeであるとか適当なことを言うと、なんか知らないがproductを使わずに以下のようにかけるらしい。ちょっとわからん（すまん）。
+上記気持ちにより、まぁ確かにそれらしいsyntaxを決めて、それに対して評価方法が定義されていれば雰囲気計算できそうな気持ちはある。passionが大事。これはちょっとよくわからなかったが、なんかconstantsが'curried'typeであるとか適当なことを言うと、なんか知らないがproductを使わずに以下のようにかけるらしい。ちょっとわからん（すまん）。 $\rightarrow$ snumajirが教えてくれた。curry化のことらしい。なるほど。
 \begin{equation*}
 	\lambda n : C_{int}.\ c_{if}(c_{=}(n)(c_0))(c1)(c_{*}(n)(f(c_{-}(n)(c_{1}))))
 \end{equation*}
@@ -420,9 +420,11 @@ Lemma4.3は後で使う。
 
 \nl
 
-さて、リダクション規則が定まったので、先の例（minus）を例に取り上げて計算してみる。
+さて、リダクション規則が定まったので、先の例（minus）を例に取り上げて計算してみる。。。
 
-TODO: 書く
+\nl
+$\bm{すまん全部クソ真面目に計算するやつ手書きでやったけどこっちに書くのしんどかったので省略します。別ノートの冒頭に個人的な歴史的経緯からAddの例を書いたやつがあるので（minusでなくてすまん）気になったらそっちを見てください。定義どおりにやるだけなので難しくないです。}$
+\nl
 
 ただ、実はこれってequalityをリダクションをごっちゃにしているよね。リダクションは定義によって導出できるけど、これ自身はイコールでつないでいいみたいな議論はしていない。
 しちゃいなよYou、ということでこれ。
@@ -440,7 +442,7 @@ Theorem4.4によってわかることは下記の２つで。
 	\item[2] equationに対するtranslation relation（$\rightarrow$）の健全性
 \end{itemize}
 
-Section1.2のSimple Imperative Languageで話したが、場合によってはrelation $M \rightarrow^{*} V$は新しいruleのセットによってもうちょい直接的に記述できる（$natural (operational) semantics$というらしい）。
+Section1.2のSimple Imperative Languageで話したが、場合によってはrelation $M \rightarrow^{*} V$は新しいruleのセットによってもうちょい直接的に記述できる（$natural\ (operational)\ semantics$というらしい）。
 $M \Downarrow V$と書いたとき、右側がterm, 左側がそのtermを評価した結果の$value$である。
 これはTranslation Relationみたいな1ステップの評価ルールというより、一気に評価していくイメージ（あってんのか？）。これからPCFでこれを考えていく。
 項のメタ変数としては、$L$, $M$, $N$を利用し、Valueのメタ変数としては$U$, $V$, $W$を使うとのこと。
@@ -481,39 +483,21 @@ $\bm{4.5\ Lemma}$
 
 \nl
 \nl
-$\bm{TODO:\ ここがうまくまとまらない。。。うまくまとめたい。}$
+$\bm{TODO:\ すまんちょっとここはちゃんと理解できてないので解説してほしい。}$
 \nl
-\nl
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ここがうまくまとめられないぃぃぃぃぃぃぃぃ (p.110 中段以降)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% % TODO: 個々の文章、意訳したいけどnature of argumentsとは？
-% $\Downarrow$と$\rightarrow^{*}$はPCF termとvalueの間に同一の関係を定義している、というこのproofは2つのsemantic descriptionの形式のそれぞれが関係しているnature of argumentsの素晴らしい例を示している（?）
-%
-% Theorem4.4からbasic propertyなrelationの$\rightarrow$は構造に関する帰納法で証明される。
-% これがうまくいくのは、Table4.3で与えられるtransition semanticsのruleの仮定が、結論のsubtermにのみ関与するという意味でstructurally inductiveであるかららしい。
-% このようなpropertyを持ったtransition semanticsをこれらの理由から、$structural\ operational\ semantics$などと呼ぶらしい。
-%
-% % TODO: なんかinductionについてつらつら書いてある。。。
-% 今、$\rightarrow^{*}$のpropertyを示すために、structural inductionと評価の長さに関する帰納法を合体した。
-% これはFigure1.1のtransition semanticsを見ると図的に理解することができる（これは嘘）
-% 帰納法の仮定の一つが垂直でそれ以外は水平である？？？
-% 対象的に、natural semantics evaluationは一切水平なコンポーネントを持たない（Figure1.1）
-% そのため、Lemma4.5で見たように帰納法の仮定は全体的に垂直であり、評価木の高さに関する帰納法による。
-% 帰納法の仮定は一つしか必要とされていないとしても、natural semanticsのruleを含む事実は、通常termの構造に関する帰納法で証明することはできない。なぜなら、ruleの仮説で利用されるtermは、結果で利用されるtermのsubtermではないかもしれないから。
-%
-% PCFのnatural semanticsにおいてはまず再帰のruleで仮定が$\mu x: t. M$を言っているため間違っている。
-%
-% \begin{eqnarray}
-% 	\inference{[\mu x: t. M/x]M \Downarrow V}{\mu x:t. M \Downarrow V} \nonumber
-% \end{eqnarray}
-%
-% Table1.5のnatural semanticsはwhile loopの評価のruleで同じ声質を持っているためだめ。
-% table1.4は与えられるSimple Imperative Languageのtransition semanticsはこれを満たす。
-% 後述するtheoremにあるように、sufficiencyはnatural semantics styleの評価の高さに関する帰納法によって示され、その逆はstructural operational semanticsの後の構造に関する帰納法と、評価の長さに関する帰納法によって示される。
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+次の証明 $\bm{4.6\ Theorem}$ に関わってくる話。
+この証明では、$\Downarrow$と$\rightarrow^{*}$が、PCFとvalueの間に同じ関係を定義しているぞ、ということを証明する。
+なんか、これは良い nature of argument の例って書いてあったけど、nature of argumentって何？固有名詞？俺の読解ミスかな？
+\nl
+
+さて、Theorem4.4を振り返ってみると、これは$\bm{構造に関する帰納法}$によって証明できた。このinductionでうまくいくのは、Transition Rule for Call-by-Name PCF の定義のRuleの仮定が、その結論のsubtermになっているためである。このような性質を持つTransition Semanticsを$Structual\ Operational\ Semantics$とも言うらしい。
+
+さて問題はこっからで、次の証明を行う中で出てくるが、通常Natural Semanticsのルールを含むある事実の証明を行う場合、Structual Inductionのみで証明することはできない（らしい。ここがちゃんとわかっていない）。曰く、仮定がその結論のSubtermになっていないケース（PCFの場合は$\mu$-rule, まぁ確かにsubtermにはなっていない）があるためであるとか。
+
+そのため、構造に関する帰納法と、評価の長さに関する帰納法を同時に回すことでうまくやるよ、と書いてあったがなんでこれでやるといいのかもちゃんとわかっていない。マジですまない。教えて下さい。
+
+\nl
 
 \nl
 $\bm{4.6\ Theorem}$

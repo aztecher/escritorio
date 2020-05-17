@@ -71,7 +71,7 @@
 \begin{frame}\frametitle{概要}
 \begin{itemize}
 	\item FPGAを大規模データセンターにデプロイすることを考える。
-	\item このとき、FPGAからデータセンターのリソースをうまく利用するのはちょっとむずかしい。
+	\item このとき、{\color{red} FPGAからデータセンターのリソースをうまく利用する}のはちょっとむずかしい。
   	\begin{itemize}
 			\item オンボードのホストのリソースに関してはまぁ良い。
   		\item	問題はデータセンター内のリモートホストのリソースを利用することを考えたとき。
@@ -93,55 +93,140 @@
 	\item 大規模FPGAアプリケーションを構築するには複数のFPGAでコミュニケーションとったり、それ以外のリソースともやり取りできてほしいが、概ね以下のような問題がある。
 	\begin{itemize}
 		\item[1] 別ホストに対して、様々なリソースを、様々な通信方式で要求することはプログラムを非常に複雑にする。
-		\item[2] server-centricである。FPGA $\rightarrow$ SSD(Remote) は、FPGA $\rightarrow$ CPU(FPGA Host) $\rightarrow$ CPU(Remote Host) $\rightarrow$ SSD (Remote Host)
-		\item[3] リソースマルチプレクシングができない。これは開発者が処理を記述する必要がある。同じリソースを使用する複数FPGAが存在する場合、同時アクセスなど問題はより深刻化する。
+		\item[2] server-centricで、FPGAから直接的なリモートリソースの特定ができない。
+		\item[3] リソースマルチプレクシングができない。\\これは開発者が処理を記述する必要がある。\\同じリソースを使用する複数FPGAが存在する場合、同時アクセスなど問題はより深刻化する。
 	\end{itemize}
 \end{itemize}
 \pnote{
 }
 \end{frame}
 
-\begin{frame}\frametitle{DUA Overview}
-	% こちらの図をダイエットさせる。背景と目的の個数をあわせておきたい。
+
+\begin{frame}\frametitle{背景}
   \begin{figure}[htb]
-		\includegraphics[width=\linewidth]{fig/ez_FPGA_DC_Legacy.pdf}
+		\includegraphics[width=\linewidth]{fig/ez_FPGA_Base.pdf}
   \end{figure}
 \pnote{
 }
 \end{frame}
+
+% \begin{frame}\frametitle{DUA Overview}
+% 	% こちらの図をダイエットさせる。背景と目的の個数をあわせておきたい。
+%   \begin{figure}[htb]
+% 		\includegraphics[width=\linewidth]{fig/ez_FPGA_DC_Legacy.pdf}
+%   \end{figure}
+% \pnote{
+% }
+% \end{frame}
 % =====================================================================================
 
 % ============================ 各背景に対する問題提起と理想的なアーキテクチャ ===============================
 \section{問題の解析と理想のアーキテクチャ}
 \begin{frame}\frametitle{問題1}
 	\begin{itemize}
-		\item hoghoge
+		\item 異なるリソース／異なるリソースロケーション／異なる通信方式
+			\begin{itemize}
+				\item Resource: DRAM, CPU, GPU,  FPGA, ...
+				\item Location: ローカルホスト、リモートホスト
+				\item Stack: PCIe, network, ...
+			\end{itemize}
+		\item FPGAアプリケーションが何を利用するかによるが非常にプログラムが複雑になる。
+		\item 表は各リソース、Stackの実装に何行程度必要かを示す図。
 	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=1.0]{fig/table1.pdf}
+  \end{figure}
+	\pnote{
+	}
+\end{frame}
+
+\begin{frame}\frametitle{問題1へのアプローチ}
+	\begin{itemize}
+		\item Applicationからは共通のインターフェースを利用するように抽象化
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[width=\linewidth]{fig/ez_FPGA_common_communication_interface.pdf}
+  \end{figure}
 	\pnote{
 	}
 \end{frame}
 
 \begin{frame}\frametitle{問題2}
 	\begin{itemize}
-		\item hoghoge
+		\item Server-Centric（Server中心のnamespaceによるアクセシビリティの悪さ）
+			\begin{itemize}
+				\item 例えばPCIeアドレスはそのホスト内部からの利用のみが可能なnamespace
+			\end{itemize}
+			\item 例えばFPGAからリモートのSSDにデータを書き込みたい場合
+			\begin{itemize}
+				\item[1] local CPUで動作しているdaemon processへデータ転送
+				\item[2] remote CPUで動作するdaemon processへデータ転送
+				\item[3] リモートのSSDに書き込みをする
+			\end{itemize}
+			\item このような記述をリソースコミュニケーション種類ごとに記述する。
 	\end{itemize}
+	\pnote{
+	}
+\end{frame}
+
+\begin{frame}\frametitle{問題2へのアプローチ}
+	\begin{itemize}
+		\item global unified naming scheme
+		\item DCネットワークリソースを一意に特定するような命名をしてリソース特定可能にする。
+		\item またこの名前からリソースに対してアクセスできるようなRoutingを実装する
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[width=\linewidth]{fig/ez_FPGA_unified_naming_scheme.pdf}
+  \end{figure}
 	\pnote{
 	}
 \end{frame}
 
 \begin{frame}\frametitle{問題3}
 	\begin{itemize}
-		\item hoghoge
+		\item 通信におけるリソースマルチプレクシングが貧弱
+			\begin{itemize}
+				\item 例えばPCIeを利用するが、アクセス先はDMA/GPU/FPGAと異なる場合
+				\item FPGA開発者はこれを適切にプログラムでハンドルする。
+				\item Applicationと密結合になってしまう
+			\end{itemize}
+		\item 更に、同じリソースへの同時アクセスケースのハンドリングも。。。
+			\begin{itemize}
+				\item ２つのFPGA上のApplicationから同じSSDに書き込む場合
+			\end{itemize}
 	\end{itemize}
+	\pnote{
+	}
+\end{frame}
+
+\begin{frame}\frametitle{問題3へのアプローチ}
+	\begin{itemize}
+		\item underlying network serviceの実装
+		\begin{itemize}
+		  \item unified naming schemeを利用したリソースのrouting
+			\item multiplexing機能も実装
+		\end{itemize}
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[width=\linewidth]{fig/ez_FPGA_mux_routing.pdf}
+  \end{figure}
 	\pnote{
 	}
 \end{frame}
 
 \begin{frame}\frametitle{Desicred Communication Architecture}
 	\begin{itemize}
-		\item hogehoge
-		\item fugafuga
+		\item まとめるとFPGAの世界に以下のようなアーキテクチャを導入したい
+			\begin{itemize}
+				\item common communication interface
+				\item global, unified naming scheme
+				\item underlying network service
+			\end{itemize}
+		\item これを実装したものが{\color{red} Direct Universal Access (DUA)}である。
 	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[width=\linewidth]{fig/figure1b.png}
+  \end{figure}
 	\pnote{
 	}
 \end{frame}
@@ -154,8 +239,8 @@
 	\begin{itemize}
 		\item \bm{目的} : FPGAの世界に理想的なコミュニケーションアーキテクチャ（DUA）を導入する。
 		\item[1] 共通のコミュニケーションインターフェースの導入
-		\item[2]  全てのリソースに対してアドレスを付加し、リソースの場所に関わらずアクセス可能にする。
-		\item[3]  ルーティングやリソースマルチプレクシングできるようにネットワークサービスを導入。
+		\item[2] 全てのリソースに対してアドレスを付加し、リソースの場所に関わらずアクセス可能にする。
+		\item[3] ルーティングやリソースマルチプレクシングできるようにネットワークサービスを導入。
 	\end{itemize}
   % \begin{figure}[htb]
   %   \centering
@@ -169,12 +254,14 @@
 % ============================= DUA overview ==========================================
 
 % まず外観を掴んでもらう。
-% その後に問題に照らしながら各部分の解説をしていく
-
 \section{DUA overview / DUA components}
 \begin{frame}\frametitle{DUA Overview}
+	\begin{itemize}
+		\item 結果的にこのような実装によりDUAを実現します
+		\item 以降、この図 + $\alpha$を部分ごとに確認していきます
+	\end{itemize}
   \begin{figure}[htb]
-		\includegraphics[width=\linewidth]{fig/ez_DUA_high_overview.pdf}
+		\includegraphics[scale=0.6]{fig/figure2.png}
   \end{figure}
 \pnote{
 }
@@ -183,19 +270,164 @@
 % =====================================================================================
 
 % =========================== DUA Components ===============================
+\begin{frame}\frametitle{Resource Address Format}
+	\begin{itemize}
+		\item まずは{\color{red} global, unified naming scheme}の話から。
+		\item DUAではDC内でグローバルにユニークなアドレスを各リソースにつける
+		\item ただし新しいアドレスフォーマットを考えるのは懸命ではない $\rightarrow$ 様々なリソースの既存の命名法を活用する。
+		\item UID = server ID : device ID : resource INST
+			\begin{itemize}
+				\item server ID : IP address
+				\item device ID : 各サーバ内でuniqueなID
+				\item resource INST: 各デバイスにおける既存のaddressing scheme
+			\end{itemize}
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=1.0]{fig/figure3.pdf}
+  \end{figure}
+\pnote{
+	話の順番が列挙順と変わりますがまずは、global, unified naming schemeの話からします。
+	というのも、これは共通インターフェースの話と、overlay networkの話両方に絡んでくるからです。
+}
+\end{frame}
+
 
 \begin{frame}\frametitle{DUA Communication Interface}
 	\begin{itemize}
-		\item hogehoge
+		\item 次に、{\color{red}Common Communication Interface}の話
+		\item 共通のインターフェース(API)
+		\item プログラマはこのインターフェースを利用することのみを考えればいい。
+			\begin{itemize}
+					\item アプリケーションではBSDソケットのようなノリで取り扱える。
+					\item Connection setup/close primitive (CONNECT/LISTEN/ACCEPT/CLOSE)
+					\item Data transmittion primitive (SEND/RECV, READ/WRITE)
+					\item socketプログラミングみたいに両方で開いて送受信してクローズみたいな形のコード記述
+			\end{itemize}
+	\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{DUA underlay network}
+	\begin{itemize}
+		\item 最後に、{\color{red}Underlying network service}の話（これが長い。。。）
+		\item 大きく分けてControl Plane / Data Planeに分かれている
+		\item これらの協調作業によりRoutingやResource Multiplexing を実現する
 	\end{itemize}
 \pnote{
 }
 \end{frame}
 
 
+% 各通信インターフェースのStackはそのまま利用し、これはあくまでDUAの話というとをごっちゃにしないように伝える
 \begin{frame}\frametitle{DUA Control Plane}
 	\begin{itemize}
-		\item hogehoge
+		\item まずDUAのControl Plane
+		\item CPU Control Agent (CPU CA)とFPGA Control Agent (FPGA CA)
+			\begin{itemize}
+				\item 複雑なcontrol logicはCPU CAで行う
+				\item ローカルリソース監視やcontrol plane commandをData Planeへ運ぶ役割
+			\end{itemize}
+		\item CPU / FPGA CAで{\color{red} Resource Management, Routing Management, Connection Management}を行う
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=0.4]{fig/ez_DUA_ControlPlane.pdf}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+% cpu caで管理しているのはdevice idのみ?
+% ip addressはまぁ共通だし。
+% リソース内のアドレスは管理せずデバイスに制御させると書いてある。
+\begin{frame}\frametitle{Resource Management}
+	\begin{itemize}
+		\item FPGA CAがオンボードのリソースに関する情報をCPU CAに伝える
+		\item CPU CAは上記 + その他メモリ/GPU情報などを集めUIDを割り当てる
+			\begin{itemize}
+				\item device IDはホストでユニークに降るため、CPU CAはdevice IDとローカルリソースのmappingを持っている。
+				\item もちろんplug-in/plug-out/failureなどでリソース変更が起きた際にはmappingのupdateを行う。
+			\end{itemize}
+		\item 現実装ではまだnaming serviceはないためUID指定でリソース利用する
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=0.4]{fig/ez_DUA_ControlPlane_ResourceMangement.pdf}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+% ここでいうroutingとは。。。?
+% もちろんDC Networkでのroutingではない。これは今回の例でいうとLTL（UDP/IP上に定義されるプロトコルでFPGA間の通信に利用されるもの）
+% routingとは各サーバー内の接続情報から、各サーバー内部のrouting pathを決定する部分。つまりDUA overlayの部分のルーティングという意味になりそう
+% CPU CAは各サーバーのinterconnection tableを保持する。全てのローカルリソースに関するinterconnect情報で、UIDを利用する? (正確にはCPU CAはdeviceIDを保持しているのでUIDがわかっている、という感じか)。
+% 第一カラム : src FPGA
+% 第二カラム : dst resource (can accessed from this FPGA through which underlying communication stack)
+% つまり1 : Nの構成テーブル
+
+% table upload
+% 1. FPGA CAがcommunication stack と physical interfaceの情報を自サーバーのCPU CAにuploadする。
+% 2. CPU CAは(同一ホストの)異なるFPGA間のinterconnectonを決定し、interconnection tableを更新する。↑
+% 3. あるFPGAがDC network fabricとの接続性を報告したとき、他サーバのあるリソースの情報の意味を持つエントリーを挿入する（これはいまいちspecificでないがこれだけの情報があればいいのか?）
+
+% このinterconnection tableでターゲットリソースへのrouting pathが用意に計算できる。 (packetは後で出てくる)
+% 1. destination UIDから、serverID, deviceIDを確認し、同一FPGAからdirect connectionできるかどうかを確認し、interconnection tableにあるstackを利用してリソースアクセスする。
+% 2. そうでない場合、interconnection tableから他のFPGAを介すようなrouting pathを見つける。
+
+% ex.  Figure5にて。
+% FPGA1 (192.168.0.2:4) が他のサーバーに位置しているFPGA3(192.168.11...5:3)のapplicationに通信したいいとき、ルーティングパスとしては以下が計算される。
+% FPGA1 -(FPGA Connect)-> FPGA2 -(LTL)-> FPGA3
+
+% lookupの方針によっては本来望ましい最適なpathを通らない可能性がある気はする。到達はしそうだが。
+% -> いや言い方が悪いな、もしlookup時にstep1が早い想定だと、latencyが上る可能性がある、くらいの温度感か。なのでlookup速度の差くらいはありそう程度
+\begin{frame}\frametitle{Routing Management}
+	\begin{itemize}
+		\item 各サーバー内のリソースの接続情報からrouting pathを決定する。
+		\item FPGA CAがcommunication stack と physical interfaceの情報をCPU CAに伝える
+		\item CPU CAは各サーバーごとにinterconnection tableを保持、管理しこれをもとにrouting pathを決める
+			\begin{itemize}
+				\item ただしDC network fabricとの接続性を確認した場合は、他サーバのあるリソースを意味するエントリーを挿入する。
+			\end{itemize}
+		\item FPGA1(192.168.0.2:4) $\rightarrow$ FPGA3(192.168.11.5:3/On Remote Host)のルーティングパスは、\\ {\color{orange} FPGA1 $\rightarrow$ (FPGA Connect) $\rightarrow$ FPGA2 $\rightarrow$ (LTL) $\rightarrow$ FPGA3}
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=1.0]{fig/figure5.png}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+% DUAでは各FPGA communicationはconnectionとして抽象化され、<srcUID:dstUID>のペアで識別され、これもControl Planeで管理される。
+% step1. Connection phase
+%   1. アクセスコントロールポリシーを確認する。src FPGA applicationがdst resourceにアクセス可能かの確認をする。
+%   2. OKならdestへのrouting pathを計算し、routing pathに沿ったフォワーディングテーブルをFPGA data planeに配る。
+%   3. data planeはこれに従ってforwardingするため、適切なcommunication stackを利用することができる。
+%   4. routing pathの種類によって CPU CAは異なるアクション（？<- 多分これVirtual Networkの意味での用語のactionで使っている気がする）をデータプレーンとunderlying stackに流すことができる
+%			1. dst resourceがdirect connected -> CPU CAは単純に対応するforwarding tableをデータプレーンに流す。
+%			2. dst resourceがdirect connectedではないが同一サーバー -> CPU CAはルーティングパスに沿ってローカルFPGAのstackを呼び出しconnectionをsetupする。
+%        冷静に考えてこのFPGA間のconnectionもないので実装したのでは？という気持ちがある。
+%        ex.
+%        Figure5にて、FPGA2がFPGA1のオンボードDRAMにアクセスするために接続開始したとき、CPU CAはFPGA2とFPGA1の間にFPGA Connect connectionをsetupする。
+%			3. dst resourceがリモートサーバのリソース -> CPU CAはリモートのCPU CAと強調してFPGA間のconnection tunnelをLTLなどでセットアップする
+%
+% step2. established phase
+%		1. step1が全てうまく行くと、DUA connection establishedになる。
+%   2. establishedになるとapplicationにその旨の通知が飛ぶ。
+%   3. いくつかのstackでは多くの同時接続がサポートされていなかったりする（LTLは64しかない）が、同一のrouting pathを持つ複数のDUA connectionは同一のtunnel connectionで多重化できる
+%      それ以外にも、各traffic classで複数のtunnelを用意しtraffic schedulingを容易にしたりもできる。
+%
+% step3. connecton close phase
+%		1. applicationがconnectionをcloseするとき、DUAはstack tunnel connectionをクローズする（もちろん多重化されてなければ）
+%		2. 対応するフォワーディングテーブルをdata planeから削除する。
+%   3. もしデータパス(targeted resource, physical interface, comunication stack)で何かしらの失敗が発生したら影響のあるDUA connectionを削除しapplicationに通知する。
+
+\begin{frame}\frametitle{Connection Management}
+	\begin{itemize}
+		\item Connectionの管理もControl Planeで行う。
+		\item まずアクセス可能かどうかをpolicyで判断し、良ければrouting pathを決定してそれに沿ったforwarding tableをデータプレーンに配る
+		\item Stackによっては大量同時接続が非サポートのこともある（LTLは64しかない)が、複数のDUA connectionを同一のtunnel connectionでマルチプレクシングできる
+		\item ApplicationがコネクションをクローズしたときにはStackのtunnel connectionをクローズしforwarding tableをdata planeから削除する。
+		\item コネクション成立/失敗時にアプリケーションに通知する
 	\end{itemize}
 \pnote{
 }
@@ -204,11 +436,169 @@
 
 \begin{frame}\frametitle{DUA Data Plane}
 	\begin{itemize}
-		\item hogehoge
+		\item 次にDUAのData Plane
+		\item overlay, stack, underlayからなる。
+			\begin{itemize}
+				\item overlay  : 異なるApplicationとStackの間のデータ転送を行うRouter
+				\item stack    : 既存のcommunication stack
+				\item underlay : stack と physical interfaceをつなぎ、異なるstack用に物理インターフェース上でmultiplexingする
+			\end{itemize}
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=0.5]{fig/ez_DUA_DataPlane.pdf}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+
+\begin{frame}\frametitle{DUA Overlay}
+	\begin{itemize}
+		\item overlay部は更に、Connector, Switch Fabric, Stack Translatorに分かれる。
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=1.0]{fig/figure6.png}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+% うまく短い言葉でまとまらないな。。。
+% connectorはforwarding tableを持っている
+% forwarding tableはUIDとswitch fabric の output portのmapping情報
+%
+% connector
+% 1. encapsle data to DUA message
+% 2. forwarding tableをlookupして、switch fabricを通してdestination connectorにmessageを転送するためにswitchのoutput portを決定する。
+% 3. forwarding tableはControl PlaneからDUA Connectorへと配信される。
+\begin{frame}\frametitle{DUA Overlay - Connector}
+	\begin{itemize}
+		\item App/Stack と Switch fabricの間に存在する。
+		\item 主に２つの機能がある。
+			\begin{itemize}
+				\item データ転送 : I/O interfaceからのデータをencapし(DUA message)switch fabricへ転送する / switch fabricからのDUA messageをdecapし後続へ。場合によってはFPGA CAへ。
+				\item forwarding tableの管理とlookup : forwarding tableに沿って転送先portを決定する
+				\item Access control : CPU CAでpolicyに基づいたrouting path / forwarding tableが決まり、policy準拠のpathのみが許される。
+			\end{itemize}
 	\end{itemize}
 \pnote{
 }
 \end{frame}
+
+
+\begin{frame}\frametitle{DUA Overlay - Connector}
+	\begin{itemize}
+		\item Connectorを図にするとこんな感じ
+		\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=0.5]{fig/ez_DUA_DataPlane_Connector.pdf}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+
+% losslessにし、というがどういうことや
+% application data buffer / stack data bufferって?
+\begin{frame}\frametitle{DUA Overlay - Switch Fabric}
+	\begin{itemize}
+		\item App/Stack connector間に存在する
+		\item incoming connectorからdestination connectorへmesageをswitchする
+		\item バッファの話など細かい話があったがイマイチ何が言いたいのかわからなかった。。。
+	\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{DUA Overlay - Stack Translator}
+	\begin{itemize}
+		\item Stack側ConnectorとStackの間に存在する
+		\item DUA interfaceを実際のStackのinterfaceへ変換する
+		\item Control Planeがconnection設立時にstack translatorに対応するtranslation tableを各stack translatorへ送る
+		\item translation tableは、DUA message headerとunderlying stack headerのmapping情報でこれを元に変換する
+		\item multiplex stack tunnelもここで制御できるらしい
+	\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{DUA Overlay - Stack Translator}
+	\begin{itemize}
+		\item Stack Translatorを図にするとこんな感じ
+		\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=0.5]{fig/ez_DUA_DataPlane_StackTranslator.pdf}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+
+\begin{frame}\frametitle{Communicaton Stack}
+	\begin{itemize}
+		\item 現実装では、既存の4つのStack(LTL,DMA,FPGA-Host,DDR)をData Planeに統合した。
+		\item DUAはend-to-endのtransport protocolにLTLを採用している。
+			\begin{itemize}
+				\item LTL (Lightweight Transport Layer)
+				\item FPGA間のネットワークを介した通信でUDP/IP上に定義されるプロトコルらしい。
+				\item DCネットワークの通信をFPGAから行うために利用し、輻輳制御はdisableらしい。
+			\end{itemize}
+		\item ただ、後で独自実装したFPGA Connect というStack (こちらはPCIe接続しているFPGA間での通信）も利用している
+	\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{FPGA Connect Stack}
+	\begin{itemize}
+		\item 単一サーバー上にPCIeで接続された異なるFPGA間で動作する複数Application間のdirect communicatonをサポートする
+		\item スライドでは詳細は省略。
+		\item Microsoft氏はこれもDUAのData Planeに組み込んでいるよう。
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=0.5]{fig/ez_FPGA_Connect.pdf}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+% 複数スタックに対して、physical interfaceは1（ex. PCIe)なのでそのへんの管理とか、attach protectionとか
+\begin{frame}\frametitle{DUA Underlay}
+	\begin{itemize}
+		\item Stack と Physical Interfaceの間に存在
+		\item 主に以下のような処理を行う
+			\begin{itemize}
+				\item 複数Stack間のリソース管理       % 複数のStackが同一のphysical interfaceを利用することになるのでその管理
+				\item 外部の攻撃からのStack保護       % 基本的にcontrol planeのpolicyベースのfilterがかかるので外からの意図しない攻撃はstack側に流れない
+				\item Traffic CheckとFPGA CAへの報告  % stack側からのdataについても、もしstackがおかしなpacketを流したらそれをdropしてFPGA CAに報告をする
+				\item Multiplexer/Demultiplexer       % stack -> physical interfaceはmultiplexerとして、physical interface -> stackはdemultiplexerとして機能する
+			\end{itemize}
+	\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{DUA Underlay}
+	\begin{itemize}
+		\item DUA Underlayを図にするとこんな感じ
+		\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=0.5]{fig/ez_FPGA_Underlay.pdf}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+% これは最後のまとめかな
+\begin{frame}\frametitle{DUA Overview}
+  \begin{figure}[htb]
+		\includegraphics[width=\linewidth]{fig/ez_DUA_high_overview.pdf}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+
 % ==========================================================================
 
 % ======================== 評価 (Microbenchmark / Application Benchmark)==============================
@@ -216,617 +606,193 @@
 \section{Evaluation}
 \begin{frame}\frametitle{Evaluation}
 	\begin{itemize}
-			\item hogehoge
+			\item MicroBenchmarkとApplicationBenchmarkで性能を測定
+			\item Testbetとしては下図
+				\begin{itemize}
+					\item Server : Supermicro SYS-4028GR-TR2 x 2 (一部の検証ではDell R720) with 40Gps NIC
+					\item FPGA : Altera Stratix V D5, 172.6K ALMs, 4G DDR3-1600 DRAM, PCIe Gen3 x8, 40GbE QSFP+ x2
+					\item Switch : Arista 706 0X
+					\item OS : Windows Server 2012 R2
+				\end{itemize}
 	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=1.0]{fig/figure9.pdf}
+  \end{figure}
 \pnote{
+	% Altera Stratix V D5はミドルレンジFPGAらしいほんまか？
 }
 \end{frame}
 
-\begin{frame}\frametitle{Microbenchmark}
+\begin{frame}\frametitle{MicroBenchmark : FPGA Area Cost}
 	\begin{itemize}
-			\item hogehoge
+			\item DUAの実装に関わるFPGAリソースの消費の関係が下の表
+			\item 4 stack (4-port switch, 4 connectors, 4 stack translator) には9.29\%
+			\item Application側に4port追加しても19.86\%
+			\item Underlayは4 stack - 3 physical interfaceで0.25\%
+			\item Area costとしては低いし許容範囲\\（ハイエンドFPGAでは無視できるレベル）
 	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=1.0]{fig/figure10.pdf}
+  \end{figure}
 \pnote{
 }
 \end{frame}
 
-\begin{frame}\frametitle{Application Benchmark}
+\begin{frame}\frametitle{MicroBenchmark : Switch Fabric Performance}
 	\begin{itemize}
-			\item hogehoge
+			\item スイッチファブリックの性能評価
+				\begin{itemize}
+    			\item 全switch portはtraffic generator/result checkerのapplicationに接続する
+    			\item 混雑したトラフィックシナリオを想定してメッセージ送信
+    			\item メッセージサイズは32Bから4KBまで変化
+    			\item switch fabricは300MHzで動作、理想のスループットは9.6GBps
+    			\item 2時間のテストでLatency / Throughputを計測。
+				\end{itemize}
+			\item スループットは理論上の最大値に到達 \& レイテンシは低い
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=1.0]{fig/table2.pdf}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+% これちょっと難しいな（最大周波数とThroughput）
+% 1sで490M回cycleする。
+% 1sで490Mmessageのmatchingを行う
+% 1message = x Byte
+% Throughput (Byte/s) = 490M * x
+% (逆に) 10000 (MBps (10GBps)) / 490(MBps) = x = 20.4くらい
+% messageサイズの情報がなかった
+\begin{frame}\frametitle{MicroBenchmark : Routing Table Performance}
+	\begin{itemize}
+			\item おそらくConnectorでのForwarding Table matchingの部分だと思う。。。
+			\item 詳細がないが、Table entryに対するmatching engineを組んだとのこと。
+			\item tableエントリと1portあたりのエリアコスト、及び最大周波数をまとめた結果が下
+				\begin{itemize}
+					\item 32エントリのとき1portあたり0.83\%エリアコスト、4-8portで考えると3.3\%-6.6\%程度
+					\item 
+					\item エントリ数が増加するとエリアコストはリニアに増加するが、最大周波数の減少はそれほど低下しない
+					\item このときのメッセージサイズの情報が書いてなかったが、message-per-secondのThroughputがclock frequencyとおなじになる実装らしく、1portあたり10GBps位出るらしいので、計算するとだいたい1message=20Byte程度と思われる（多分）
+				\end{itemize}
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=1.0]{fig/table3.pdf}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{Microbenchmark : Latency Overhead}
+	\begin{itemize}
+		\item FPGA1からFPGA1$^{*}$へのデータ送信
+			\begin{itemize}
+				\item[1] FPGA1 $\rightarrow$ FPGA4へFPGA Connect でデータ送信
+				\item[2] FPGA4 $\rightarrow$ FPGA4$^{*}$へLTLでデータ送信
+				\item[3] FPGA4$^{*}$ $\rightarrow$ FPGA1$^{*}$へFPGA Connectでデータ送信
+			\end{itemize}
+		\item end-to-endの通信レイテンシを各レイテンシごとに確認
+		\item Stackレイテンシに比べ、DUAのレイテンシ無視できるくらいはかなり低い
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=1.0]{fig/figure11a.png}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{MicroBenchmark : Handling Multiplexing}
+	\begin{itemize}
+			\item DUAのMultiplexing性能の測定
+				\begin{itemize}
+					\item 同一のPCIe interfaceでHost DRAMにデータを書き込むApplication1, 2, 3(weight 1:1:2)を時間をずらしながら実行
+					\item 0sでApp 1を実行
+					\item 1sでApp 2を実行すると、App 1と合計してTotal Throughputに達成するように平等にスケジュールされる
+					\item 2sでApp 3を実行すると、上記重みに従ったThroughputに分かれる。
+				\end{itemize}
+			\item 期待されるThroughputへの切り替わりもかなり早い
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=1.0]{fig/figure11b.png}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+% 今回の彼らの実装では並列度をパラメータ化している
+\begin{frame}\frametitle{ApplicationBenchmark : Deep Crossing}
+	\begin{itemize}
+			\item Bingで使用されているらしいdeep neural networkらしい
+			\item サービス応答に関わるレイテンシが重要
+			\item モデル構造のうちの一部がベクトル計算集約的な部分のためそれをFPGAにoffloadし処理時間を短縮する
+			\item 並列度をパラメータ化すると処理完了時間が短縮できるがロジックリソース消費量が増える
+			\item 今回モデル内DVM全てを並列度64で実装し、最初2つと後ろ2つを分けてFPGAx2で実装する
+			\item 接続方式はFPGA Connect / LTL で確認
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=1.0]{fig/figure12.pdf}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{Application Benchmark : Deep Crossing}
+	\begin{itemize}
+			\item シングルFPGAはArea Cost的に並列度32でしか実装できない。それとの比較
+			\item シングルFPGAでは発生しないCommunication Latencyが発生している
+			\item 一方DVMごとの並列度が上がっているので、処理時間は向上しレイテンシはFPGA Connectでは約42\%、LTLでは約37\%削減
+			\item 2つのFPGAボードを繋ぐために必要な追加のOpenCLコード数は26行だった
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=1.0]{fig/table4.pdf}
+  \end{figure}
+  \begin{figure}[htb]
+		\includegraphics[scale=1.0]{fig/table5.pdf}
+  \end{figure}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{ApplicatonBenchmark : Multi-Regular-Expression Matching}
+	\begin{itemize}
+		\item IDS(侵入検知システム)では典型的に正規表現が利用される
+    \item DUA上の3FPGAで構成されるfast multi-regular-expression matching プロトタイプを作成し測定
+		\item 219の正規表現ルールを作成し、3分割(73rules/stg)してステージ分けし、それぞれのステージを各FPGAで実装した。
+		\item 並列度は32, 1cycleで8bit文字列をマッチングし、入力文字列がステージで照合完了して初めて次のステージに送られる
+		\item 接続方式はFPGA Connect, 比較対象はCPUを通じたFPGA間のデータ転送時、及びCPUでのマッチング性能。
 	\end{itemize}
 \pnote{
 }
 \end{frame}
 
+% これはちゃんと結果を吟味しないと行けない
+% Latencyに関してはFPGAで処理するところが共通している２つに関しては、FPGA間の通信速度の差という小さい差しか出ない
+% Throughputに関してはハードウェア直接接続の恩恵を受けている。
+\begin{frame}\frametitle{ApplicatonBenchmark : Multi-Regular-Expression Matching}
+	\begin{itemize}
+		\item LatencyとThroughputを測定
+		\item Throughput : 文字列が大きくなると顕著になり、CPUを通じたデータ転送と比較しても2倍程度出る
+		\item Latency : CPUを通じたデータ転送と比較してもあまり変化がないが、CPU処理と比べると3倍近く高速になっていることがわかる
+		\item 3つのFPGAをつなぐために必要な追加のOpenCLコード数は30行未満だった
+	\end{itemize}
+  \begin{figure}[htb]
+		\includegraphics[scale=1.0]{fig/figure13.png}
+  \end{figure}
+\pnote{
+}
+\end{frame}
 
-% ====================================================================================================
+\section{結論}
+\begin{frame}\frametitle{Conclusion}
+	\begin{itemize}
+		\item FPGAのDC利用を考えたときに出てくる各種問題を解決するような理想的なアーキテクチャを考え実装した
+		\item FPGAからDCネットワークのリソースを容易に利用できるようになった。
+		\item 実装に関わるArea Costも低く、性能もLatency/Throughputの観点から非常に良いことがわかった。
+	\end{itemize}
+\pnote{
+}
+\end{frame}
 
-% % 説明順序変えていいのでは?
-% \begin{frame}\frametitle{FreeFlow Network Library (FFL)}
-% 	\begin{itemize}
-% 		\item Appコンテナ内部でAppに \\
-% 			    FreeFlow transparentを提供する
-% 		\item ただし、{\color{orange} App内部からは通常のRDMA \\
-% 			    Verbs library を利用しているようにしか見えない}
-% 		\item Appはコードの修正なし \\
-% 			    （もしくはほんの少しの修正）に利用できる
-% 		\item FFRとやり取りする
-%   \end{itemize}
-%   \begin{textblock*}{0.4\linewidth} (230pt, 100pt)
-%   	\centering
-% 		\includegraphics[width=30mm]{fig/figure4-ffl.png}
-%   \end{textblock*}
-% \pnote{
-% 	まずはFreeFlow Network Libraryです。
-% 	これはアプリケーションが利用するRDMAのVerbs libraryを改良した感じのものになります。
-% 	ただこれは後ほど説明しますが、Application側が利用するAPIにはほぼ手を付けない形で改良するため、通常のRDMA通信コードから、FreeFlowの通信にするためには、ライブラリの差し替えを行うだけで、アプリケーション側でコードを変更する必要がほとんどないようになっています。
-% 	FFLは次に説明するFreeFlow Routerとやり取りを行います。
-% }
-% \end{frame}
-%
-% \begin{frame}\frametitle{FreeFlow Router (FFR)}
-% 	\begin{itemize}
-% 		\item 各ホストでシングルインスタンス（コンテナ）として起動し、そのホストの各コンテナにvirtual networkの提供を行う
-% 		\item FFLとのchannelをコントロールすることで、data planeのリソースポリシー（QoSなど）を実装する
-% 		\item FFOと連携し、IPアドレスの割り当てなどの処理を行ったりもするらしい。（これはいまいち明記されてなかった）
-%   \end{itemize}
-%   \begin{figure}[htb]
-%     \centering
-%     \includegraphics[scale=1]{fig/figure4-ffr.png}
-%   \end{figure}
-% 	\pnote{
-% 		FreeFlow Routerはホスト毎に一つコンテナで起動し、そのホストに対してvirtual networkの機能提供を行う。
-% 		FFLとのIPC channelをコントロールすることでデータプレーンのリソースポリシーなどを実現します。
-% 		次に説明するFFOを連携することでIPアドレスなどのタスク処理なども行うらしいです。
-% 		FFRが提供するvirtual networkというのがRDMAのみの話ではないのかとも思ったのですが、ちょっと論文の中身では触れられていなかったです。
-% 		ただ実際、Githubの実行例を見ると docker runのタイミングでweaveネットワーク指定できるみたいで、任意のコンテナオーバーレイネットワークソリューションを使用できそうでな形になっていて、TCP/IPで通信をすることもできるみたいなのでそのへんのやり取りのことかなと思っています。
-% 	}
-% \end{frame}
-%
-% % ApplicationとFFRのメモリマップの保持だと思うが、これはTransparentの詳細の内容になってしまう。
-% \begin{frame}\frametitle{FreeFlow Orchestrator (FFO)}
-% 	\begin{itemize}
-% 		\item コントロールプレーンを司る \\
-% 			   （らしいが論文を通してあまり説明が無い。。。）
-% 		\item コンテナ通信のコントロールや \\
-% 			    リアルタイムモニタリングなど。
-% 		\item その他にもユーザ定義情報をストアする。
-%   \end{itemize}
-%   \begin{textblock*}{0.4\linewidth} (230pt, 100pt)
-%   	\centering
-%   	\includegraphics[width=30mm]{fig/figure4-ffo.png}
-%   \end{textblock*}
-% 	\pnote{
-% 		FFOはコントロールプレーンを司るようなコンポーネントらしいんですが紙面の都合上、FFOの詳細はあまり書いてなかったです。
-% 		コンテナ間通信のコントロールやリアルタイムモニタリングなどを行うようです。
-% 		FFOではZooKeeperを利用してユーザ定義の情報。例えばIPアサインの情報や、アクセスコントロール、リソース共有のポリシー、メモリに関する情報などを管理するそうです。
-% 	}
-% \end{frame}
-%
-% % ここの話は性能に関わるのでいる
-% % RPCの話はまぁしなくていいだろう
-% \section{Communication channel between FFL and FFR}
-% \begin{frame}\frametitle{Communication Channel between FFL and FFR}
-% 	\begin{itemize}
-% 		\item FFLとFFRの間のCommunication Channelについて。
-% 		\item FFL側でAppが行ったRDMAリクエスト（APIコール）を、FFR側で模倣する必要がある。
-% 		\item 2つの方式を考えた。
-% 		\begin{itemize}
-% 			\item File Descriptorを利用する。(Unix domain socketによるIPC)
-% 			\item Fastpathを利用する。(Shared memoryによるIPC)
-% 		\end{itemize}
-% 		\item 以降特に断りがない場合、FreeFlowはFastpathによる方式だと思っていただければ。
-% 	\end{itemize}
-% 	\pnote{
-% 		アプリケーションがFFL側で実行したRDMAのAPIコールを、FFR側で実行する必要があります。
-% 		というのも、アプリケーションがコールした内容を、FFR経由でそのホストのPhysical NICに同様のリクエストを必要があるからです。
-% 		つまりあるコンテナから別のコンテナに対してAPI実行をバイパスする必要がある、ということをする。
-% 		直感的に考えつく方法としてRPCがあるかと思います。
-% 		今回は、次に説明する2種類の方法で実現します。
-% 		１つ目は、File Descriptorをうまく変更する方法で、言ってしまえばUnix domain socketによるIPCになります。
-% 		２つ目は、Fastpathという手法で、これはイメージとしてはShared memoryによるIPCになります。
-% 	}
-% \end{frame}
-%
-% % Queuenの話が出てきちゃった。。。
-% \begin{frame}\frametitle{Verbs forwarding via File Descriptor}
-% 	\begin{itemize}
-% 		\item APIコール自体をRPCのように模倣するのではなく、NIC fdに対して行われる要求をFFR側で模倣する。（{\color{orange}そのためApp側の変更は少ない}）
-% 		\item コンテナ内部のNIC fdをUnix domain socketに差し替える。もう片方の終端をFFRにすることでFFLの内容をFFRに伝える。
-% 		\item Unix Domain SocketベースのIPC
-% 	\end{itemize}
-%   \begin{figure}[htb]
-%     \centering
-%     \includegraphics[scale=1]{fig/figure7-bc.png}
-%   \end{figure}
-% 	\pnote{
-% 		まずはFile Descriptorをうまく変更する方式についてです。
-% 		Verbs Libraryはレイヤ構造になっていて、特にApplication側は結構複雑な構造体のポインタがたくさん出てくる感じになっているので、RPCで行おうとするとかなり深いDeepCopyなどをしないと行けなくて、速度面で問題になってしまいます。
-% 		ただ、NICファイルディスクリプタに対して行われる要求部分は比較的単純になっているらしく、ここをUnix domain socketに差し替え、もう片方の端点をFreeFlow Routerにするようにすれば、FreeFlow Routerに対してNICファイルディスクリプタに対して実行される内容がFFRに伝わることになるので、FFRはそれと同じことをPhysical NICに対して行ってあげる、という手法になります。
-% 		このように、うまくレイヤ構造になっているライブラリの低い部分を差し替えるため、アプリケーション側としては通常のAPIコールをするだけでよいようになっている。
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{File Discriptor方式の欠点}
-% 	\begin{itemize}
-% 		\item レイテンシが大きい。ラウンドトリップタイムを計測したらかんたんに$5\mu$sを超える。
-% 		\item レイテンシセンシティブなアプリケーションでは致命的らしい。
-% 		\item ただし、CPUはほとんど使わない $\rightarrow$ ボトルネックの解消にCPUリソースを少しだけ拝借する設計 \bm{{\color{red} Fastpath}} を考えた
-% 	\end{itemize}
-% 	\pnote{
-% 		ただしこの方式はレイテンシがどうしても大きくなってしまうため、レイテンシセンシティブなアプリケーションではまだ微妙です。
-% 		この方式の良い点はCPUをほとんど利用しない点なのですが、逆にこのボトルネックを解消するためにCPUリソースを少し利用する設計が、次に説明するFastpathになります。
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{Fastpath between FFL and FFR}
-% 	\begin{itemize}
-% 		\item FFLとFFRでメモリを共有する方式。
-% 		\begin{enumerate}
-% 			\item まずFFRがCPUを回し、FFLからのリクエスト、すなわちメモリなにか書かれないか確認する。
-% 			\item リクエストを受け取ったらFFRは直ちに処理する、その際FFLもCPUを回しレスポンスを確認する。
-% 			\item レスポンスが帰ってきたら直ちに処理し、FFL側はCPUを手放す。
-% 	  \end{enumerate}
-% 		\item shared memoryによるIPC
-% 	\end{itemize}
-%   \begin{figure}[htb]
-%     \centering
-%     \includegraphics[scale=1]{fig/figure8.png}
-%   \end{figure}
-% 	\pnote{
-% 		Fastpathは言ってしまえば、shared memoryを利用するIPCになります。
-% 		まずFastpathでは、FFLとFFRでメモリをshareしておきます。
-% 		FFR側ではCPUを（おそらく）pinningし、shared memoryの内容を確認します。
-% 		FFL側ではリクエスト内容をメモリに書き、その内容を受け取った、FFRが直ちにそのリクエスト内容を処理します。
-% 		このタイミングでFFL側でもCPUを利用して、レスポンスを待ち受けます。
-% 		FFRから同様にレスポンス内容がメモリに書かれると、それがFFLに渡り、処理されます。
-% 		FFL側では処理し終わったら、CPUを手放します。
-% 		このようにshared memoryを利用してプロセス間通信をします。
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{Fastpath方式の欠点と対策のための実装}
-% 	\begin{itemize}
-% 		\item CPU を消費する。（メモリチェックが必要）
-% 		\begin{itemize}
-% 			\item 1FFR（つまり1ホスト）で1CPUのみ利用する。複数コンテナの着信確認は1CPUで行うようにデザインした。
-% 			\item non-blockingな関数のときにのみ利用されるなどの制限を設けたため、FFL側でのCPU利用時間は極めて小さい。
-% 		\end{itemize}
-% 		\item FFOはホスト上にレイテンシセンシティブなアプリケーションが無いことを知っている場合、FastpathとCPUの利用を止めることができる。
-% 	\end{itemize}
-% \pnote{
-% 	Fastpathのメリットはレイテンシが小さいことですが、デメリットはもちろんCPUを消費することです。
-% 	実装的にできる限りCPUの利用を削減するために、いくつか制限を設けているようです。
-% 	１つ目は、1つのFFR、つまり1ホストでは1CPUのみを利用するように、複数コンテナの着信確認を1CPUでおおなうようなデザインにしたということです。
-% 	２つ目は、non-blockingな関数の場合にのみ利用するなどの制限を設け、FFL側でのCPU利用時間は極めて少なくしたということです。
-% 	また、FFOが、ホスト上にレイテンシセンシティブなアプリケーションが存在しないことを確認できる場合はFastpathとCPUの利用を止めるようにできるそうです。
-% 	その判定は、起動しているコンテナの内容で判断すると一言書いてありましたが、詳細はあまりわからなかったです。
-% }
-% \end{frame}
-%
-% \section{Control \& data plane policies}
-% \begin{frame}\frametitle{Control \& data plane policies}
-% 	\begin{itemize}
-% 		\item FreeFlowではコントロール／データプレーン両方のオペレーションが可能。
-% 		\item 下記のような一般的なコントロール／データプレーンポリシーを適用できる。
-% 		\begin{itemize}
-% 			\item 帯域幅の制御
-% 			\item フローの順位付け
-% 			\item リソース使用の制御
-% 		\end{itemize}
-% 		\item 紙面の都合上、詳細ではないもののcontrol planeの例とdata planeの例を一つづつ挙げてくれている。
-% 	\end{itemize}
-% 	\pnote{
-% 		次にコントロールプレーン、データプレーンのポリシーに関する話です。
-% 		これは論文的にも必要最低限しか書いてなく、「紙面の都合で割愛する」という言葉が結構出てきていました。
-% 		FreeFlowでは基本的にコントロールプレーン／データプレーンの両方のオペレーションが可能で、一般的なポリシーの適用は可能であると記述がありました。
-% 		挙げられていたものとしては、帯域幅の制御や、フローの順位づけ、リソースの制限などです。
-% 		基本的にRDMAはメッセージ単位の通信になるため、そのレベルでの制限はつけられるというような肌感です。
-% 	  コントロールプレーンの例とデータプレーンの例を簡単ですが挙げてくれていました。
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{Control plane policy example}
-% 	\begin{itemize}
-% 		\item 各コンテナが作成できるQP（Queue Pair : RDMA通信において端点に対応するもの）の数に制限をつけることができる。
-% 		\item RDMAにおいて、大量にQPを作成すると性能に影響することが知られている。
-% 		\item コンテナ単位でこのQP数の制御を行うことができる。
-% 	\end{itemize}
-% 	\pnote{
-% 		まずコントロールプレーンのポリシーの例です。
-% 		RDMAにおける通信の端点（TCPとかUDPでいうsocketみたいなもの）にQueue Pairというのがあるんですが、各コンテナが作成できるQPの数に制限をつけることができます。
-% 		一般にRDMAではこのQPの数が膨大になると性能に影響することが知られているようで、これを各アプリケーションが起動するコンテナ単位でリミットを設けてハンドリングすることができます。
-%
-% 		(理論的にQPは一つのHCA（コントローラデバイス）ごとに2^24個作れるものの、メモリの制限で4万〜7万個くらいがせいぜいらしい)
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{Data plane policy example}
-% 	\begin{itemize}
-% 		\item per-flowのレートリミットをかけることができるとのこと。
-% 		\item FFRに簡単なトークンバケットのデータ構造を実装しており
-% 		\begin{enumerate}
-% 			\item アプリケーションがQPを作成したときにFFOにポリシーをチェック
-% 			\item 予め設定されていたレート制限を持つトークンバケットをQPに関連付け
-% 			\item アプリケーションがリクエスト送信要求をするたびにFFRが送信していいかハンドリング
-% 		\end{enumerate}
-% 		\item これはあくまで一例で、実装の仕方は柔軟にできるらしく、APIも提供しているらしいが割愛していた。
-% 	\end{itemize}
-% 	\pnote{
-% 		次にデータプレーンのポリシーの例です。
-% 		フローごとにレートリミットをかけることができるようです。
-% 		FFRの中に簡単なトークンバケットのデータ構造を実装していて
-% 		まず、アプリケーションがQueue Pairを作成したときにFFOにポリシーチェックをし、
-% 		予め設定されていたレート制限を持つトークンバケットをQueue Pairに関連付けて、
-% 		アプリケーションがリクエスト送信要求をするたびに、FFRがトークンバケットを確認し送信するかどうかをハンドリングする
-% 		という流れでレートリミットを実装する形になります。
-% 		ただ、この実装はあくまで今回の論文用の一例らしく、実際にはもっと自由に実装できるようにAPIの提供などを行っているようです。
-%
-% 		このようにして、コントロールプレーンやデータプレーンにポリシーを適用することができます。
-% 	}
-% \end{frame}
-%
-%
-% \section{評価}
-% \begin{frame}\frametitle{構成}
-% 	\begin{enumerate}
-% 		\item Infiniband
-% 		\begin{itemize}
-% 			\item CPU : Intel Xeon E5-2620 2.10GHz 8-core $\times$ 2
-% 			\item RAM : 64GB
-% 			\item NIC : 56Gbps Mellanox FDR CX3
-% 			\item OS  : Ubuntu 14.04 (3.13.0-129-generic)
-% 		\end{itemize}
-% 		\item RoCE
-% 		\begin{itemize}
-% 			\item CPU : Intel Xeon E5-2609 2.40GHz 4-core
-% 			\item RAM : 64GB
-% 			\item NIC : 40Gbps Mellanox CX3 NIC
-% 			\item OS  : Ubuntu 14.04 (4.4.0-31-generic)
-% 		\end{itemize}
-% 	\end{enumerate}
-% 	\pnote{
-% 		評価に利用するサーバー構成としては2種類を整えた。
-% 		1つ目はInfinibandで通信する構成のもの、2つ目はRoCEで通信する構成のものになります。
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{Microbenchmark: Throughput and Latency}
-% 	\begin{itemize}
-% 		\item SEND/WRITEのlatency, bandwidthを測定
-% 		\item ベンチマーク測定用ツールはFreeFlow上で{\color{orange}コードの変更なしに実行できた}
-% 	\end{itemize}
-% 	\pnote{
-% 		RDMAのSEND/WRITEのlatency, bandwidthを測定しました。
-% 		ベンチマーク測定用のツールはFreeFlow上でコードの変更なしに実行できたそうです。
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{Microbenchmark: Throughput}
-% 	\begin{itemize}
-% 		\item 2種類のtestbedでRDMA SEND/WRITEのスループットを測定。
-% 		\item 1GBのデータを2KB〜1MBの単位で分割して転送している。
-% 		\item Host-RDMAはベアメタル + RDMAの性能
-% 		\item message size $\geq$ 8KBの場合、Infiniband/RoCEともにベアメタルの性能と同じになる。
-% 		\item (WRITEのデータはREADよりわずかに良いらしいが論文からは省略されている。)
-% 	\end{itemize}
-%   \begin{figure}[htb]
-%     \centering
-%     \includegraphics[scale=1]{fig/figure9.png}
-%   \end{figure}
-% 	\pnote{
-% 		まずはスループットについて、先程述べた2種類の構成で測定したものを、それぞれベアメタル+RDMAの場合と比較した図がこちらの図になります。
-% 		この図は、READの結果ですが、Writeの結果もほぼ同様になったそうで、論文には掲載されていませんでした。
-% 		測定時は1GBのデータを2KBから1MBの単位で分割して転送しています。（横軸）
-% 		メッセージサイズが8KByte以上の場合はInfiniband / RoCEともにベアメタルの性能と同じになっています。
-% 		8KByte未満のところはサイズが細かすぎて帯域が飽和していないだけのようで、実際に2CPUをFFRに利用するとHost-RDMAと同じような値になったようです。
-% 	}
-% \end{frame}
-%
-%
-% \begin{frame}\frametitle{Microbenchmark: Throughput}
-% 	\begin{itemize}
-% 			\item 同時稼働コンテナ数（flow数）を512にスケールアップした場合においてもグラフ。
-% 			\item 増加させてもほぼ一定の性能を維持している。（コンテナのスケールにも強い）
-% 			\item このときの帯域幅は各フローで均等に分散していることも確認した。
-% 			\item （このグラフのHost-RDMAは一体なんなのかはよくわからない。。。）
-% 	\end{itemize}
-%   \begin{figure}[htb]
-%     \centering
-% 		\includegraphics[scale=1]{fig/figure11.png}
-%   \end{figure}
-% 	\pnote{
-% 		同時稼働するコンテナペア（フロー数）を最大512まで増加させても、全てのフローの集約スループットはほぼ一定の性能を維持していること、及びこのときの帯域幅は各フロードで均等に分さんしていることも測定されました。
-% 		FreeFlowでコンテナを増加させても問題ないことがわかります。
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{Microbenchmark: Latency}
-% 	\begin{itemize}
-% 		\item 64B, 256B, 1KB, 4KBのメッセージを送信し、レイテンシを測定した。
-% 		\item WRITEのほうが、SENDよりレイテンシが少なく、FreeFlowとベアメタルの間のギャップも小さい。
-% 		\item これはFFLとFFRの間のIPCの違いによるレイテンシの差。
-% 		\item とはいえSENDの場合であっても余剰レイテンシは1.5$\mu$s程度。
-% 	\end{itemize}
-%   \begin{figure}[htb]
-%     \centering
-% 		\includegraphics[scale=1]{fig/figure10.png}
-%   \end{figure}
-% 	\pnote {
-% 		次に、レイテンシについてです。
-% 		こちらはInfinibandの構成で測定しており、64Byte, 256Byte, 1KByte, 4KByteのメッセージ送信のレイテンシを測定しました。
-% 		こちらに関してはWRITEとSENDの両方の結果を掲載していました。
-% 		WRITEのほうがSENDに比べレイテンシが少なっく、FreeFlowとベアメタルのギャップも小さいです。これは今回のスライドでは説明を省いていますが、RDMAの通信方式によりFFLとFFRの間で起こるIPCに違いがあり、その部分のレイテンシが影響しているためです。
-% 		とはいっても、SENDの場合であってもHost-RDMAに比べ余剰のレイテンシは1.5$\mu$s程度です。
-% 		}
-% \end{frame}
-%
-% \begin{frame}\frametitle{Microbenchmark: Latency}
-% 	\begin{itemize}
-% 		\item ちなみに、1.5$\mu$sってどれくらい？
-% 		\item ネットワークのone hop : 0.55$\mu$s
-% 		\item TCP stack : least 10$\mu$s
-% 		\item TCP virtual network latency : 40$\mu$s以上（彼らのテストでは）
-% 	\end{itemize}
-% 	\pnote{
-% 		ちなみに1.5$\mu$sってどれくらいかというのも丁寧に書いてくれていました。
-% 		大体、ネットワークのワンホップにかかる時間が0.55$\mu$s程度なので、これが比較対象として上がってくるくらいの速度のようです。
-% 		TCP stackは最低でも10$\mu$s程度、TCP virtual network latencyは40$\mu$s程度にもなるそうなので感覚的喉の程度の速度かはわかっていただけるかと思います。
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{Microbenchmark: CPU overhead}
-% 	\begin{itemize}
-% 		\item Fastpath enableの場合とそうでない場合は実際どのくらいレイテンシに差が出るか。
-% 		\begin{itemize}
-% 			\item Fastpathだと2.4$\mu$sだが、そうでない場合は17.0$\mu$sまで上昇する。
-% 		\end{itemize}
-% 	\item Throughput測定時（このときどのパターンでも帯域はフルに使っており、message sizeは1MB）のCPU UtilizationはやはりLowCPU（disable Fastpath）のほうが断然良い。
-% 	\item {\color{orange}ワークロードによって使い分けるのがベスト}
-%   \end{itemize}
-%   \begin{figure}[htb]
-%   	\centering
-% 		\begin{tabular}{c}
-% 			\begin{minipage}{0.4\hsize}
-%   			\includegraphics[scale=1]{fig/table3.png}
-%   		\end{minipage}
-% 			\begin{minipage}{0.4\hsize}
-%   			\centering
-%   			\includegraphics[scale=1]{fig/figure12.png}
-%   		\end{minipage}
-% 		\end{tabular}
-%   \end{figure}
-% 	\pnote{
-% 		また、CPUオーバーヘッドに関しても測定しておく。
-% 		Fastpathを用する場合とそうでない場合のレイテンシとCPU coreの利用率を見るとこちらのようになっています。
-% 		まずレイテンシの観点から行くとHost-RDMAが1.8$\mu$sである一方、Fastpathだと2.4$\mu$s、LowCPU（これは名言はなかったですが、おそらくfdを利用する方式）では17.0$\mu$s程度になってしまいます。
-% 		一方で、FastpathはCPUを1つフルに使用しますが、LowCPUでは全然利用しないことがわかります。
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{Microbenchmark: Rate limiter and Performance Isolation}
-% 	\begin{itemize}
-% 		\item rate limiterの性能を検証した
-% 		\item Infinibandのtestbedで、異なるホストのコンテナ間で単一のフローを開始した。
-% 		\item flow rateに制限をかけ、帯域幅を1Gbps〜40GBpsまで変更して測定した。
-% 		\item 複数コンテナペア間でそれぞれに制限をかけても想定通り動いた。
-% 	\end{itemize}
-%   \begin{figure}[htb]
-%     \centering
-% 		\includegraphics[scale=1]{fig/figure13.png}
-%   \end{figure}
-% 	\pnote{
-% 		rate limitに関しても検証を行い、データプレーンポリシーがうまく適用されているかの検証も行う。
-% 		frow rateに制限をかけて、帯域幅を変更しながら検証したところ理想的な値を推移することがわかった。
-% 		この実験を、複数コンテナペア間でリミットを変更しながら確認しても問題なく動くことがわかった。
-% 	}
-% \end{frame}
-%
-% % 個々らへん理由とかはちゃんと言えるようにする。（書いてある。m）
-% \begin{frame}\frametitle{Microbenchmark: TCP socket over RDMA}
-% 	\begin{itemize}
-% 		\item 本説とは少しずれる気がするが、socket-based application（rsocket）についても利益をもたらすよという話。
-% 		\item iperfでTCP throughputを、NPtcpを利用してTCP latencyをそれぞれ計測した。({\color{orange}これらも変更の必要はなかった}）
-% 		\item Weaveと比べると常に早く、Throughputでホストに勝てないのはsocketとverbsの変換部分のoverhead。
-% 	\end{itemize}
-%   \begin{figure}[htb]
-%     \centering
-% 		\includegraphics[scale=1]{fig/figure14.png}
-%   \end{figure}
-% \pnote{
-% 	rsocket - RDMA socket APIのこと。
-% 	socket-level APIとしてRDMAを提供してくれているプロトコルで、通常のsocket callと同様の取り回しでRDMAを利用できる。
-% 	内部的にはsocketとverbsの変換処理を行っているらしく、Host-TCPほどの性能は出ないものの、Weaveよりは性能が出ている。
-%
-% 	rsocketを利用した性能の検証も行ったようです。
-% 	iperfでTCPのスループット、NPtcpでTCPのレイテンシをそれぞれ計測したところ、virtual nnetworkであるWeaveと比較すると常に早く、Host-TCPには勝てないくらいの性能にはなった。
-% 	Host-TCPに負けている理由はsocketとverbsの間の変換に関するoverheadが原因だということでした。
-% 	}
-% \end{frame}
-%
-%
-% \begin{frame}\frametitle{Real-world application}
-% 	\begin{itemize}
-% 		\item TensorflowとSparkを利用して機械学習とデータアナリティクスの性能を確認した。
-% 		\item 比較対象はHost-RDMA（これに近づくほど理想的）、Host-TCP, Weaveの三種類。
-% 		\item これらはすべてInfiniband構成で実行した。
-% 	\end{itemize}
-% 	\pnote{
-% 		ここからは現実的なアプリケーションを取り上げて性能検証の話をしていきます。
-% 		今回はTensorflowとSparkを取り上げ、機械学習とデータ・アナリティクスのアプリケーションの性能を測定しました。
-% 		Infinibandの構成で行い、比較対象はHost-RDMA、Host-TCP、Weaveの三種類です。
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{Tensorflow}
-% 	\begin{itemize}
-% 		\item 3台のサーバ上でRDMA対応のTensorflowを実行。（{\color{orange}変更は一行}）
-% 		\item 各サーバにはNVIDIA GTX 1080Ti $\times$ 3がそれぞれ搭載されており、一基がmasterかつparameterサーバ, それ以外がworkerサーバ。
-% 		\item 2種類のtraining workloadを実行する
-% 		\begin{itemize}
-% 			\item Convolutional Neural Network : 画像認識用途
-% 			\item Recurrent Neural Network : 音声認識用途
-% 		\end{itemize}
-% 	\end{itemize}
-% 	\pnote{
-% 		まずはtensorflowの性能検証から話します。
-% 		3台のサーバー上でRDMA対応のtensorflowを実行します。
-% 		各サーバにはGPUが搭載されており、一基がmasterかつparameterサーバ、2基がworkerサーバーの構成です。
-% 		training workloadとして、2種類、CNNとRNNを実行しています。
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{Tensorflow: CNN}
-% 	\begin{itemize}
-% 		\item 3種類のモデル（ResNet-50, Inception-v3, AlexNet）をtraining dataとしてImageNet dataを利用。
-% 		\item 分散トレーニングにおいてネットワークパフォーマンスがボトルネックになる。
-% 		\begin{enumerate}
-% 			\item Host-RDMAとHost-TCPの比較をするとRDMAのほうが1.8〜3倍程度良い。
-% 			\item FreeFlowとWeaveを比較するとより大きい差がでている。(Alexnetに関しては14.6倍ほどRDMAのほうが良い)
-% 		\end{enumerate}
-% 		\item FreeFlowの性能はHost-RDMAに切迫している！(Alexnetは少し高いがこれはノイズだろうとのこと)
-% 	\end{itemize}
-%   \begin{figure}[htb]
-%     \centering
-% 		\includegraphics[scale=1]{fig/figure15-a.png}
-%   \end{figure}
-% \pnote{
-% 	まずはCNNの方の結果を話します。
-% 	モデルとして利用したのは3種類で、トレーニングデータとしてはImageNetのデータを利用したとのことです。
-% 	分散トレーニングをするわけですが、結果からどのモデルに関しても同じ傾向が見られるため、ネットワークパフォーマンスがボトルネックになっていることがわかります。
-% 	Host-RDMAとHost-TCPを比較するとRDMAのほうが1.8〜3倍程度早いです。
-% 	また、FreeFlowとWeaveを比較すると更に大きい差がでています。
-% 	そのようななか、FreeFlowはHost-RDMAに迫る性能が出ていることがわかります。
-% }
-% \end{frame}
-%
-% \begin{frame}\frametitle{Tensorflow: RNN}
-% 	\begin{itemize}
-% 		\item エンコーダ／デコーダとか隠れ層とかの設定の話があったがちょっと良くわからなかった。。。
-% 		\item 各訓練ステップに費やされた時間をCDFにしたグラフ
-% 		\item CNNの場合と同様に、FreeFlowはHost-RDMAに切迫しており、Weaveに比べて8.7倍くらいの性能が出ている
-% 	\end{itemize}
-%   \begin{figure}[htb]
-%     \centering
-% 		\includegraphics[scale=1]{fig/figure15-b.png}
-%   \end{figure}
-% 	\pnote{
-% 		次にRNNの方の結果です。
-% 		RNNの設定部分の話はイマイチわかりませんでした。。。
-% 		こちらは各訓練ステップに費やされた時間をCDFグラフにしたものです。
-% 		CNNの場合と同様の傾向を示していて、FreeFlowはHost-RDMAに迫る性能が出ています。
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{Spark}
-% 	\begin{itemize}
-% 		\item 2つのサーバーでSparkを実行。片方にはmaster, slaveのcontainer, もう片方にはslave containerで動作。
-% 		\item Sparkに同梱されている、\textit{GroupBy}と\textit{SortBy}のベンチマークで計測した。
-% 		\item 結果的に、Tensorflowと同様の結果になり、ネットワーク性能がアプリケーション性能に大きく影響しているのがわかる。
-% 		\item FreeFlowはHost-RDMAに切迫しており、Weaveに比べて1.8倍の性能がでる。
-% 	\end{itemize}
-%   \begin{figure}[htb]
-%     \centering
-% 		\includegraphics[scale=1]{fig/figure16.png}
-%   \end{figure}
-% 	\pnote{
-% 		次にSparkの結果について話します。
-% 		こちらは2つのサーバーでSparkを実行し、片方にはmaster, slaveのコンテナ, もう片方にはslaveのコンテナで動作させたそうです。
-% 		Sparkに同梱されているGroupByとSortByというベンチマークで計測したようです。
-% 		結果をみると、こちらもtensorflowと同様の結果になっていることがわかります。
-% 		こちらでもFreeFlowはHost-RDMAに迫る性能が出ていることがわかります。
-% 	}
-% \end{frame}
-%
-%
-% \section{Discussion}
-% \begin{frame}\frametitle{CPU overhead / Congestion Control}
-% 	\begin{itemize}
-% 		\item CPU overhead
-% 		\begin{itemize}
-% 			\item 今回はperformanceためにあえて許容した。
-% 			\item CPUがやるべき仕事をhardwareにオフロードできれば解決は可能かもね。
-% 			\item future workの一つ
-% 		\end{itemize}
-% 		\item Congestion Control
-% 		\begin{itemize}
-% 			\item RDMA NICに輻輳制御メカニズムは入っており、FreeFlowはそれに準拠する。
-% 		\end{itemize}
-% 	\end{itemize}
-% 	\pnote{
-% 		最後にこの方式でいくつか議論になりそうな話に関してまとめて議論しておきます。
-% 		まず、CPUオーバーヘッドについては今回はあえてレイテンシ改善のために許容しました。
-% 		もしうまくハードウェアにオフロードできれば解決はできるかもねという言葉とともに、今後の課題としていました。
-%
-% 		輻輳制御に関してはRDMA NIC側に輻輳制御メカニズムが入っており、FreeFlowはHW NICとしてそれを利用するため、そちらに準拠することになります。
-% 	}
-% \end{frame}
-%
-% % TODO: ここは再読
-% \begin{frame}\frametitle{Security}
-% 	\begin{itemize}
-% 		\item FFRで各コンテナのメモリ状態を取りまとめているから、同一ホストだしIPC領域スキャンすれば確認できるのでは？
-% 		\begin{itemize}
-% 			\item FFRは個々のQPに対して独立して共有メモリバッファを作成するため、IPC領域をスキャンしても他のコンテナの情報は読み取れない.
-% 		\end{itemize}
-% 		\item memory keyの問題（？）。説明がないのでわからなかったが、RDMAの問題なのでFreeFlowで別段悪化はしないらしい。
-% 	\end{itemize}
-% 	\pnote{
-% 		次にセキュリティー的な問題についてです。
-% 		FFRでは各コンテナのメモリを共有するから、IPC領域スキャンすると別のコンテナのメモリ状態見れるのではという問題が考えられますが、FFRでは個々のQueue Pairに対して独立して共有メモリバッファを作成するため、スキャンしても他のコンテナ情報などを読み取ることはできなくなっています。
-%
-% 		また、これは私がわからなかったんですが、memory keyの問題があるよと書いてありました。ただこれに関してはRDMAの問題なのでFreeFlowでどうこうという話ではないよね、とのことでした。
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{Container migration}
-% 	\begin{itemize}
-% 		\item offline migration（shutdown $\rightarrow$ move $\rightarrow$ reboot）可能。
-% 		\item FFR／FFOによりIPアドレスは変わらないので、rebootしたらRDMA connectionを再確立させることができる。
-% 		\item live migrationはできない。
-% 	\end{itemize}
-% 	\pnote{
-% 		コンテナマイグレーションに関しては、まずオフラインマイグレーション、すなわちシャットダウンして、移動して、再起動する形のマイグレーションに関しては可能で、virtual IP が変わらないのでそのままRDMAの接続を再確立するそうです。
-% 		（これはRoCEみたいなIP層を利用するものだとわかりますが、InfinibandだとそもそもIP使うっけ？みたいなレベルの理解が無いのでちょっとわかりません。）
-% 		ただしライブマイグレーションはできないということでした。
-% 	}
-% \end{frame}
-%
-% \begin{frame}\frametitle{VM host / Work with external legacy peer}
-% 	\begin{itemize}
-% 		\item VM上でコンテナを動作させる場合
-% 		\begin{itemize}
-% 			\item 今回のprototypeでは基本的にベアメタル上にコンテナを起動させているが、SR-IOVなどを利用しているVM上なら可能。
-% 		\end{itemize}
-% 		\item その他RDMAピアとの通信
-% 		\begin{itemize}
-% 			\item FFRはリモートのpeerがFFR使ってるか普通のRDMAかなどの判別をするわけではないため、RDMAで普通に通信可能。
-% 		\end{itemize}
-% 	\end{itemize}
-% 	\pnote{
-% 		VM上でコンテナを起動させる場合にFreeFlowが使えるのかという問題に関しては、今回のプロトタイプでは基本的にコンテナはベアメタル上で動かしていたが、SR-IOVなどを利用しているVMであれば問題ないだろうと書いてありました。
-% 		その他のRDMAピアとの通信はどうなるのかという問題は、基本的に通信対象がFRRを利用しているかどうかなどは関係しないため、RDMAで普通に通信することが可能になっているということでした。
-% 	}
-% \end{frame}
-%
-%
-% \section{結論}
-% \begin{frame}\frametitle{結論}
-% 	\begin{itemize}
-%     \item FreeFlowにより、コンテナ環境に対して、\textit{Isolation}、\textit{Portability}、\textit{Controllability}、\textit{Performance}を満たすRDMA環境を提供することができた。
-%   	\item 肝心のPerformanceに関してもベアメタルRDMAに匹敵するくらいの性能が出る。
-% 		\item Githubは\href{https://github.com/microsoft/Freeflow}{こちら}
-% 	\end{itemize}
-% 	\pnote{
-% 		結論です。
-% 		FreeFlowによりコンテナの環境に対して、Isolation, Portability, Controllability, Performanceを満たすRDMA環境を提供することができるようになりました。
-% 		Controllabilityに関してはmicrobenchmarkでうまくフロー制御ができていることがわかりました。
-% 		肝心のPerformanceに関してもベアメタルRDMAに匹敵するくらいの性能が出ることをいくつかの性能検証で確認できました。
-% 		一応Githubで公開してくれていて、まだプロトタイプ段階とのことですが、ハードウェア要件を満たせば試して確認することもできると思います。issueを見ると、k8sへの対応なども勧めていて、結構頑張っていそうだなという印象でした。
-% 		以上で、発表は終わりです。何か質問等あればいただければと思います。
-%     論文の内容を省いている部分もあるので、話していない論文の内容についても何かあれば質問いただければと思います。
-% 	}
-% \end{frame}
 
 \newcounter{finalframe}
 \setcounter{finalframe}{\value{framenumber}}

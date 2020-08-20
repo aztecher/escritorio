@@ -1,0 +1,959 @@
+\documentclass[dvipdfmx,9pt,notheorems]{beamer}
+%%%% 和文用 %%%%%
+\usepackage{bxdpx-beamer}
+\usepackage{pxjahyper}
+\usepackage{pdfpcnotes}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{minijs}%和文用
+\renewcommand{\kanjifamilydefault}{\gtdefault}%和文用
+
+%%%% スライドの見た目 %%%%%
+\usetheme{metropolis}
+\usefonttheme{professionalfonts}
+\usecolortheme[RGB={112,128,144}]{structure}
+\setbeamertemplate{frametitle}[default][center]
+\setbeamertemplate{navigation symbols}{}
+\setbeamercovered{transparent}%好みに応じてどうぞ）
+\setbeamertemplate{footline}[page number]
+\setbeamerfont{footline}{size=\normalsize,series=\bfseries}
+\setbeamercolor{footline}{fg=black,bg=black}
+%%%%
+
+%%%% 定義環境 %%%%%
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{theorem}{定理}
+\newtheorem{definition}{定義}
+\newtheorem{proposition}{命題}
+\newtheorem{lemma}{補題}
+\newtheorem{corollary}{系}
+\newtheorem{conjecture}{予想}
+\newtheorem*{remark}{Remark}
+\renewcommand{\proofname}{}
+%%%%%%%%%
+
+%%%%% フォント基本設定 %%%%%
+\usepackage[T1]{fontenc}%8bit フォント
+\usepackage{textcomp}%欧文フォントの追加
+\usepackage[utf8]{inputenc}%文字コードをUTF-8
+\usepackage{otf}%otfパッケージ
+\usepackage{sansmathfonts}%数式・英文ローマン体を sansmathfonts にする
+\usepackage{bm}%数式太字
+%%%%%%%%%%
+
+\title{Plankton: Scalable network configuration verification through model checking}
+\author{Santhosh Prabhu\footnotemark[1], Kuan-Yen Chou\footnotemark[1], Ali Kheradmand\footnotemark[1], P. Brighten Godfrey\footnotemark[1], Matthew Caesar\footnotemark[1]}
+\institute{\footnotemark[1]University of Illinois at Urbana-Champaign}
+
+\begin{document}
+\begin{frame}[plain]\frametitle{}
+\titlepage %表紙
+\end{frame}
+
+\begin{frame}\frametitle{動機}
+	\begin{itemize}
+		\item もともとこの論文が読みたかった（が、前回は挫折した）
+		\item Networkの分野におけるmodel checkなどの検証手法がどのように利用されているのか知りたい
+		\item nsdi20ということだしひとまず最新の論文で現状何ができていないのかざっくり掴みたい
+		\item network/verificationの両分野ともに明るくないのでこれからちょっとずつ取り込んでいきたい第一歩
+	\end{itemize}
+	\pnote{
+		実際今から話していく中で、わからなかった点などもあります。
+		最後にも話そうと思うんですが、また色々知識をつけたら再トライしたいなと思っています。
+	}
+\end{frame}
+
+\begin{frame}\frametitle{Contents}
+\raggedright
+\tableofcontents
+\end{frame}
+
+
+\section{概要}
+\begin{frame}\frametitle{概要}
+\begin{itemize}
+	\item 現在、ネットワーク設定検証(Network Configuration Verification)において実用的なサイズのネットワークに耐えうる検証ツールは無い
+	\item これを解決するものとしてPlanktonを提案
+	\begin{itemize}
+		\item 複数Protocol(OSFP, BGP)に対応するmodelを構築し\\
+			SPIN(モデルチェッカ)でmodel checkを行う
+		\item 様々な最適化により、既存の手法に比べ非常に高速、かつメモリ利用量も抑えることができる
+	\end{itemize}
+	\item 様々な条件のベンチマークにおいて実用に耐えうることを確認した
+\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{背景}
+\begin{itemize}
+	\item Enterpise Networkを管理・運用するのは大変。
+	\begin{itemize}
+		\item 設定ファイルを記述し機器に投入することで想定した動作をさせる
+		\item 当然、設定にバグが混入すると事故る
+	\end{itemize}
+	\item ネットワークの設定を投入する前に意図した振る舞いになるかどうかを予め確認できると嬉しい！！
+\end{itemize}
+\begin{figure}[htb]
+  \centering
+  \includegraphics[scale=0.5]{figs/EZ_enterprise_network_configuration.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+
+\begin{frame}\frametitle{問題}
+\begin{itemize}
+	\item Control Planeのモデル化の問題はおよそ以下に起因する状態の膨大さ
+	\begin{itemize}
+		\item[1] ネットワークは動的に変化する (link/node failure, failure reaction)
+		\item[2] ネットワークの状態は非決定的である。
+		\item[3] ネットワークは多様である（同じネットワークでOSPF, BGP, IS-ISなどが混在）
+	\end{itemize}
+	\item 現実的なネットワークサイズを対象に実用的な速度の検証は困難
+	\item 検証方法、最適化など多方面から様々な研究が行われている
+\end{itemize}
+\pnote{
+}
+\end{frame}
+
+
+\begin{frame}\frametitle{関連Tool}
+	\begin{itemize}
+		\item 関連するようなツールはすでにいくつか存在している（次項）
+		\item しかし、やはりネットワークのスケールに従って実用度が下がる
+		\begin{itemize}
+			\item 多くのツールは速度を担保するためにcorrectness/expressivenessを犠牲に。。。
+		\end{itemize}
+		\item Minesweeperはこれを落とさないように頑張った
+		\begin{itemize}
+			\item Scalability以外については満たしている非常に強力なツール
+			\item 245台のデバイスネットワークのループチェックに4時間以上かかる
+		\end{itemize}
+		\item {\color{orange} 現実問題としてscalabilityまでも満たすようなものって作れるの？}
+	\end{itemize}
+\pnote{
+	configuration analysis toolってのはある。
+	入力として、givenはnetwork config, correctness specification, possivle environment specificationを与えることで、そのenvの元で、configurationが常にcorrectness specificationを満たすかを吐き出す
+	難しいのはscallability(ネットワーク規模の意味)である。（おそらく取り扱うものが多くなるから？）
+	多くのツールはcorrectnessやexpressivenessを犠牲にした、これだと検証とは？みたいな気持ちになる。まぁ一分できるだけでも意義はあるが。
+	minesweeperはSMT constraintを利用してネットワークをモデル化し、SMT Solverにより検証を実行することで、correctness, expressivenessの維持に成功した。
+  ただし、minesweeperはscalability的には貧弱で、245台のデバイスネットワークのループチェックに4時間以上かかってしまった。
+	結局、多くのprotocolをサポートし、かつscalableなconfiguration verification toolは作成できるのか？というのが焦点の論文になる
+}
+\end{frame}
+
+\begin{frame}\frametitle{関連Tool}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.6]{figs/EZ_other_tools.pdf}
+  \end{figure}%
+\pnote{
+}
+\end{frame}
+
+
+\begin{frame}\frametitle{問題の分析}
+	\begin{itemize}
+		\item Minesweeperを例に考えるとscalabilityの問題は検証手法による
+		\item Minesweeperでは経路計算を完全に別ドメイン(SMT constants)に変換し、SMT Solverで解く
+		\begin{itemize}
+			\item 決定的な経路計算を対象に取ると{\color{orange} software model execution}のほうが早い
+			\item 簡単なテストをしたらx1000-x10000くらいの差が出た
+		\end{itemize}
+		\item とはいえ基本的に現実世界は非決定的な事象の取り扱いになる
+		\begin{itemize}
+			\item でもその非決定性、ほんとに考える必要あるの？
+			\item 非決定的な事象について{\color{orange}考えるべきもの／考えなくてもいいもの}に分ける
+			\item もし{\color{orange}必要な非決定的な事象のみに刈り込めれば}スケールしても実用的な速度で検証できるのでは?
+		\end{itemize}
+	\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{整理}
+	\begin{itemize}
+		\item 前項の直感をまとめると下図
+		\item 検証手法としてはsoftware model checkを利用する。
+		\item RPVPというprotocolを提案しOSPF, BGPなどをmodel化する。
+		\item 非決定的な事象について刈り込むために、各種最適化を行う
+	\end{itemize}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.6]{figs/EZ_plankton_design_elements.pdf}
+  \end{figure}%
+\pnote{
+	% model checkingに利用するmodelという面でRPVP
+	% non-determinismを刈り込むためにpartial orderなどの構造が入っている（のかな?）の面でRPVP
+}
+\end{frame}
+
+
+
+\begin{frame}\frametitle{整理 - 詳細}
+	\begin{itemize}
+		\item ここから話すtopicとの対応をつけたのが下図
+	\end{itemize}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.6]{figs/EZ_plankton_design_elements_with_topics.pdf}
+  \end{figure}%
+\pnote{
+	また話の流れを図的に把握するために、ここから話すtopicとの対応をつけたのが下図
+	以降、話の流れを見失わないように適宜参照しながら話していきます
+}
+\end{frame}
+
+\begin{frame}\frametitle{論文の目的}
+\begin{itemize}
+	\item packet equivalence computation と explicit-state model checking を組み合わせたconfiguration verificationパラダイムの定義
+	\item 実用的な規模のネットワークで実現するための各種最適化
+	\item OSPF, BGP, Static RoutingをサポートしたPlankton prototypeの実装と実用規模で検証可能であることを示し、最先端のものと比較し4桁以上の差をつけた
+\end{itemize}
+\pnote{
+	改めて今回の論文についての筆者らのkey contributionとしては次の３つです
+	1つ目は、新たなconfiguration verificationのパラダイムとして、packet equivalence computationとexplicit-state model checkingによるものを定義したよ。
+  2つ目は、1つ目の延長ですが、各種最適化を行いましたという話。
+	3つ目は、実際に検証したよという話で、OSPF, BGP, Static Routingをサポートしたプロトタイプを実装し、実際に実用規模のスケールで検証可能であることと、最先端のverificationと比較して4桁以上差をつけたという話。
+}
+\end{frame}
+
+\section{Explicit-state Model Checking}
+\begin{frame}\frametitle{Explicit-state Model Checking}
+\begin{itemize}
+	\item SMTではなくExplicit-state model checking (明示的状態モデル検査)により検証を行う
+	\item programのmodelが与えられた時、その実行パスを網羅的に探索する
+	\item 今回の例では、conrol planeをprogramとしてmodel化する
+	\item Networkのstateがどのように変更していくかはnon-deterministic
+\end{itemize}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.5]{figs/EZ_explicit-state-model-check-in-plankton.pdf}
+  \end{figure}%
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{Plankton Design Overview}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.5]{figs/EZ_explicit-state_model_checker.pdf}
+  \end{figure}%
+\pnote{
+	ここでPlanktonのdesign overviewを示しておきます。
+}
+\end{frame}
+
+\begin{frame}\frametitle{Plankton Design Overview}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.7]{figs/EZ_explicit-state_model_checker_parts.pdf}
+  \end{figure}%
+\pnote{
+	以降の話は概ねこんな感じの部分の話になっていきます。
+}
+\end{frame}
+
+
+
+\begin{frame}\frametitle{Plankton Design Overview}
+  \begin{figure}[htb]
+    \centering
+		\includegraphics[scale=0.7]{figs/EZ_explicit-state_model_checker_parts_1.pdf}
+  \end{figure}%
+\pnote{
+	今からはこの部分の話をしていきます。
+}
+\end{frame}
+
+
+\begin{frame}\frametitle{PEC \& Dependency-aware Scheduling}
+\begin{itemize}
+	\item 探索するPacketレベルの施行をいかに削るか、という話。
+	\item しかし、依存関係とか考える必要があったりするのでそれは考える
+	\item 以下の流れで説明をしていきます
+	\begin{itemize}
+		\item[1] Header Space Analysis
+		\item[2] Packet Equivalence Class(PEC)
+		\item[3] Stringly Connected Components (SCC)
+		\item[4] Dependency-aware Scheduling
+	\end{itemize}
+\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{Header Space Analysis(HSA)}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.7]{figs/EZ_header_space_analysis.pdf}
+  \end{figure}%
+\pnote{
+	そもそもどういうことをするかというと、与えられた設定に対して、例えばあるノードAからBに対するreachabilityを検証する場合は、Aが送信可能なpacket patterをすべて生成して、Bに到達するかみたいなことを確認するようなことをします。
+	この場合、SWはある種の入力に対して、いくつかの出力を割り当てるような転送関数としてみることで、最終的にAが生成するheader spaceのサブセットがBに到達する、みたいなことを見つける形になります。
+	これを各種nodeで全パターン確認する、みたいなことをすると流石にしんどいんですが、網羅性を担保するためにはそれらしいことをやるしか無いわけです
+}
+\end{frame}
+
+\begin{frame}\frametitle{Packet Equivalence Class}
+\begin{itemize}
+	\item PacketのEquivalenceを考えpacketをまとめることで計算量を削減する
+	\item Equivalenceはどうするの？ \\
+		$\rightarrow$ 同一設定内容の適用範囲で分ける(Prefixベースの設定適用が前提になっていそう)
+	\item トライ木でPrefix単位でノードを伸ばしていき、各node(Prefix)に対してconfigurationが紐付いている感じ。
+\end{itemize}
+\pnote{
+	いまそれらしいことをやる必要があるといったんですが、これが等価の議論につながる感じになります。
+	すなわちpacket同士のequivalence(等価性)みたいなものをうまく定義することができれば、等価であるpacketは一つ試せばいいので計算量を削減することができます。
+	そこで、packetのequivalenceはどうするの？という話になってくるのですが、これが今回導入するPacket Equivalence Classというもので、Tri-Tree ベースで考えていくものになります。
+	今回どのようなpacketが等価であるか、というと同一configurationを利用するpacketは等価である、と定義します。これをPacket Equialence Classesとするようです。
+}
+\end{frame}
+
+\begin{frame}\frametitle{Packet Equivalence Class}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.7]{figs/EZ_packet_equivalence_class.pdf}
+  \end{figure}%
+\pnote{
+	例えばOSPF上で、128.0.0.0というprefixのものと、192.0.0.0というprefixのものがアドバタイズされている例を考えてみる。
+	この場合、図のようなトライ木を構築するそうです。
+	トライ木のノードである各prefixにはそれぞれconfigが紐付けられてている、というイメージで構築していくようで、それぞれがPacket Equivalenceである、という形になります。
+	なので、この例の場合はPrefixが0.0.0.0-127.255.255.255の範囲、128.0.0.0-191.255.255.255の範囲、192.0.0.0-255.255.255.255の範囲のpacketがそれぞれ等価、という感じです。
+	考慮するIPアドレスが必要だろうと個人的に思うのですが、これはおそらく対象nodeのPacket header spaceのIPアドレスから考えるのかな、と思います。（それはそう？）
+
+	（1ずつ伸びていくのか？ -> これはtriの実装の仕方によるきがしている。別に矢印に11111...みたいなものを対応付けるのもいいとは思う（挿入操作などでちょっとつけかえが発生するが））
+	明確な言及がないのであくまで個人的な解釈。prototype作ったんならコード公開してくれ、という気持ちがある。
+	（プロトコル実行前にどうやってこのPEC計算するの？）
+	それな。基本的にはconfigurationがgivenなのでその内容を見てどのpacketの単位で分割するのか、というのは決まる。
+	次に実際にプロトコルを実行する際には、対象のnodeのpacket header spaceを見て、どのPECを利用する形になるのか判定する形になると思っている。
+	それぞれのPECごとに各nodeでは振る舞いが変わるはずなので、検証の単位がPECの粒度になる、と思う。（一回のprotocol実行で検証するのは一つのPECという感じ？）
+}
+\end{frame}
+
+
+\begin{frame}\frametitle{Strongly Connected Components (SCC)}
+\begin{itemize}
+	\item PECは基本独立していて、並列計算の観点でもその方が嬉しい
+	\item ただ、例えばiBGPのことを考えてみると、前提としてOSPFでdataplaneを接続していないといけなかったりする。
+	\item この場合は、iBGPのPECとOSPFのPECの間に依存が発生することになる。(Strongly Connected Components)
+	\item SCC同士の依存、みたいなことも考えられるし考えているらしいが、経験的にSCCはあまり依存しあわないらしい。
+\end{itemize}
+\pnote{
+	PEC単位で基本的な検証を行うんだが、ProtocolとしてBGP, OSPF？みたいなところは同時検証というわけではなく、それも網羅的に探索される。
+	そのため、OSPFが前提であるようなiBGPみたいな環境では、OSPFでの検証結果を踏まえて、iBGPの検証をしないといけなかったりする。
+	つまり、PEC間に依存関係ができてしまう。これをSCCと読んでいる。これについてはちゃんと考えなければいけないという話。
+	(iBGP over OSPFのことはよくわかっていない。)
+}
+\end{frame}
+
+\begin{frame}\frametitle{Dependency-aware Scheduling}
+\begin{itemize}
+	\item 実際にmodel checkするときには、極力並列化して実行したい。
+	\item 最初にSCCを確認して、並列化できるところは並列化し、SCCがあるところは依存性を保つため同時に検証を行うなどのスケジューリング機構があるらしい
+	\item 動作周りの細かいことが書いていななったため、検証プロセス自体の効率化もされている、くらいの認識。
+\end{itemize}
+\pnote{
+	基本的な方針としてはPEC単位で、独立しているので並列化して計算してやればいいが、SCCに関してはそういうわけには行かないのでうまくスケジューリングする必要がある。
+	そのためのスケジューラ(モデルチェックのプロセスについてのスケジューリングをしてくれるやつ)というのがありますよ、という話。あまり詳細がなくそれ以上の情報がいまいちつかめなかった。
+}
+\end{frame}
+
+
+\section{RPVP protocol model}
+
+\begin{frame}\frametitle{Plankton Design Overview}
+  \begin{figure}[htb]
+    \centering
+		\includegraphics[scale=0.7]{figs/EZ_explicit-state_model_checker_parts_2.pdf}
+  \end{figure}%
+\pnote{
+	今からはこの部分の話をしていきます。
+}
+\end{frame}
+
+
+%
+% TODO: この辺の話はどこに行った(Algorithm)
+%
+\begin{frame}\frametitle{RPVP: Reduced Path Vector Protocol}
+\begin{itemize}
+	\item 前回話したSimple Path Vector Protocol(SPVP)の拡張
+	\item 今回のネットワークが収束状態の時について、モデル検査が正しく実行できるようなモデル
+	% \begin{itemize}
+	% 	\item 複数Originを許容する
+	% 	\item 時系列ベースのタイブレークを許容するためにランキング関数をtotal orderではなく、partial orderと見る。（この条件が強そう）
+	% 	\item iBGPをモデル化するためにプロトコル実行中に任意ノードのランキング関数をいつでも変更可能にする
+	% \end{itemize}
+	\item 実行pathの一部／全部で発散することがある。
+	\item 我々の目的は収束状態でのフォワーディングをチェックするものであるため、ネットワークが収束状態の時について、モデル検査が正しく実行できるようなモデルを定義する
+	\item ちょっとこれは時間的に咀嚼しきれなかった。。。
+\end{itemize}
+\pnote{
+}
+\end{frame}
+
+% コードベース
+% なんか釈然としない（拡張内容の反映的な観点から）
+% message-passingはしていないね
+\begin{frame}\frametitle{RPVP}
+\begin{itemize}
+	\item RPVP Algorithm
+\end{itemize}
+  \begin{figure}[htb]
+    \centering
+		\includegraphics[scale=0.5]{figs/RPVP_code.png}
+  \end{figure}%
+\pnote{
+}
+\end{frame}
+
+
+\begin{frame}\frametitle{RPVP - Code Base}
+\begin{itemize}
+	\item 初期化: Origin以外のnodeのbest-pathを$\bot$で初期化、Originは$\epsilon$で初期化
+	\item 収束状態になるまでループ
+	\item 全nodeのうち, updateするべき対象nodeの集合を取り出す。これが空集合の場合に収束状態となりプロトコル停止
+	\item 上記node集合のうち無造作に一つ取り出して、もしinvalidならbest-pathとして$\bot$を入れておく。
+	\item 取り出したnodeの隣接nodeのうち、nodeをアップデートできるような隣接nodeの集合を取り出し、bestなnodeの集合を取り出す
+	\item bestなnode集合から無造作に一つ取り出して、そのbest-pathをexport -> importして、対象nodeのbest-pathとする
+	\item これを収束状態になるまで繰り返す
+\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{RPVP(補足)}
+\begin{block}{invalid}
+		\centering
+		$invalid(n) \triangleq best\mathchar`-path(best\mathchar`-path(n).head) \neq best\mathchar`-path(n).rest$
+\end{block}
+\begin{itemize}
+	\item node $n$ のbest-pathと、そのbest-path上の次のnodeのbest-pathを見て、同一経路かどうかを確認している
+	\item 同一経路でない場合、$invalid(n)$ は $true$ になる感じ
+\end{itemize}
+\begin{block}{can-update}
+		\centering
+		$can\mathchar`-update_n(n^{\prime}) \triangleq better(import_{n,n^{\prime}}(export_{n^{\prime},n}(best(n^{\prime}))), best(n))$
+\end{block}
+\begin{itemize}
+	\item node $n$の隣接node $n^{\prime}$ のbest(SPVPでやったやつ)を$n^{\prime}$ から送信し、$n$が受信したものと、その時点でのnode $n$のbestを比較し, 前者の方が良ければ $true$ となる感じ
+\end{itemize}
+\pnote{
+	import n n' はnode nがn'からpath情報を受信することを意味していて、export n' nはn'がnにpath情報を送信することを言っている、と思われる。
+}
+\end{frame}
+
+\section{Policies}
+
+\begin{frame}\frametitle{Plankton Design Overview}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[scale=0.7]{figs/EZ_explicit-state_model_checker_parts_3.pdf}
+  \end{figure}%
+\pnote{
+	ここでPlanktonのdesign overviewを示しておきます。
+}
+\end{frame}
+
+\begin{frame}\frametitle{Policy}
+\begin{itemize}
+	\item 今までの話ではしていなかったが、実際はPolicyベースで性質を満たすかどうか検証する
+	\item 以降ではこれについて話をしていく
+\end{itemize}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.5]{figs/EZ_model_checker_policy.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+
+\begin{frame}\frametitle{Policy / Policy API}
+\begin{itemize}
+	\item ネットワークの収束した状態に対するデータプレーンポリシーの検証をターゲットに考える
+	\item PlanktonはPolicy APIを実装している
+	\item APIによってcallbackを登録する感じ？（多分）で、model checkerが収束状態を生成するたびに呼び出される感じ
+\end{itemize}
+\pnote{
+}
+\end{frame}
+
+
+\begin{frame}\frametitle{Policy API}
+\begin{itemize}
+	\item Plankton APIでは、Planktonの探索を最適化するための追加情報として、source node / interasting nodeを与えることができる。\\
+		$\rightarrow$ 最適化に利用できる (Policy-based Pruning / Choise of Failures) \\
+		$\rightarrow$ 2種類のデータプレーンの収束状態の等価(equivalent)を考えられる
+\end{itemize}
+\begin{block}{Def: equivalence of two converged data plane states for a PEC}
+	\begin{itemize}
+		\item[1] source nodeからのpath長さが同じ
+		\item[2] 同じinteresting nodeがpath上の同じ位置にある
+	\end{itemize}
+\end{block}
+\pnote{
+}
+\end{frame}
+
+
+\section{Optimization}
+\begin{frame}\frametitle{Optimizations}
+\begin{itemize}
+	\item いくつかの最適化を施している
+	\item ちょっと多いのでいくつかピックアップして話したい
+	\item スライドでは特にPartial Order Reductionの話をしていきたい
+	\begin{itemize}
+		\item Partial Order Reduction
+		\item Policy-based Pruning
+		\item Choise of Failure
+		\item State Hashing
+	\end{itemize}
+\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{Partial Order Reduction}
+\begin{itemize}
+	\item 状態空間の爆発への対策として重要な技術の一つ
+	\item ある状態を起点にした経路集合から代表経路を決定することで状態数を削減する
+	\item 今回は4種類のPartial Order Reductionのインスタンスがある
+	\begin{itemize}
+		\item Explore consistent executions only
+		\item Deterministic nodes
+		\item Decision independence
+		\item Failure ordering
+	\end{itemize}
+	\item 今回は特に、上２つが丁寧に書かれていたのでそれを見ていく
+\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{Partial Order Reduction}
+\begin{itemize}
+	\item 同じ結果になるような、複数のアクションが異なるオーダーで実行される場合、一つのオーダのみ考える感じ
+\end{itemize}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.6]{figs/EZ_partial_order_reduction.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{Explore consistent executions only}
+\begin{itemize}
+	\item consistent executionのみ実行する
+	\item consistent executionとは？
+	\item 収束状態S, partial execution of RPVP $\pi$の時\\
+		実行の各stepにおいて、あるnodeがSのbest-pathをpickして、その後それが変更されない場合
+	\item もちろん、探索を開始するときにある収束状態につながるconsistent executionを正確に把握することはできないため、チェックの必要がある?
+	\item そこで、我々が探索するすべての実行はrelevantであると仮定し、もし反対の証拠を得た時（例えばデバイスが選択されたベストパスを変更する時）その実行の探索を止める
+\end{itemize}
+\pnote{
+	inconsistent execution(矛盾するような)について削減する
+	% \item Theorem1が、障害が発生したときに、ネットワークの収束状態につながるconsistent executionの存在を保証している（？）\\
+	% これはどういうつもりだろう。inconsistent状態には対応するconsistent executionが存在するみたいなtheoremの話か？違う気もする
+}
+\end{frame}
+
+
+\begin{frame}\frametitle{consistent, inconsistent (1)}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.6]{figs/EZ_prune_consistent_execution_1.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{consistent, inconsistent (2)}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.6]{figs/EZ_prune_consistent_execution_2.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{consistent, inconsistent (3)}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.6]{figs/EZ_prune_consistent_execution_3.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{consistent, inconsistent (4)}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.6]{figs/EZ_prune_consistent_execution_4.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{consistent, inconsistent (5)}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.6]{figs/EZ_prune_consistent_execution_5.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{consistent, inconsistent (6)}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.6]{figs/EZ_prune_consistent_execution_6.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{consistent, inconsistent (7)}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.6]{figs/EZ_prune_consistent_execution_7.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{consistent, inconsistent (8)}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.6]{figs/EZ_prune_consistent_execution_8.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{consistent, inconsistent (9)}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.6]{figs/EZ_prune_consistent_execution_9.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+
+
+\begin{frame}\frametitle{Prioritize deterministic nodes}
+\begin{itemize}
+	\item あるnodeがdeerministicとは\\
+		そのノードのパス、以降のプロトコル実行の流れの中で絶対に変更されない場合を指す
+	\item configurationから必ず優先されるようなnodeがある場合（その後絶対にpathが変更されない場合?）それ以外の選択は考えられない
+	\item Planktonのmodel checkerの探索空間を減らすために、無関係なnon-determinismを刈り込む
+\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{deterministic nodes}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.6]{figs/EZ_prioritize_deterministic_nodes_1.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{deterministic nodes}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.6]{figs/EZ_prioritize_deterministic_nodes_2.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{deterministic nodes}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.6]{figs/EZ_prioritize_deterministic_nodes_3.pdf}
+\end{figure}%
+\pnote{
+}
+\end{frame}
+
+
+\begin{frame}\frametitle{Prioritize deterministic nodes}
+\begin{itemize}
+	\item そもそもpartiallyにprotocolが実行されていくのに、どうやってnodeがdeterministicであるかわかるの？
+	\item これは各Routing Protocolで固有のheuristicsを考えるらしい
+	\item ちょっとこれもいまいち理解しきれなかった。。。
+\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{Policy-based Pruning}
+\begin{itemize}
+	\item Policy-based Pruning概要
+	\item policy-based pruningは、protocol executionにlimitをかける
+	\item APIでsource nodeのsetが定義されている場合、policyはそのsource nodeからのforwardingのみを分析することで、policyをチェックする
+	\item 例えばあるnodeへの到達性チェックをする場合、source nodeを与えているとsource nodeからのみ到達性をチェックし問題なければpolicy holds
+\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{Choise of Failure}
+\begin{itemize}
+	\item Bonsaiが提案したEquivalence Partitioning of Deviceとか言う話があるらしい。
+	\item 結構ガッツリした論文 + 2018で最近の物なのでそのうち読みます。
+\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{State Hashing}
+\begin{itemize}
+	\item state空間を徹底的に探索する間、model checkerは同時に膨大なstateを追跡する必要がある
+	\item 単一のnetwork stateはすべてのデバイスのすべてのプロトコル固有の状態変数のコピーからなる
+	\item そのため、これらの膨大な状態変数のコピーを維持するコストが膨大になる
+	\item 特性として、あるデバイスでルーティングを決定しても、他のデバイスの変数にすぐに影響を与えない
+	\item 具体的な手法がちゃんと書いてなかったが上記の特性からメモリフットプリントを削減する
+\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\section{Evaluation}
+\begin{frame}\frametitle{諸元}
+\begin{itemize}
+	\item Planktonのprototype実装を行った\\
+		(373 Promera Code / 4870 C++ Code)
+	\begin{itemize}
+		\item equivalence class computation
+		\item control plane model
+		\item policy API
+		\item optimization
+	\end{itemize}
+	\item Ubuntu 16.04
+	\item 3.4 GHz Intel Xeon processor with 32 Hardware thread
+	\item 188G RAM
+	\item 結果が多かったのでいくつか絞って紹介
+	\item 基本的にはMinesweeperと比較する。ポリシー検証結果はMinesweeperとPlanktonは検証を通じて同じ結果になった。
+\end{itemize}
+\pnote{
+}
+\end{frame}
+
+\begin{frame}\frametitle{Experiments with synthetic configurations}
+\begin{itemize}
+	\item まず、\href{https://clusterdesign.org/fat-trees/}{fat tree}を利用したperformance testをいくつか試した
+	\item 各エッジスイッチがOSPFをしゃべる。リンクの重みは同じ。
+	\item ルーティングループ検出を行ってみる。
+	\item static routeを追加し意図的に一部のルーティングでループをおこす。
+\end{itemize}
+\pnote{
+	同じエッジスイッチに接続されている2台のサーバーが通信する場合、コアレベルを参照せずに、その特定のエッジスイッチを介して通信できる.
+	逆に、サーバーが別のエッジスイッチに接続されている場合、パケットはいずれかのコアスイッチに到達し、次にターゲットエッジスイッチに到達します。
+}
+\end{frame}
+
+
+\begin{frame}\frametitle{Experiments with synthetic configurations}
+\begin{itemize}
+	\item Planktonの様々なコア数での実行、Minesweeperを使用した場合のグラフ
+	\item 横軸はfat treeのサイズ + ループあり(Pass)とループなし(Fail)
+	\item 時間(棒グラフ)とメモリ消費量(折れ線グラフ)を示している
+	\item Planktonは入力ネットワークサイズに応じて現実的な速度で抑えれている
+	\item minesweeperと同一量のメモリを利用する16coreの場合、K=10では2000sが0.5s程度に
+\end{itemize}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.5]{figs/fat-tree_OSPF_loop-policy_multicore.png}
+\end{figure}%
+\pnote{
+	グラフの説明
+	PlanktonはMinesweeperに比べ、どのネットワークサイズでも現実的な速度でスケールしていることがわかる（現実的なスケールの話というよりはスケーラビリティの話）
+	メモリ利用量は並列度に比例して大きくなり、速度は反比例しており想定通りで、Minesweeperと比較すると16coreまで並列度を上げてもメモリ使用量は低いままで、
+	速度を見ると,K=10だと例えば2000sなのが、0.4, 5sくらいになっている。
+}
+\end{frame}
+
+% 基本的に、PEC解析は完全に独立しており、同じCPU労力で行われているため、
+% n個のコアで実行すると時間はnx短縮され、メモリがnx増加する
+\begin{frame}\frametitle{Experiments with synthetic configurations}
+\begin{itemize}
+	\item 更に大きなfat treeまでスケールアップしてみたものが下図\\
+		(横軸がDevice数になっているが、fat treeのサイズと見て良さそう)
+	\item 棒グラフは時間、マークはmemory
+	\item 最大サイズ（2205-devices）の場合でも、Single IPの到達性は数分程度
+\end{itemize}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.3]{figs/fat-tree_OSPF_loop-policy_large-scale.png}
+\end{figure}%
+\pnote{
+	minesweeperでは無限に時間がかかるので試していないとのこと
+	2205のdeviceネットワークでは、planktonは1回の処理で170GB使用する
+}
+\end{frame}
+
+% (c) Fat trees with BGP, waypoint policy, 1 core
+% \begin{frame}\frametitle{Experiments with synthetic configurations}
+% \begin{itemize}
+% 	\item 非常に高度な非決定性を持つPlanktonをテストする
+% 	\item BGPを様々なサイズのfat treeで構成する
+% 	\item aggregation switchのwaypoint policyを検証するみたいな話らしい（入れるか?）
+% 	\item なんかPolicy-based pruningの成功だとか言ってる
+% \end{itemize}
+% % \begin{figure}[htb]
+% %   \centering
+% % 	\includegraphics[scale=0.5]{figs/fat-tree_OSPF_loop-policy_large-scale.png}
+% % \end{figure}%
+% \pnote{
+% 	% minesweeperでは無限に時間がかかるので試していないとのこと
+% 	% 2205のdeviceネットワークでは、planktonは1回の処理で170GB使用する
+% }
+% \end{frame}
+
+\begin{frame}\frametitle{Experiments with semi-synthetic configurations}
+\begin{itemize}
+	\item OSPFによってつながったReal-world AS topologyを\href{https://research.cs.washington.edu/networking/rocketfuel/papers/sigcomm2002.pdf}{Rocketfuel}から取得
+	\item あるリンク障害が到達可能性に影響を与えるかどうかの測定をした
+	\item 時間とメモリ両方の面でPlanktonの方が優れたパフォーマンス
+\end{itemize}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.3]{figs/AS-topologies_OSPF_failure_loop-policy_multicore.png}
+\end{figure}%
+\pnote{
+	Rocketfuelとか言うものがあるらしい（元論文らしきものは見つかった。ISP topologyを測定するという題名のもの）
+	Topology生成とかやってくれるのかなと思っているが、詳細についてはちょっと確認できてません。
+
+	なんか同じくらいになっているのは何だろね。。。
+}
+\end{frame}
+
+\begin{frame}\frametitle{Experiments with semi-synthetic configurations}
+\begin{itemize}
+	\item PEC間の依存の取り扱いを評価するために、ASトポロジ上でOSPF上にiBGPを設定した
+	% iBGPプレフィックスは次のホップに到達するために基礎となるOSPFルーティングプロセスに依存する
+	% なんかこれできるのMinesweeperとPlanktonだけらしいぞ
+	\item iBGPでアナウンスされたプレフィックスに向けられたパケットが正しく配信されているかどうかチェックする
+	\item Dependency-aware schedulerのおかげで、Planktonの方が何桁も優れている
+\end{itemize}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.3]{figs/AS-topologies_OSPF_with_iBGP_loop-policy_multicore.png}
+\end{figure}%
+\pnote{
+
+	前ページのOSPFと単純に比較できる感じのものではない？
+	うーん、ちょっとなんとも言えないな。。
+}
+\end{frame}
+
+\begin{frame}\frametitle{Testing with real configuration}
+\begin{itemize}
+	\item 3つの異なる組織の10種類のreal-world configurationを検証した
+	\item 障害の有無 + 複数のpolicyで確認した
+	\item 実世界の構成検証の複雑さにも現実的な時間で対応できていることを示している
+\end{itemize}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.4]{figs/real-world_config_muliple_polices_1core.png}
+\end{figure}%
+\pnote{
+	括弧内はデバイス数、ちょっと少ない？気もしないでもない。
+	モデルとかではなくて実際のネットワークで確認した、という意味合いが強いのかな
+
+	Way-Pointing : 想定したノードを通っているか、とかかな？
+	Bounded Path Length : パス帳制限ポリシー
+
+	検証する中で割と色々わかった面があるみたいな話が書いてあった。（話さなくていい）
+	1. 間接的なstatic routeやiBGPのような何らかの形の再帰的ルーティングが使用されていた。
+	   -> MinesweeperやPlanktonがこれらの設定をサポートすることの重要性を強調していると感じている
+	2. PEC dependency graphには1つのPEC以上の強く接続されているコンポーネントは存在していなかった。
+	   -> 我々の期待と一致している
+	3. 非決定性があるのは失敗したリンクの選択だけ
+	   -> 現実世界のネットワーク構成は大部分が決定的であるという直感を裏付けていた。
+}
+\end{frame}
+
+\begin{frame}\frametitle{Testing with real configuration}
+\begin{itemize}
+	\item ネットワーク構成としては3種類 + Policy3種類(link failureありなし)
+	\item 幅広いポリシーが実世界のネットワーク上で検証できている
+	\item 結果としてはPlanktonのものしか載せていないが、Minesweeperと比較して優位に良かったようである。
+\end{itemize}
+\begin{figure}[htb]
+  \centering
+	\includegraphics[scale=0.5]{figs/real-world_configs_multiple_policies_32_cores.png}
+\end{figure}%
+\pnote{
+	結果はPlanktonのもののみ。Timeを見るとおよそ30sec程度で検証が完了している。
+
+	Loop : ループが発生するかどうか。
+	Path Consistency: Pathの一貫性（特にlink failureとかの時のリアクションとかが気になる気がする）
+	MultiPath Consistency: 複数Pathがあるときに両方 (複数pathバージョンかな？)
+}
+\end{frame}
+
+% Optimization / Costeffectivenessの話はとりあえず無し
+
+
+\section{結論}
+\begin{frame}\frametitle{結論}
+	\begin{itemize}
+		\item Planktonは{\color{orange}formal} network configuration verification tool
+		\begin{itemize}
+			\item equivalence partitioning of the header space
+			\item explicit state model checking of protocol execution
+		\end{itemize}
+		\item 既存のconfiguration verification toolよりもかなり早い
+		\begin{itemize}
+			\item partial order reduction
+			\item state hashing
+		\end{itemize}
+		\item 今後の興味／課題
+		\begin{itemize}
+			\item transient stateのチェック改善
+			\item 実ソフトウェアへの組み込み
+			\item partial order reductionの改善
+		\end{itemize}
+	\end{itemize}
+	\pnote{
+	}
+\end{frame}
+
+\begin{frame}\frametitle{自戒}
+	\begin{itemize}
+		\item わかっていない点が多い
+			\begin{itemize}
+				\item RPVPの議論ともう少し細かいところ
+				\begin{itemize}
+					\item RPVPの詳細の議論
+					\item SPVPの関係やそれを取り巻く証明など
+					\item これだけで一回話す分位、トピックとしては重そう。。。
+				\end{itemize}
+				\item Optimization
+				\begin{itemize}
+					\item Deterministic Nodeの話（heuristicの話）
+					\item Choise of Failure (Equivalence Partitioning of Device)の話
+					\item State Hashingの話（これはどちらかというとSPIN自体の話に近いかも）
+				\end{itemize}
+			\end{itemize}
+		\item また時間をおいて色々納得できるところまで読み込めるようになったらまた取り上げたい
+	\end{itemize}
+	\pnote{
+	}
+\end{frame}
+
+\newcounter{finalframe}
+\setcounter{finalframe}{\value{framenumber}}
+\setcounter{framenumber}{\value{finalframe}}
+\end{document}

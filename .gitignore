@@ -13,3 +13,5 @@ _templates*
 *.snm
 *.toc
 *.upa
+*figs*
+*convert.sh*

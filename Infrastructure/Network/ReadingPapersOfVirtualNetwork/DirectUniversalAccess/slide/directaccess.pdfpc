@@ -1,10 +1,12 @@
+[duration]
+0
 [notes]
 ### 2
  はじめにこの論文を選んだ動機です。
 ### 4
- まず、本論文の概要をざっくりと説明します。hogehoge 
+43
 ### 5
- 
+ （次のページに図あり）ここでいうリソースマルチプレクシングは、例えば共通のPCIeを利用して通信するリソースが複数ある時にうまく処理できない、もしくは自分でそういう処理を記述する必要があったりするということ。また同じリソースに対しても同時アクセスが発生した場合にどう取り回すかなども必要になってくる. 
 ### 6
  
 ### 7
@@ -20,33 +22,33 @@
 ### 12
  
 ### 13
- 
+ 以降ではglobal, unified naming schemeの話、common communication interfaceの話、underlying network serviceの話の順に話します。前者2つはサラッと行きますが、underlying network serviceが長いのでそのつもりで効いていただけるといいかと思います。
 ### 14
- 
+ 話の順番が列挙順と変わりますがまずは、global, unified naming schemeの話からします。というのも、これは共通インターフェースの話と、overlay networkの話両方に絡んでくるからです。
 ### 15
  
 ### 16
- 話の順番が列挙順と変わりますがまずは、global, unified naming schemeの話からします。というのも、これは共通インターフェースの話と、overlay networkの話両方に絡んでくるからです。
-### 17
  
+### 17
+ 次のスライドから, ResourceManagement, Routing Management, Connection Managementを順に見ていきます
 ### 18
  
 ### 19
- 
+ innterconnection table : スライドの表にあるやつあるソースリソースに対して、他の各リソースにどのように接続できるかをまとめた表interconnectionの情報自体の収集はFPGA CAからの通知などから取得するこれを元にRouting Pathを決める\par 以下、メモ\par ここでいうroutingとは。。。? もちろんDC Networkでのroutingではない。これは今回の例でいうとLTL（UDP/IP上に定義されるプロトコルでFPGA間の通信に利用されるもの）routingとは各サーバー内の接続情報から、各サーバー内部のrouting pathを決定する部分。つまりDUA overlayの部分のルーティングという意味になりそうCPU CAは各サーバーのinterconnection tableを保持する。全てのローカルリソースに関するinterconnect情報で、UIDを利用する? (正確にはCPU CAはdeviceIDを保持しているのでUIDがわかっている、という感じか)。第一カラム : src FPGA 第二カラム : dst resource (can accessed from this FPGA through which underlying communication stack) つまり1 : Nの構成テーブル\par table upload 1. FPGA CAがcommunication stack と physical interfaceの情報を自サーバーのCPU CAにuploadする。2. CPU CAは(同一ホストの)異なるFPGA間のinterconnectonを決定し、interconnection tableを更新する。↑3. あるFPGAがDC network fabricとの接続性を報告したとき、他サーバのあるリソースの情報の意味を持つエントリーを挿入する（これはいまいちspecificでないがこれだけの情報があればいいのか?）\par このinterconnection tableでターゲットリソースへのrouting pathが用意に計算できる。 (packetは後で出てくる) 1. destination UIDから、serverID, deviceIDを確認し、同一FPGAからdirect connectionできるかどうかを確認し、interconnection tableにあるstackを利用してリソースアクセスする。2. そうでない場合、interconnection tableから他のFPGAを介すようなrouting pathを見つける。\par ex. Figure5にて。FPGA1 (192.168.0.2:4) が他のサーバーに位置しているFPGA3(192.168.11...5:3)のapplicationに通信したいいとき、ルーティングパスとしては以下が計算される。FPGA1 -(FPGA Connect)-> FPGA2 -(LTL)-> FPGA3 \par lookupの方針によっては本来望ましい最適なpathを通らない可能性がある気はする。到達はしそうだが。-> いや言い方が悪いな、もしlookup時にstep1が早い想定だと、latencyが上る可能性がある、くらいの温度感か。なのでlookup速度の差くらいはありそう程度
 ### 20
- 
+ 以下、メモ\par DUAでは各FPGA communicationはconnectionとして抽象化され、<srcUID:dstUID>のペアで識別され、これもControl Planeで管理される。step1. Connection phase 1. アクセスコントロールポリシーを確認する。src FPGA applicationがdst resourceにアクセス可能かの確認をする。2. OKならdestへのrouting pathを計算し、routing pathに沿ったフォワーディングテーブルをFPGA data planeに配る。3. data planeはこれに従ってforwardingするため、適切なcommunication stackを利用することができる。4. routing pathの種類によって CPU CAは異なるアクション（？<- 多分これVirtual Networkの意味での用語のactionで使っている気がする）をデータプレーンとunderlying stackに流すことができる1. dst resourceがdirect connected -> CPU CAは単純に対応するforwarding tableをデータプレーンに流す。2. dst resourceがdirect connectedではないが同一サーバー -> CPU CAはルーティングパスに沿ってローカルFPGAのstackを呼び出しconnectionをsetupする。冷静に考えてこのFPGA間のconnectionもないので実装したのでは？という気持ちがある。ex. Figure5にて、FPGA2がFPGA1のオンボードDRAMにアクセスするために接続開始したとき、CPU CAはFPGA2とFPGA1の間にFPGA Connect connectionをsetupする。3. dst resourceがリモートサーバのリソース -> CPU CAはリモートのCPU CAと強調してFPGA間のconnection tunnelをLTLなどでセットアップする\par step2. established phase 1. step1が全てうまく行くと、DUA connection establishedになる。2. establishedになるとapplicationにその旨の通知が飛ぶ。3. いくつかのstackでは多くの同時接続がサポートされていなかったりする（LTLは64しかない）が、同一のrouting pathを持つ複数のDUA connectionは同一のtunnel connectionで多重化できるそれ以外にも、各traffic classで複数のtunnelを用意しtraffic schedulingを容易にしたりもできる。\par step3. connecton close phase 1. applicationがconnectionをcloseするとき、DUAはstack tunnel connectionをクローズする（もちろん多重化されてなければ）2. 対応するフォワーディングテーブルをdata planeから削除する。3. もしデータパス(targeted resource, physical interface, comunication stack)で何かしらの失敗が発生したら影響のあるDUA connectionを削除しapplicationに通知する。
 ### 21
  
 ### 22
- 
+ 次はこれを順番に説明していきます
 ### 23
- 
+ 次の図を見せながら説明するといい
 ### 24
  
 ### 25
  
 ### 26
- 
+ 次の図を見せながら説明するといい
 ### 27
  
 ### 28
@@ -56,17 +58,17 @@
 ### 30
  
 ### 31
- 
+ 次の図を見せながら説明するといい
 ### 32
  
 ### 33
- 
+ Altera Stratix V D5はミドルレンジFPGAと書いてあったがほんまか？
 ### 34
- 
+ ハイエンドなら無視できるとあるがちょっとこの辺はわからない
 ### 35
  
 ### 36
- 
+ これちょっと難しいな（最大周波数とThroughput）1sで490M回cycleする。1sで490Mmessageのmatchingを行う1message = x Byte Throughput (Byte/s) = 490M * x (逆に) 10000 (MBps (10GBps)) / 490(MBps) = x = 20.4くらいmessageサイズの情報がなかった
 ### 37
  
 ### 38
@@ -74,14 +76,8 @@
 ### 39
  
 ### 40
- 
+ 前のLatencyのデータと比べて、データおかしくない
 ### 41
  
 ### 42
- 
-### 43
- 
-### 44
- 
-### 45
- 
+ 比較対象に注意through CPUは処理自体をFPGAでやるがデータ転送部分をFPGA ConnectではなくCPUを通じてFPGA間のデータ転送をしている。そのため、Throughputという点ではデータ転送帯域の差が如実に出ているように見える。input文字列長がながければ長いほどその結果が顕著に出てる感じ対してレイテンシの観点からでは差があまりない。トータルレイテンシのうちに占めるFPGAの処理時間が大きいのかなと思います。またもちろんFPGA Connectのほうが早いけど結局同一サーバー内だし、最大でも16KB程度なので転送速度の差がグラフ上で明確に出るほどではないのかなと思った。
